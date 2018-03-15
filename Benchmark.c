@@ -1,6 +1,31 @@
 #include "Benchmark.h"
 #include <time.h>
 
+#ifdef _WIN32
+#include <Windows.h>
+#define CLOCK_PROCESS_CPUTIME_ID 1
+static int primeraVez = 1;
+static LARGE_INTEGER frecuencia;
+
+int clock_gettime(int dummy, struct timespec *ct) {
+    LARGE_INTEGER cuenta;
+
+    if (primeraVez) {
+        primeraVez = 0;
+
+        QueryPerformanceFrequency(&frecuencia);
+
+    }
+
+    QueryPerformanceCounter(&cuenta);
+	
+    ct->tv_sec = cuenta.QuadPart / frecuencia.QuadPart;
+    ct->tv_nsec = ((cuenta.QuadPart % frecuencia.QuadPart) * 1e9) / frecuencia.QuadPart;
+
+    return 0;
+}
+#endif
+
 Experimento nuevoExperimento() {
   Experimento experimento;
   experimento.comparaciones = 0;
@@ -36,17 +61,4 @@ unsigned int tiempoMilisegundos(Experimento * experimento) {
 unsigned int tiempoNanosegundos(Experimento * experimento) {
   return (experimento->fin.tv_nsec-experimento->inicio.tv_nsec)+
   (experimento->fin.tv_sec-experimento->inicio.tv_sec) * 10e9;
-}
-
-int ordenar2 (int * lista, unsigned int n, Experimento * experimento) {
-  if(n != 2) return -1;
-
-  iniciarCuenta(experimento);
-
-  if (comparar(lista[0] > lista[1], experimento))
-  swap(&lista[0], &lista[1], experimento);
-
-  finalizarCuenta(experimento);
-
-  return 0;
 }
