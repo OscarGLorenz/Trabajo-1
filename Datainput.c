@@ -1,20 +1,21 @@
 #include <stdio.h>
-#define PARAMAX longitud
-#define PARAMIN longitud
-#define PARAMINC longitud
 
-void swap(int * a, int * b) {
+#define PARAMAX longitud			// Limite de 'entropia global' para ser considerado ordenado ascendente
+#define PARAMIN longitud			// Limite de 'entropia global' para ser considerado ordenado descendente
+#define PARAMINC longitud			// Limite de 'entropia icremental' para ser considerado relativamente ordenado (posiciones consecutivas son similares)
+
+void swap(int * a, int * b) {		// Conmuta 2 variables proporcionadas por referencia
   int aux = *a;
   *a = *b;
   *b = aux;
 }
 
-int distancia(int a, int b){
+int distancia(int a, int b){		// Calcula el incremento entre 2 elementos consecutivos, para el calculo de la 'entropia incremental'
 	int dist = a - b;
 	return dist < 0 ? - dist : dist;
 }
 
-void showvector(int * datos, int longitud){
+void showvector(int * datos, int longitud){		// Visualiza el array de datos
 	int i;
 	for (i = 0; i < longitud; i++){
 		printf("%d ", datos[i]);
@@ -22,7 +23,7 @@ void showvector(int * datos, int longitud){
 	printf("\n");
 }
 
-void startvector(int * datos, int longitud, int modo){
+void startvector(int * datos, int longitud, int modo){		// Rellena el array de datos con valores ascendentes; modo: 0 = consecutivos; 1 = incremento aleatorio
 	int i;
 	srand(clock());
 	datos[0] = 1 + modo * (rand() % longitud);
@@ -33,14 +34,14 @@ void startvector(int * datos, int longitud, int modo){
 	}
 }
 
-void invertvector(int * datos, int longitud){
+void invertvector(int * datos, int longitud){		// Invierte el orden de un array
 	int i, j;
 	for (i = 0, j = longitud - 1; i < j; i++, j--){
 		swap(datos + i, datos + j);
 	}
 }
 
-void randomize(int * datos, int longitud){
+void randomize(int * datos, int longitud){			// Aleatoriza un array dado realizando tantas pasadas de swaps como su tamaño, para mayor aleatorizacion
 	int i, j;
 	srand(clock());
 	for(j = 0; j < longitud; j++){
@@ -50,7 +51,7 @@ void randomize(int * datos, int longitud){
 	}
 }
 
-void duplicate(int * datos, int longitud){
+void duplicate(int * datos, int longitud){			// Modifica array en un numero aleatorio de posiciones, duplicando posiciones también aleatorias
 	int i, j;
 	srand(clock());
 	j = rand() % longitud;
@@ -60,7 +61,7 @@ void duplicate(int * datos, int longitud){
 	}
 }
 
-void inputdata(int * datos, int longitud){
+void inputdata(int * datos, int longitud){			// Permite al usuario introducir los valores del array, dada su longitud previamente
 	int i;
 	for(i = 0; i < longitud; i++){
 		printf("Introduzca dato %d: ", i+1);
@@ -68,7 +69,7 @@ void inputdata(int * datos, int longitud){
 	}
 }
 
-double maxorder(int longitud){
+double maxorder(int longitud){			// Calcula la 'entropia global' en el caso de mayor orden ascendente
 	int i, factor = 0;
 	for(i = 1; i <= longitud; i++){
 		factor += i * i;
@@ -76,7 +77,7 @@ double maxorder(int longitud){
 	return factor;
 }
 
-double minorder(int longitud){
+double minorder(int longitud){			// Calcula la 'entropia global' en el caso de mayor orden descendente
 	int i, factor = 0;
 	for(i = 1; i <= longitud; i++){
 		factor += i * (longitud - i + 1);
@@ -84,7 +85,7 @@ double minorder(int longitud){
 	return factor;
 }
 
-int incremental(int * datos, int longitud){
+int incremental(int * datos, int longitud){			// Calcula la 'entropia incremental' del array, segun la distancia entre valores de posiciones consecutivas
 	int i;
 	double entropia = 0;
 	for(i = 0; i < longitud - 1; i++){
@@ -95,7 +96,7 @@ int incremental(int * datos, int longitud){
 	return 0;
 }
 
-int order(int * datos, int longitud){
+int order(int * datos, int longitud){				// Calcula el 'tipo de orden' segun la 'entropia global' y 'entropia incremental'
 	int i; 
 	double entropia = 0;
 	const double ordenmax = maxorder(longitud), inversmax = minorder(longitud);
@@ -116,8 +117,8 @@ El tipo de orden sera:
  0: aleatorio
 */
 
-int datacreator(char modo, int * datos, int longitud){
-	startvector(datos, longitud, 1);			//Argumento no3: 0 = consecutivos, 1 = de salto aleatorio
+int datacreator(char modo, int * datos, int longitud){		// Crea el array de datos del tipo solicitado, y estima su 'tipo de orden'
+	startvector(datos, longitud, 1);
 	switch(modo){
 		case 'a':
 			break;
