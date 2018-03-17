@@ -91,7 +91,7 @@ int incremental(int * datos, int longitud){			// Calcula la 'entropia incrementa
 	for(i = 0; i < longitud - 1; i++){
 		entropia += distancia(datos[i], datos[i+1]);
 	}
-	printf("\nEntropia: %f\n", entropia);
+//	printf("\nEntropia: %f\n", entropia);
 	if (entropia < PARAMINC) return 2;
 	return 0;
 }
@@ -103,7 +103,7 @@ int order(int * datos, int longitud){				// Calcula el 'tipo de orden' segun la 
 	for(i = 0; i < longitud; i++){
 		entropia += datos[i] * (i + 1);
 	}
-	printf("\nEntropia: %f\n", entropia);
+//	printf("\nEntropia: %f\n", entropia);
 	if (ordenmax - entropia < PARAMAX) return 1;
 	if (entropia - inversmax < PARAMIN) return -1;
 	return incremental(datos, longitud);
@@ -118,7 +118,9 @@ El tipo de orden sera:
 */
 
 int datacreator(char modo, int * datos, int longitud){		// Crea el array de datos del tipo solicitado, y estima su 'tipo de orden'
+	int orden = 0;
 	startvector(datos, longitud, 1);
+	
 	switch(modo){
 		case 'a':
 			break;
@@ -133,9 +135,11 @@ int datacreator(char modo, int * datos, int longitud){		// Crea el array de dato
 			break;
 		case 'e':
 			inputdata(datos, longitud);
+			orden = order(datos, longitud);
+			printf("\n\nTipo de orden: %d\n", orden);
 			break;
 	}
-	return order(datos, longitud);
+	return orden;
 }
 
 int main() {
@@ -152,8 +156,7 @@ int main() {
 	printf("Cantidad de datos a ordenar: ");
 	scanf("%d", &longitud);
 	int datos[longitud];
-	orden = datacreator(modo, datos, longitud);
+	datacreator(modo, datos, longitud);
 	showvector(datos, longitud);
-	printf("\n\nTipo de orden: %d\n", orden);
 	return 0;
 }
