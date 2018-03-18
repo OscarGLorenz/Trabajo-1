@@ -1,5 +1,31 @@
 /*Algoritmo de ordenación método de Selección*/
 
+/*ALGORITMO ADAPTADO AL BENCHMARK*/
+
+void selection( int*lista, int N, Experimento*experimento){  
+   iniciarCuenta(experimento);
+   int i,j,menor,aux;
+   for(i=0;i<N-1;i++){
+      menor=i;
+        for(j=i+1;j<N;j++){
+        if (comparar(lista[j] < lista[menor], experimento)){
+           menor=j;
+        }
+   }
+      if(menor!=i){
+      swap(&lista[i], &lista[menor], experimento);
+            
+      } 
+}
+ finalizarCuenta(experimento);
+}
+
+
+
+
+
+/*ALGORITMO SIN ADAPTAR AL BENCHMARK*/
+/*
 void selection( int*lista, int N, Experimento*exp){
    int i,j,menor,aux;
    for(i=0;i<N-1;i++){
@@ -16,7 +42,7 @@ void selection( int*lista, int N, Experimento*exp){
       
       } 
 }
-}
+}*/
 
 /* EJEMPLO DE PRUEBA DEL ALGORITMO*/
 
