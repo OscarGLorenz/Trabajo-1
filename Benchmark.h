@@ -53,13 +53,14 @@ struct experimento {
   unsigned int movimientos;   //Guarda número de movimientos
   struct timespec inicio;     //Estructura con el tiempo al inicio
   struct timespec fin;        //Estructura con el tiempo al final
+  size_t elementos; 	      //Tamaño del experimento
 };
 
 /* Para abreviar ahora se llamará "Experimento" sin más */
 typedef struct experimento Experimento;
 
 /* Genera un nuevo experimento, inicializa variables */
-Experimento nuevoExperimento();
+Experimento nuevoExperimento(size_t n);
 
 /* Intercambia las variables x e y, añade 3 movimientos al experimento*/
 void swap(int * x, int * y, Experimento * experimento);
