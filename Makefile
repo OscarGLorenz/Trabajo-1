@@ -3,13 +3,13 @@ CC=gcc
 
 #Flags
 #(-I.) Buscar en este directorio las dependencias
-CFLAGS=-I.
+CFLAGS=-I. -lm
 
 #Dependencias (archivo.h)
-DEPS =
+DEPS = Benchmark.h
 
 #Objetos (archivo.o)
-OBJ = main.o
+OBJ = main.o Benchmark.o
 
 #Compila todos los archivos objeto
 %.o: %.c $(DEPS)

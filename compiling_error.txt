@@ -1,0 +1,8 @@
+/tmp/ccatfXxK.o: En la función `burbuja':
+main.c:(.text+0x10a): referencia a `iniciarCuenta' sin definir
+main.c:(.text+0x166): referencia a `comparar' sin definir
+main.c:(.text+0x1a3): referencia a `swap' sin definir
+main.c:(.text+0x1d2): referencia a `finalizarCuenta' sin definir
+/tmp/ccatfXxK.o: En la función `main':
+main.c:(.text+0x7a2): referencia a `nuevoExperimento' sin definir
+collect2: error: ld returned 1 exit status
