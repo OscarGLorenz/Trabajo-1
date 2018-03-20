@@ -12,4 +12,3 @@ int main(){
 	showvector(datos, longitud);
 	return 0;
 }
-

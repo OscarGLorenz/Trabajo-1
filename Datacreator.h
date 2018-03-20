@@ -1,6 +1,8 @@
 #ifndef DATACREATOR_H_
 #define DATACREATOR_H_
 
+#include <stdio.h>
+
 enum Datamode{
 	CRECIENTE,
 	DECRECIENTE,
