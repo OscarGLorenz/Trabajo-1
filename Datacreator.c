@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "Datacreator.h"
 
 #define PARAMAX longitud			// Limite de 'entropia global' para ser considerado ordenado ascendente
 #define PARAMIN longitud			// Limite de 'entropia global' para ser considerado ordenado descendente
@@ -117,23 +118,23 @@ El tipo de orden sera:
  0: aleatorio
 */
 
-int datacreator(char modo, int * datos, int longitud){		// Crea el array de datos del tipo solicitado, y estima su 'tipo de orden'
+int datacreator(enum datamode modo, int * datos, int longitud){		// Crea el array de datos del tipo solicitado, y estima su 'tipo de orden'
 	int orden = 0;
 	startvector(datos, longitud, 1);
 	
 	switch(modo){
-		case 'a':
+		case CRECIENTE:
 			break;
-		case 'b': 
+		case DECRECIENTE: 
 			invertvector(datos, longitud);
 			break;
-		case 'c':
+		case DESORDENADO:
 			randomize(datos, longitud);
 			break;
-		case 'd':
+		case REPETIDOS:
 			duplicate(datos, longitud);
 			break;
-		case 'e':
+		case USUARIO:
 			inputdata(datos, longitud);
 			orden = order(datos, longitud);
 			printf("\n\nTipo de orden: %d\n", orden);
@@ -142,8 +143,7 @@ int datacreator(char modo, int * datos, int longitud){		// Crea el array de dato
 	return orden;
 }
 
-int main() {
-	int longitud, orden;
+enum datamode mododato(){
 	char modo;
 	printf("\nMODOS DISPONIBLES:\n");
 	printf("a) Ordenado sentido creciente\n");
@@ -153,10 +153,17 @@ int main() {
 	printf("e) Introducir datos personalizados\n\n");
 	printf("Intruduzca modo: ");
 	scanf("%c", &modo);
-	printf("Cantidad de datos a ordenar: ");
-	scanf("%d", &longitud);
-	int datos[longitud];
-	datacreator(modo, datos, longitud);
-	showvector(datos, longitud);
-	return 0;
+	switch(modo){
+		case 'a':
+			return CRECIENTE;
+		case 'b': 
+			return DECRECIENTE;
+		case 'c':
+			return DESORDENADO;
+		case 'd':
+			return REPETIDOS;
+		case 'e':
+			return USUARIO;
+	}
 }
+
