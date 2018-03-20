@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "Datacreator.h"
+#include "GUI.h"
 
 
 int main(){

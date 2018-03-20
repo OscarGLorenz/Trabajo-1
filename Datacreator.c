@@ -18,14 +18,6 @@ int distancia(int a, int b){
 	return dist < 0 ? - dist : dist;
 }
 
-void showvector(int * datos, int longitud){
-	int i;
-	for (i = 0; i < longitud; i++){
-		printf("%d ", datos[i]);
-	}
-	printf("\n");
-}
-
 void startvector(int * datos, int longitud, int modo){
 	int i;
 	srand(clock());
@@ -143,27 +135,4 @@ int datacreator(datamode modo, int * datos, int longitud){
 	return orden;
 }
 
-datamode mododato(){
-	char modo;
-	printf("\nMODOS DISPONIBLES:\n");
-	printf("a) Ordenado sentido creciente\n");
-	printf("b) Ordenado sentido decreciente\n");
-	printf("c) Desordenado\n");
-	printf("d) Con duplicados\n");
-	printf("e) Introducir datos personalizados\n\n");
-	printf("Intruduzca modo: ");
-	scanf("%c", &modo);
-	switch(modo){
-		case 'a':
-			return CRECIENTE;
-		case 'b': 
-			return DECRECIENTE;
-		case 'c':
-			return DESORDENADO;
-		case 'd':
-			return REPETIDOS;
-		case 'e':
-			return USUARIO;
-	}
-}
 

@@ -19,9 +19,6 @@ void swap(int * a, int * b);
 // Calcula el incremento entre 2 elementos consecutivos, para el calculo de la 'entropia incremental'
 int distancia(int a, int b);
 
-// Visualiza el array de datos
-void showvector(int * datos, int longitud);
-
 // Rellena el array de datos con valores ascendentes; modo: 0 = consecutivos; 1 = incremento aleatorio
 void startvector(int * datos, int longitud, int modo);
 
@@ -59,8 +56,5 @@ El tipo de orden sera:
 
 // Crea el array de datos del tipo solicitado, y estima su 'tipo de orden'
 int datacreator(datamode modo, int * datos, int longitud);
-
-// Solicita al usuario el tipo de dato con el que quiere experimentar
-datamode mododato();
 
 #endif
