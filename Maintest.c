@@ -1,7 +1,9 @@
 #include <stdio.h>
-#include "Datacreator.h"
 #include "TUI.h"
-//#include "Dataorganizer.h"
+#include "Datacreator.h"
+#include "Dataorganizer.h"
+
+#define MUESTRAMAX 6		//Para el modo experimento, se generarán vectores de datos a ordenar de tamaño 10^n, con n = 1..MUESTRAMAX
 
 void runExperiment(){
 	char mode = experimentMode();

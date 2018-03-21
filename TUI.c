@@ -62,7 +62,7 @@ char datainputMode(){
 char orderinputMode(){
 	char mode;
 	printf("\nComo desea que se ordenen sus datos?\n");
-	printf("a) \"I feel lucky\", dime cual crees que es el algoritmo mas apropiado para este tipo de datos\n");
+	printf("a) \"I'm feeling lucky\", dime cual crees que es el algoritmo mas apropiado para este tipo de datos\n");
 	printf("b) Comparar la velocidad de todos los algoritmos\n");
 	do{
 		printf("Introducza su opcion: ");
