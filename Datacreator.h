@@ -8,6 +8,7 @@ enum Datamode{
 	DECRECIENTE,
 	DESORDENADO,
 	REPETIDOS,
+	FICHERO,
 	USUARIO
 };
 
