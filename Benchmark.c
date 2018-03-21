@@ -26,10 +26,11 @@ int clock_gettime(int dummy, struct timespec *ct) {
 }
 #endif
 
-Experimento nuevoExperimento() {
+Experimento nuevoExperimento(size_t n) {
   Experimento experimento;
   experimento.comparaciones = 0;
   experimento.movimientos = 0;
+  elementos = n;
   return experimento;
 }
 
