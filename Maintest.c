@@ -21,11 +21,14 @@ void runExperiment(){
 }
 
 void runOrganizer(){
-	char dataMode = datainputMode();	
-	char orderMode = orderinputMode();
+	int datasize;
+	char dataMode = dataInputMode(&datasize);
+	char orderMode = orderInputMode();
+	int datavector[datasize];
 	switch (dataMode){
 		case 'a':
-			
+			inputData(datavector, datasize);
+			showVector(datavector, datasize);
 			break;
 		case 'b':
 			
@@ -46,33 +49,3 @@ int main(int argc, char const *argv[]){
 	return 0;
 }
 
-/*		
-//	Experimento experimento[4];
-	float count[4];
-	float number[4];
-
-for (int i = 0; i < 4; i++) {
-		experimento[i] = nuevoExperimento();
-		int n = number[i] = pow(10,i+1);
-		int datos[n];
-		startvector(datos, n);
-		randomize(datos, n);
-		burbuja(datos, n, &experimento[i]);
-		count[i] = experimento[i].comparaciones;
-	}
-  	
-	complejidad(number,count,4);
-	return 0;
-}
-
-int main(){
-	int longitud, orden;
-	datamode modo = mododato();
-	printf("Cantidad de datos a ordenar: ");
-	scanf("%d", &longitud);
-	int datos[longitud];
-	datacreator(modo, datos, longitud);
-	showvector(datos, longitud);
-	return 0;
-}
-*/

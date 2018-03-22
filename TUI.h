@@ -11,15 +11,18 @@ char programMode();
 char experimentMode();
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
-char datainputMode();
+char dataInputMode();
 
 //Pide modo de ORDENADOR. Opciones: modo AUTO/LUCKY, modo TODOSALGORITMOS
-char orderinputMode();
+char orderInputMode();
 
 // Visualiza el array de datos
-void showvector(int * datos, int longitud);
+void showVector(int * datavector, int datasize);
 
-// Solicita al usuario el tipo de dato con el que quiere experimentar
-datamode mododato();
+// Permite al usuario introducir los valores del array a través de un fichero *.txt en la misma carpeta que el programa
+void dataFile(int * datavector, int datasize);
+
+// Permite al usuario introducir los valores del array por teclado
+void inputData(int * datavector, int datasize);
 
 #endif

@@ -44,7 +44,7 @@ char experimentMode(){
 	return mode;
 }
 
-char datainputMode(){
+char dataInputMode(int* datasize){
 	char mode;
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo ORDENADOR\n");
@@ -56,10 +56,14 @@ char datainputMode(){
 		fflush(stdin);
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b'));
+	if (mode == 'a'){
+		printf("\nNumero de elementos que desea introducir: ");
+		scanf("%d", datasize);
+	}
 	return mode;
 }
 
-char orderinputMode(){
+char orderInputMode(){
 	char mode;
 	printf("\nComo desea que se ordenen sus datos?\n");
 	printf("a) \"I'm feeling lucky\", dime cual crees que es el algoritmo mas apropiado para este tipo de datos\n");
@@ -72,39 +76,35 @@ char orderinputMode(){
 	return mode;
 }
 
-void showvector(int * datos, int longitud){
+void showVector(int * datavector, int datasize){
 	int i;
-	for (i = 0; i < longitud; i++){
-		printf("%d ", datos[i]);
+	for (i = 0; i < datasize; i++){
+		printf("%d ", datavector[i]);
 	}
 	printf("\n");
 }
 
-datamode mododato(){
-	char modo;
-	printf("\nMODOS DISPONIBLES:\n");
-	printf("a) Ordenado sentido creciente\n");
-	printf("b) Ordenado sentido decreciente\n");
-	printf("c) Desordenado\n");
-	printf("d) Con duplicados\n");
-	printf("f) Datos presentes en fichero (1 numero/fila)\n\n");
-	printf("f) Introducir datos\n\n");
-	printf("Intruduzca modo: ");
-	scanf("%c", &modo);
-	switch(modo){
-		case 'a':
-			return CRECIENTE;
-		case 'b': 
-			return DECRECIENTE;
-		case 'c':
-			return DESORDENADO;
-		case 'd':
-			return REPETIDOS;
-		case 'e':
-			return FICHERO;
-		case 'f':
-			return USUARIO;
-	}
+void dataFile(int * datavector, int datasize){
+	char filename[32];
+	FILE * datafile;
+	printf("El fichero debe contener un elemento de tipo entero natural en cada fila.");
+	printf("Indique el nombre del fichero, situado en la misma carpeta que el programa: ");
+	do {
+		scanf("%s", filename);
+		if((datafile = fopen(filename,"r")) == NULL){
+			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
+		}
+	} while (datafile == NULL);
+	
 }
 
+void inputData(int * datavector, int datasize){
+	int i;
+	int data[datasize];
+	printf("\n");
+	for(i = 0; i < datasize; i++){
+		printf("Introduzca dato %d: ", i+1);
+		scanf("%d", datavector + i);
+	}
+}
 
