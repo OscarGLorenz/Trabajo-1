@@ -6,10 +6,10 @@ CC=gcc
 CFLAGS=-I. -lm
 
 #Dependencias (archivo.h)
-DEPS = Benchmark.h
+DEPS = Benchmark.h Cost.h
 
 #Objetos (archivo.o)
-OBJ = main.o Benchmark.o
+OBJ = main.o Benchmark.o Cost.o
 
 #Compila todos los archivos objeto
 %.o: %.c $(DEPS)

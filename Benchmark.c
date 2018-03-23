@@ -18,7 +18,7 @@ int clock_gettime(int dummy, struct timespec *ct) {
     }
 
     QueryPerformanceCounter(&cuenta);
-	
+
     ct->tv_sec = cuenta.QuadPart / frecuencia.QuadPart;
     ct->tv_nsec = ((cuenta.QuadPart % frecuencia.QuadPart) * 1e9) / frecuencia.QuadPart;
 
@@ -30,7 +30,7 @@ Experimento nuevoExperimento(size_t n) {
   Experimento experimento;
   experimento.comparaciones = 0;
   experimento.movimientos = 0;
-  elementos = n;
+  experimento.elementos = n;
   return experimento;
 }
 
