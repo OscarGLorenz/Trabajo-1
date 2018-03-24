@@ -5,7 +5,7 @@ enum Datamode{
 	CRECIENTE,
 	DECRECIENTE,
 	DESORDENADO,
-	REPETIDOS,
+	REPETIDOS
 };
 
 typedef enum Datamode datamode;

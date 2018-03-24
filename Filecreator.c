@@ -4,7 +4,7 @@
 #include "Datacreator.h"
 #include "TUI.h"
 
-int dataInput(FILE ** datafile){
+int fileCreator(FILE ** datafile){
 	char filename[32];
 	int datasize;
 	printf("\nEste programa le permite generar un fichero de texto con una serie de datos pseudoaleatorios,\n");
@@ -17,7 +17,6 @@ int dataInput(FILE ** datafile){
 			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
 		}
 	} while (*datafile == NULL);
-	fprintf(*datafile, "Hola");
 	printf("\nIntroduzca la cantidad de datos que desea generar: ");
 	scanf("%d", &datasize);
 	return datasize;
@@ -36,38 +35,24 @@ char dataSpacingMode(){
 	return mode;
 }
 
-datamode dataOrderMode(){
-	char mode;
-	printf("\nComo desea que se encuentren los datos inicialmente?\n");
-	printf("a) Ordenados sentido creciente\n");
-	printf("b) Ordenados sentido decreciente\n");
-	printf("c) Desordenados\n");
-	printf("d) Con duplicados\n");
-	do{
-		printf("Introducza su opcion: ");
-		fflush(stdin);
-		scanf("%c", &mode);
-	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
-	return mode == 'a' ? CRECIENTE : mode == 'b' ? DECRECIENTE : mode == 'c' ? DESORDENADO : REPETIDOS;
-}
-
-void fileCreator(FILE * datafile, int * datavector, int datasize){
+void filePrinter(FILE * datafile, int * datavector, int datasize){
 	int i;
-	fprintf(datafile, "%d\n", datasize);
+	fprintf(datafile, "%d,\n", datasize);
 	for (i = 0; i < datasize; i++){
 		fprintf(datafile, "%d\n", datavector[i]);
 	}
 	fclose(datafile);
+	printf("Fichero generado con exito.\n");
 }
 
 int main(){
 	FILE * datafile;
-	int datasize = dataInput(&datafile);
+	int datasize = fileCreator(&datafile);
 	int datavector[datasize];
 	datamode dataorder = dataOrderMode();
 	char dataspacing = dataSpacingMode();
 	dataCreator(datavector, datasize, dataorder, dataspacing);
-	showVector(datavector, datasize);
-	fileCreator(datafile, datavector, datasize);
+//	showVector(datavector, datasize);
+	filePrinter(datafile, datavector, datasize);
 	return 0;
 }

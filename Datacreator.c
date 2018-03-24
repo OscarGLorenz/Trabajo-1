@@ -60,9 +60,9 @@ void dataCreator(int * datavector, int datasize, datamode dataorder, char datasp
 			randomize(datavector, datasize);
 			break;
 		case REPETIDOS:
+			randomize(datavector, datasize);
 			duplicate(datavector, datasize);
 			break;
 	}
 }
-
 

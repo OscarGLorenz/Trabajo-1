@@ -22,18 +22,29 @@ void runExperiment(){
 
 void runOrganizer(){
 	int datasize;
-	char dataMode = dataInputMode(&datasize);
-	char orderMode = orderInputMode();
-	int datavector[datasize];
-	switch (dataMode){
+	FILE * datafile;
+	char datamode = dataInputMode();
+	char ordermode = orderInputMode();
+	switch (datamode){
 		case 'a':
-			inputData(datavector, datasize);
-			showVector(datavector, datasize);
+			printf("\nNumero de elementos que desea introducir: ");
+			scanf("%d", &datasize);
+				printf("\nHola\n");
 			break;
-		case 'b':
-			
+		case 'b':			
+			datasize = fileOpener(&datafile);
 			break;
 	}
+	int datavector[datasize];
+	switch (datamode){
+		case 'a':
+			inputData(datavector, datasize);
+			break;
+		case 'b':			
+			fileReader(datavector, datasize, datafile);
+			break;
+	}
+	dataSorter(datavector, datasize, ordermode);
 }
 
 int main(int argc, char const *argv[]){
