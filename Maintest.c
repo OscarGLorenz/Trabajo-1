@@ -3,33 +3,30 @@
 #include "Datacreator.h"
 #include "Dataorganizer.h"
 
-#define MUESTRAMAX 6		//Para el modo experimento, se generarán vectores de datos a ordenar de tamaño 10^n, con n = 1..MUESTRAMAX
-
 void runExperiment(){
 	char mode = experimentMode();
 	switch (mode){
-		case 'a':
+		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
 			
 			break;
-		case 'b':
+		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
 			
 			break;
-		case 'c':
+		case 'c':		// Comparar diferentes algoritmos dado un tipo de dato
 			
 			break;
 	}
 }
 
 void runOrganizer(){
-	int datasize;
+	int datasize, orderType;
 	FILE * datafile;
 	char datamode = dataInputMode();
-	char ordermode = orderInputMode();
+	char sortermode = sorterInputMode();
 	switch (datamode){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
 			scanf("%d", &datasize);
-				printf("\nHola\n");
 			break;
 		case 'b':			
 			datasize = fileOpener(&datafile);
@@ -44,7 +41,14 @@ void runOrganizer(){
 			fileReader(datavector, datasize, datafile);
 			break;
 	}
-	dataSorter(datavector, datasize, ordermode);
+	switch (sortermode){
+		case 'a':
+			luckySorter(datavector, datasize);
+			break;
+		case 'b':
+			multiSorter(datavector, datasize);
+			break;
+	}
 }
 
 int main(int argc, char const *argv[]){

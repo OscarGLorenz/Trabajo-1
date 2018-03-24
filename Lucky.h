@@ -1,21 +1,21 @@
 #ifndef LUCKY_H_
 #define LUCKY_H_
 
-#define PARAMAX longitud			// Límite de 'entropía global' para ser considerado ordenado ascendente
-#define PARAMIN longitud			// Límite de 'entropía global' para ser considerado ordenado descendente
-#define PARAMINC longitud			// Límite de 'entropía icremental' para ser considerado relativamente ordenado (posiciones consecutivas son similares)
+#define PARAMAX datasize			// Límite de 'entropía global' para ser considerado ordenado ascendente
+#define PARAMIN datasize			// Límite de 'entropía global' para ser considerado ordenado descendente
+#define PARAMINC datasize			// Límite de 'entropía icremental' para ser considerado relativamente ordenado (posiciones consecutivas son similares)
 
 // Calcula la 'entropia global' en el caso de mayor orden ascendente
-double maxorder(int longitud);
+double maxorder(int datasize);
 
 // Calcula la 'entropia global' en el caso de mayor orden descendente
-double minorder(int longitud);
+double minorder(int datasize);
 
 // Calcula la 'entropia incremental' del array, segun la distancia entre valores de posiciones consecutivas
-int incremental(int * datos, int longitud);
+char incremental(int * datavector, int datasize);
 
 // Calcula el 'tipo de orden' segun la 'entropia global' y 'entropia incremental'
-int order(int * datos, int longitud);
+char orderType(int * datavector, int datasize);
 
 /*
 El tipo de orden será: 

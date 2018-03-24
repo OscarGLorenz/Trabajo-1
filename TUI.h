@@ -13,7 +13,7 @@ char experimentMode();
 char dataInputMode();
 
 //Pide modo de ORDENADOR. Opciones: modo AUTO/LUCKY, modo TODOSALGORITMOS
-char orderInputMode();
+char sorterInputMode();
 
 // Visualiza el array de datos
 void showVector(int * datavector, int datasize);

@@ -1,46 +1,48 @@
 #include <stdio.h>
 #include "Lucky.h"
 
-int distancia(int a, int b){
+int distance(int a, int b){
 	int dist = a - b;
 	return dist < 0 ? - dist : dist;
 }
 
-double maxorder(int longitud){
+double maxorder(int datasize){
 	int i, factor = 0;
-	for(i = 1; i <= longitud; i++){
+	for(i = 1; i <= datasize; i++){
 		factor += i * i;
 	}
 	return factor;
 }
 
-double minorder(int longitud){
+double minorder(int datasize){
 	int i, factor = 0;
-	for(i = 1; i <= longitud; i++){
-		factor += i * (longitud - i + 1);
+	for(i = 1; i <= datasize; i++){
+		factor += i * (datasize - i + 1);
 	}
 	return factor;
 }
 
-int incremental(int * datos, int longitud){
+char incremental(int * datavector, int datasize){
 	int i;
-	double entropia = 0;
-	for(i = 0; i < longitud - 1; i++){
-		entropia += distancia(datos[i], datos[i+1]);
+	double entropy = 0;
+	for(i = 0; i < datasize - 1; i++){
+		entropy += distance(datavector[i], datavector[i+1]);
 	}
-	if (entropia < PARAMINC) return 2;
-	return 0;
+	if (entropy < PARAMINC) return 'c';
+	return 'd';
 }
 
-int order(int * datos, int longitud){
+char orderType(int * datavector, int datasize){
 	int i; 
-	double entropia = 0;
-	const double ordenmax = maxorder(longitud), inversmax = minorder(longitud);
-	for(i = 0; i < longitud; i++){
-		entropia += datos[i] * (i + 1);
+	double entropy = 0;
+	const double ordenmax = maxorder(datasize);
+	const double inversmax = minorder(datasize);
+	for(i = 0; i < datasize; i++){
+		entropy += datavector[i] * (i + 1);
 	}
-	if (ordenmax - entropia < PARAMAX) return 1;
-	if (entropia - inversmax < PARAMIN) return -1;
-	return incremental(datos, longitud);
+	if (ordenmax - entropy < PARAMAX) return 'a';
+	if (entropy - inversmax < PARAMIN) return 'b';
+	return incremental(datavector, datasize);
 }
+
 

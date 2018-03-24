@@ -21,13 +21,24 @@ void fileReader(int * datavector, int datasize, FILE * datafile){
 	fclose(datafile);
 }
 
-void dataSorter(int * datavector, int datasize, char ordermode){
-	switch (ordermode){
-		case 'a':
+void luckySorter(int * datavector, int datasize){
+	char ordertype = orderType(datavector, datasize);
+	switch (ordertype){
+		case 'a':		// Considerablemente colocados en orden ascendente
 			
 			break;
-		case 'b':
+		case 'b':		// Considerablemente colocados en orden descendente
+			
+			break;
+		case 'c':		// Considerablemente colocados con pocas inserciones
+			
+			break;
+		case 'd':		// Sin patrón, usar algoritmo equilibrado para cualquier tipo de orden inical
 			
 			break;
 	}
+}
+
+void multiSorter(int * datavector, int datasize){
+	
 }
