@@ -1,7 +1,6 @@
 #ifndef GUI_H_
 #define GUI_H_
 
-#include <stdio.h>
 #include "Datacreator.h"
 
 //Pide modo de uso del programa. Opciones: modo EXPERIMENTO, modo ORDENADOR
@@ -11,15 +10,18 @@ char programMode();
 char experimentMode();
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
-char datainputMode();
+char dataInputMode();
 
 //Pide modo de ORDENADOR. Opciones: modo AUTO/LUCKY, modo TODOSALGORITMOS
-char orderinputMode();
+char sorterInputMode();
 
 // Visualiza el array de datos
-void showvector(int * datos, int longitud);
+void showVector(int * datavector, int datasize);
 
-// Solicita al usuario el tipo de dato con el que quiere experimentar
-datamode mododato();
+//Pide orden inicial de datos. Opciones: CRECIENTE, DECRECIENTE, DESORDENADO, REPETIDOS
+datamode dataOrderMode();
+
+// Abre el archivo de datos introduciendo su nombre
+int fileOpener(FILE ** datafile);
 
 #endif

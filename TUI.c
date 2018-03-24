@@ -1,18 +1,6 @@
 #include <stdio.h>
 #include "TUI.h"
 
-/*
-#include <sys/stat.h>
-#if __unix__ 
-	void clear() {
-    		system("clear");
-	}
-#elif defined(_WIN32) || defined(WIN32) 
-	void clear() {
-		system("cls");
-#endif
-*/
-
 char programMode(){
 	char mode;
 	printf("\nQue desea hacer?\n");
@@ -31,7 +19,7 @@ char experimentMode(){
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo EXPERIMENTO\n");
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
-	printf("\tprobando con un numero de datos de la forma 10^n, con n = 1..6\n");
+	printf("\tprobando con un numero de datos de la forma 10^n, con n = 2..4\n");
 	printf("Como desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
 	printf("b) Comparar la velocidad un algoritmo para diferentes tipos de datos\n");
@@ -44,7 +32,7 @@ char experimentMode(){
 	return mode;
 }
 
-char datainputMode(){
+char dataInputMode(int* datasize){
 	char mode;
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo ORDENADOR\n");
@@ -56,14 +44,17 @@ char datainputMode(){
 		fflush(stdin);
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b'));
+	if (mode == 'a'){
+
+	}
 	return mode;
 }
 
-char orderinputMode(){
+char sorterInputMode(){
 	char mode;
 	printf("\nComo desea que se ordenen sus datos?\n");
-	printf("a) \"I feel lucky\", dime cual crees que es el algoritmo mas apropiado para este tipo de datos\n");
-	printf("b) Comparar la velocidad de todos los algoritmos\n");
+	printf("a) \"I'm feeling lucky\", dime cual crees que es el algoritmo mas apropiado para este tipo de datos\n");
+	printf("b) Comparar la velocidad de todos los algoritmos al ordenar los datos introducidos\n");
 	do{
 		printf("Introducza su opcion: ");
 		fflush(stdin);
@@ -72,39 +63,42 @@ char orderinputMode(){
 	return mode;
 }
 
-void showvector(int * datos, int longitud){
+void showVector(int * datavector, int datasize){
 	int i;
-	for (i = 0; i < longitud; i++){
-		printf("%d ", datos[i]);
+	for (i = 0; i < datasize; i++){
+		printf("%d ", datavector[i]);
 	}
 	printf("\n");
 }
 
-datamode mododato(){
-	char modo;
-	printf("\nMODOS DISPONIBLES:\n");
-	printf("a) Ordenado sentido creciente\n");
-	printf("b) Ordenado sentido decreciente\n");
-	printf("c) Desordenado\n");
+datamode dataOrderMode(){
+	char mode;
+	printf("\nComo desea que se encuentren los datos inicialmente?\n");
+	printf("a) Ordenados sentido creciente\n");
+	printf("b) Ordenados sentido decreciente\n");
+	printf("c) Desordenados\n");
 	printf("d) Con duplicados\n");
-	printf("f) Datos presentes en fichero (1 numero/fila)\n\n");
-	printf("f) Introducir datos\n\n");
-	printf("Intruduzca modo: ");
-	scanf("%c", &modo);
-	switch(modo){
-		case 'a':
-			return CRECIENTE;
-		case 'b': 
-			return DECRECIENTE;
-		case 'c':
-			return DESORDENADO;
-		case 'd':
-			return REPETIDOS;
-		case 'e':
-			return FICHERO;
-		case 'f':
-			return USUARIO;
-	}
+	do{
+		printf("Introducza su opcion: ");
+		fflush(stdin);
+		scanf("%c", &mode);
+	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
+	return mode == 'a' ? CRECIENTE : mode == 'b' ? DECRECIENTE : mode == 'c' ? DESORDENADO : REPETIDOS;
 }
 
+int fileOpener(FILE ** datafile){
+	char filename[32];
+	int datasize;
+	printf("\nEl fichero debe contener un elemento de tipo entero natural en cada fila,\n");
+	printf("y en la primera fila la cantidad de datos que contiene para ordenar.\n");
+	printf("Indique el nombre del fichero, situado en la misma carpeta que el programa: ");
+	do {
+		scanf("%s", filename);
+		if((*datafile = fopen(filename,"r")) == NULL){
+			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
+		}
+	} while (*datafile == NULL);
+	fscanf(*datafile, "%d,\n", &datasize);
+	return datasize;
+}
 

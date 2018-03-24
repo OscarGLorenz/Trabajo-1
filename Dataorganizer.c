@@ -1,80 +1,44 @@
 #include <stdio.h>
+#include "Dataorganizer.h"
+#include "Lucky.h"
 
-#define PARAMAX longitud			// Limite de 'entropia global' para ser considerado ordenado ascendente
-#define PARAMIN longitud			// Limite de 'entropia global' para ser considerado ordenado descendente
-#define PARAMINC longitud			// Limite de 'entropia icremental' para ser considerado relativamente ordenado (posiciones consecutivas son similares)
-
-int distancia(int a, int b){
-	int dist = a - b;
-	return dist < 0 ? - dist : dist;
-}
-
-double maxorder(int longitud){
-	int i, factor = 0;
-	for(i = 1; i <= longitud; i++){
-		factor += i * i;
-	}
-	return factor;
-}
-
-double minorder(int longitud){
-	int i, factor = 0;
-	for(i = 1; i <= longitud; i++){
-		factor += i * (longitud - i + 1);
-	}
-	return factor;
-}
-
-int incremental(int * datos, int longitud){
+void inputData(int * datavector, int datasize){
 	int i;
-	double entropia = 0;
-	for(i = 0; i < longitud - 1; i++){
-		entropia += distancia(datos[i], datos[i+1]);
+	int data[datasize];
+	printf("\n");
+	for(i = 0; i < datasize; i++){
+		printf("Introduzca dato %d: ", i+1);
+		scanf("%d", datavector + i);
 	}
-	if (entropia < PARAMINC) return 2;
-	return 0;
 }
 
-int order(int * datos, int longitud){
-	int i; 
-	double entropia = 0;
-	const double ordenmax = maxorder(longitud), inversmax = minorder(longitud);
-	for(i = 0; i < longitud; i++){
-		entropia += datos[i] * (i + 1);
+void fileReader(int * datavector, int datasize, FILE * datafile){
+	int i, aux;
+	for (i = 0; i < datasize; i++){
+		fscanf(datafile, "%d\n", &aux); 
+		datavector[i] = aux;
 	}
-	if (ordenmax - entropia < PARAMAX) return 1;
-	if (entropia - inversmax < PARAMIN) return -1;
-	return incremental(datos, longitud);
+	fclose(datafile);
 }
 
-/*
-El tipo de orden sera: 
- 1: ~ordenado creciente
--1: ~ordenado decreciente
- 2: ~consecutivos cercanos
- 0: aleatorio
-*/
+void luckySorter(int * datavector, int datasize){
+	char ordertype = orderType(datavector, datasize);
+	switch (ordertype){
+		case 'a':		// Considerablemente colocados en orden ascendente
+			
+			break;
+		case 'b':		// Considerablemente colocados en orden descendente
+			
+			break;
+		case 'c':		// Considerablemente colocados con pocas inserciones
+			
+			break;
+		case 'd':		// Sin patrón, usar algoritmo equilibrado para cualquier tipo de orden inical
+			
+			break;
+	}
+}
 
-void datafile(int * datos, int longitud){
-	char ficheronombre[32]
-	FILE * ficherodatos;
-	printf("El fichero debe contener un elemento de tipo entero natural en cada fila.");
-	prinft("Indique el nombre del fichero, situado en la misma carpeta que el programa: ");
-	do {
-		scanf("%s",ficherodatos);
-		if((ficherodatos = fopen(ficheronombre,"r")) == NULL){
-			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
-		}
-	} while (ficherodatos == NULL);
+void multiSorter(int * datavector, int datasize){
 	
 }
-
-void inputdata(int * datos, int longitud){
-	int i;
-	for(i = 0; i < longitud; i++){
-		printf("Introduzca dato %d: ", i+1);
-		scanf("%d", datos + i);
-	}
-}
-
-

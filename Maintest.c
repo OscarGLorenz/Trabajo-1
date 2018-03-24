@@ -1,32 +1,52 @@
 #include <stdio.h>
-#include "Datacreator.h"
 #include "TUI.h"
-//#include "Dataorganizer.h"
+#include "Datacreator.h"
+#include "Dataorganizer.h"
 
 void runExperiment(){
 	char mode = experimentMode();
 	switch (mode){
-		case 'a':
+		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
 			
 			break;
-		case 'b':
+		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
 			
 			break;
-		case 'c':
+		case 'c':		// Comparar diferentes algoritmos dado un tipo de dato
 			
 			break;
 	}
 }
 
 void runOrganizer(){
-	char dataMode = datainputMode();	
-	char orderMode = orderinputMode();
-	switch (dataMode){
+	int datasize, orderType;
+	FILE * datafile;
+	char datamode = dataInputMode();
+	char sortermode = sorterInputMode();
+	switch (datamode){
 		case 'a':
-			
+			printf("\nNumero de elementos que desea introducir: ");
+			scanf("%d", &datasize);
+			break;
+		case 'b':			
+			datasize = fileOpener(&datafile);
+			break;
+	}
+	int datavector[datasize];
+	switch (datamode){
+		case 'a':
+			inputData(datavector, datasize);
+			break;
+		case 'b':			
+			fileReader(datavector, datasize, datafile);
+			break;
+	}
+	switch (sortermode){
+		case 'a':
+			luckySorter(datavector, datasize);
 			break;
 		case 'b':
-			
+			multiSorter(datavector, datasize);
 			break;
 	}
 }
@@ -44,33 +64,3 @@ int main(int argc, char const *argv[]){
 	return 0;
 }
 
-/*		
-//	Experimento experimento[4];
-	float count[4];
-	float number[4];
-
-for (int i = 0; i < 4; i++) {
-		experimento[i] = nuevoExperimento();
-		int n = number[i] = pow(10,i+1);
-		int datos[n];
-		startvector(datos, n);
-		randomize(datos, n);
-		burbuja(datos, n, &experimento[i]);
-		count[i] = experimento[i].comparaciones;
-	}
-  	
-	complejidad(number,count,4);
-	return 0;
-}
-
-int main(){
-	int longitud, orden;
-	datamode modo = mododato();
-	printf("Cantidad de datos a ordenar: ");
-	scanf("%d", &longitud);
-	int datos[longitud];
-	datacreator(modo, datos, longitud);
-	showvector(datos, longitud);
-	return 0;
-}
-*/
