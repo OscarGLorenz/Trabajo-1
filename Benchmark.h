@@ -7,30 +7,31 @@
   #include <Benchmark.h>
 
   // Ordena dos elementos en orden creciente
-  int ordenar2 (int * lista, unsigned int n, Experimento * experimento) {
-    iniciarCuenta(experimento);
+  int ordenar2 (int * list, size_t n, Experiment * experiment) {
+    startCount(experiment);
 
-    if (comparar(lista[0] > lista[1], experimento))
-    swap(&lista[0], &lista[1], experimento);
+    if (compare(list[0] > list[1], experiment))
+    swap(&list[0], &list[1], experiment);
 
-    finalizarCuenta(experimento);
+    endCount(experiment);
   }
 
   int main() {
-    int listaDesordenada[2] = {10,1};
-    int listaOrdenada[2] = {1,10};
+    size_t n = 2;
+    int listaDesordenada[] = {10,1};
+    int listaOrdenada[] = {1,10};
 
-    Experimento desorden = nuevoExperimento();
-    Experimento orden = nuevoExperimento();
+    Experiment desorder = newExperiment(n);
+    Experiment order = newExperiment(n);
 
-    ordenar2(listaDesordenada, 2, &desorden);
-    ordenar2(listaOrdenada, 2, &orden);
+    ordenar2(listaDesordenada, n, &desorden);
+    ordenar2(listaOrdenada, n, &orden);
 
     printf("------------%s------------\n", STR(orden2));
     printf("%s: Comparaciones: %u, Movimientos: %u, Tiempo %u ns\n", STR(desorden),
-      desorden.comparaciones, desorden.movimientos, tiempoNanosegundos(&desorden));
+      desorden.comparations, desorden.movements, nanos(&desorden));
     printf("%s: Comparaciones: %u, Movimientos: %u, Tiempo %u ns\n", STR(orden),
-      orden.comparaciones, orden.movimientos, tiempoNanosegundos(&orden));
+      orden.comparations, orden.movements, nanos(&orden));
 
     return 0;
   }
@@ -48,35 +49,36 @@ orden: Comparaciones: 1, Movimientos: 0, Tiempo 300 ns\n"
 #define STR(x) #x
 
 /* Estructura básica de la librería */
-struct experimento {
-  unsigned int comparaciones; //Guarda número de comparaciones
-  unsigned int movimientos;   //Guarda número de movimientos
-  struct timespec inicio;     //Estructura con el tiempo al inicio
-  struct timespec fin;        //Estructura con el tiempo al final
+struct experiment {
+  unsigned int comparations; //Guarda número de comparaciones
+  unsigned int movements;   //Guarda número de movimientos
+  struct timespec start;     //Estructura con el tiempo al inicio
+  struct timespec end;        //Estructura con el tiempo al final
+  size_t elements; 	      //Tamaño del experimento
 };
 
 /* Para abreviar ahora se llamará "Experimento" sin más */
-typedef struct experimento Experimento;
+typedef struct experiment Experiment;
 
 /* Genera un nuevo experimento, inicializa variables */
-Experimento nuevoExperimento();
+Experiment newExperiment(size_t n);
 
 /* Intercambia las variables x e y, añade 3 movimientos al experimento*/
-void swap(int * x, int * y, Experimento * experimento);
+void swap(int * x, int * y, Experiment * experiment);
 
 /* Compara la expresión dada, actualiza el experimento y devuelve la expresión*/
-int comparar(int expresion, Experimento * experimento);
+int compare(int expresion, Experiment * experiment);
 
 /* Inicia la cuenta, se guarda el tiempo actual del proceso */
-void iniciarCuenta(Experimento * experimento);
+void startCount(Experiment * experiment);
 
 /* Finaliza la cuenta, se guarda el tiempo actual del proceso */
-void finalizarCuenta(Experimento * experimento);
+void endCount(Experiment * experiment);
 
 /* Devuelve en ms el tiempo transcurrido del inicio al fin */
-unsigned int tiempoMilisegundos(Experimento * experimento);
+unsigned int millis(Experiment * experiment);
 
 /* Devuelve en ns el tiempo transcurrido del inicio al fin */
-unsigned int tiempoNanosegundos(Experimento * experimento);
+unsigned int nanos(Experiment * experiment);
 
 #endif

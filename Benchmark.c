@@ -4,61 +4,62 @@
 #ifdef _WIN32
 #include <Windows.h>
 #define CLOCK_PROCESS_CPUTIME_ID 1
-static int primeraVez = 1;
-static LARGE_INTEGER frecuencia;
+static int firstTime = 1;
+static LARGE_INTEGER frecuency;
 
 int clock_gettime(int dummy, struct timespec *ct) {
-    LARGE_INTEGER cuenta;
+    LARGE_INTEGER count;
 
-    if (primeraVez) {
-        primeraVez = 0;
+    if (firstTime) {
+        firstTime = 0;
 
-        QueryPerformanceFrequency(&frecuencia);
+        QueryPerformanceFrequency(&frecuency);
 
     }
 
-    QueryPerformanceCounter(&cuenta);
-	
-    ct->tv_sec = cuenta.QuadPart / frecuencia.QuadPart;
-    ct->tv_nsec = ((cuenta.QuadPart % frecuencia.QuadPart) * 1e9) / frecuencia.QuadPart;
+    QueryPerformanceCounter(&count);
+
+    ct->tv_sec = count.QuadPart / frecuency.QuadPart;
+    ct->tv_nsec = ((count.QuadPart % frecuency.QuadPart) * 1e9) / frecuency.QuadPart;
 
     return 0;
 }
 #endif
 
-Experimento nuevoExperimento() {
-  Experimento experimento;
-  experimento.comparaciones = 0;
-  experimento.movimientos = 0;
-  return experimento;
+Experiment newExperiment(size_t n) {
+  Experiment experiment;
+  experiment.comparations = 0;
+  experiment.movements = 0;
+  experiment.elements = n;
+  return experiment;
 }
 
-void swap(int * x, int * y, Experimento * experimento) {
-  experimento->movimientos+=3;
+void swap(int * x, int * y, Experiment * experiment) {
+  experiment->movements+=3;
   int aux = *x;
   *x = *y;
   *y = aux;
 }
 
-int comparar(int expresion, Experimento * experimento) {
-  experimento->comparaciones++;
+int compare(int expresion, Experiment * experiment) {
+  experiment->comparations++;
   return expresion;
 }
 
-void iniciarCuenta(Experimento * experimento) {
-  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &experimento->inicio);
+void startCount(Experiment * experiment) {
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &experiment->start);
 }
 
-void finalizarCuenta(Experimento * experimento) {
-  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &experimento->fin);
+void endCount(Experiment * experiment) {
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &experiment->end);
 }
 
-unsigned int tiempoMilisegundos(Experimento * experimento) {
-  return (experimento->fin.tv_nsec-experimento->inicio.tv_nsec)/10e6 +
-  (experimento->fin.tv_sec-experimento->inicio.tv_sec) * 10e3;
+unsigned int millis(Experiment * experiment) {
+  return (experiment->end.tv_nsec-experiment->start.tv_nsec)/10e6 +
+  (experiment->end.tv_sec-experiment->start.tv_sec) * 10e3;
 }
 
-unsigned int tiempoNanosegundos(Experimento * experimento) {
-  return (experimento->fin.tv_nsec-experimento->inicio.tv_nsec)+
-  (experimento->fin.tv_sec-experimento->inicio.tv_sec) * 10e9;
+unsigned int nanos(Experiment * experiment) {
+  return (experiment->end.tv_nsec-experiment->start.tv_nsec)+
+  (experiment->end.tv_sec-experiment->start.tv_sec) * 10e9;
 }
