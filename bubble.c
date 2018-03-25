@@ -2,29 +2,29 @@
 
 /*ALGORIMO ADAPTADO AL BENCHMARK*/
 
-void burbuja( int *lista ,int N, Experimento*experimento){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
+   void bubble( int *lista ,int N, Experiment*experiment){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
 
-      iniciarCuenta(experimento);
+         startCount(experiment); /* inicializamos la cuenta de tiempo relativo*/
 
-      int i, j, aux;
+         int i, j;
    
-         for(i=0;i<N-1;i++){
-            for(j=N-1;j>i;j--){    /* me voy al último elemento*/
-               if (comparar(lista[j] < lista[j-1], experimento)){   /* lo comparo con el anterior y si es necesario lo cambio*/
-               swap(&lista[j], &lista[j-1], experimento);
+            for(i=0;i<N-1;i++){
+               for(j=N-1;j>i;j--){    /* me voy al último elemento*/
+                  if (compare(lista[j] < lista[j-1], experiment)){   /*comparamos y actualizamos el contador correspondiente*/
+                  swap(&lista[j], &lista[j-1], experiment);/*Intercambiamos si es necesiario y actualizamos el contador correspondiente*/
                
+                  }
                }
-            }
       
-         }   
-         finalizarCuenta(experimento);
+            }   
+            endCount(experiment); /*finalizamos la medición del tiempo*/
 
-   }
+      }   
 
 /*ALGORITMO SIN ADAPTAR AL BENCHMARK*/
 
 /*
-void burbuja( int *lista ,int N, Experimento*exp){ 
+void bubble( int *lista ,int N, Experimento*exp){ 
 
       int i, j, aux;
    
@@ -45,7 +45,7 @@ void burbuja( int *lista ,int N, Experimento*exp){
 /*PRUEBA DEL ALGORITMO*/
 /* #include <stdio.h>
 
-   void burbuja( int *lilsta ,int N){ 
+   void bubble( int *lilsta ,int N){ 
 
       int i, j, aux;
    
@@ -65,7 +65,7 @@ void burbuja( int *lista ,int N, Experimento*exp){
    int main(){
    int A[6] ={1, 8, 5, 2, 9, 7};
    int k;
-   burbuja(A,6);
+   bubble(A,6);
    for(k=0;k<6;k++){
   int a=A[k];
       printf("%i\n",a);

@@ -2,17 +2,18 @@
 
 /* ALGORITMO ADAPTADO AL BENCHMARK*/
 
- void insercion( int *lista, int N, Experimento*experimento){ /* paso por dirección primer elemento de lista, N es el número de elementos, Experimento*exp puntero a estructura*/
+ void insertion( int *lista, int N, Experiment*experiment){ /* paso por dirección primer elemento de lista, N es el número de elementos, Experimento*exp puntero a estructura*/
  
- iniciarCuenta(experimento);
+ startCount(experiment);
   
       int i,j,aux;
          for(i=1; i<N;i++){
             aux= lista[i]; /* Guardo en aux el valor del elemento con clave i*/
-            
+            experiment -> movements++; /* aumento el contador de movimientos*/
             for(j=i-1;j>=0; j--){
-                  if (comparar(lista[j] > aux, experimento)){ /*Si el elemento con clave j (el anterior a i) es mayor que aux*/
+                  if (compare(lista[j] > aux, experiment)){ /*Si el elemento con clave j (el anterior a i) es mayor que aux*/
                   lista[j+1]=lista[j]; /*En el elemento con clave j guardo el de clave j+1 (el siguiente)*/
+                  experiment -> movements++;
                  
                }
                else{
@@ -21,11 +22,11 @@
                }
             }
             lista[j+1]=aux;
-            swap(&lista[1], &lista[1], experimento);/*Dado que el intercambio de hizo antes simplemento lo pongo para que se contabilice*/
+            experiment -> movements++;/*actualizo el valor de los movimientos*/
          }
          
            
-       finalizarCuenta(experimento);
+       endCount(experiment); 
   
    
    }
