@@ -26,52 +26,51 @@ void randomize(int * datos, int longitud){
   }
 }
 
-void burbuja(int * lista, int n, Experimento*experimento){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
+void burbuja(int * list, size_t n, Experiment * experiment){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
 
-  iniciarCuenta(experimento);
+  startCount(experiment);
 
-  for(int i = 0; i < n-1 ;i++){
-    for(int j = n-1; j > i ;j--){    /* me voy al último elemento*/
-      if (comparar(lista[j] < lista[j-1], experimento)){   /* lo comparo con el anterior y si es necesario lo cambio*/
-        swap(&lista[j], &lista[j-1], experimento);
+  for(size_t i = 0; i < n-1 ;i++){
+    for(size_t j = n-1; j > i ;j--){    /* me voy al último elemento*/
+      if (compare(list[j] < list[j-1], experiment)){   /* lo comparo con el anterior y si es necesario lo cambio*/
+        swap(&list[j], &list[j-1], experiment);
 
       }
     }
 
   }
-  finalizarCuenta(experimento);
+  endCount(experiment);
 
 }
 
 int main(int argc, char const *argv[]) {
-  int p = 4;
-  Experimento experimento[p];
-  float count[p], movs[p], tims[p];
-  float number[p];
-  Cost comp, mov, timing;
-  char comp_str[10], mov_str[10], timing_str[10];
+  size_t p = 4;
+  Experiment experiment[p];
+  char comp_str[10], mov_str[10], nanos_str[10];
 
-  for (int i = 0; i < p; i++) {
-    int n = number[i] = pow(10,i+1);
-    experimento[i] = nuevoExperimento(n);
-    int datos[n];
-    startvector(datos, n);
-    randomize(datos, n);
-    burbuja(datos, n, &experimento[i]);
-    count[i] = experimento[i].comparaciones;
-    movs[i] = experimento[i].movimientos;
-    tims[i] = tiempoNanosegundos(&experimento[i]);
+  for (size_t i = 0; i < p; i++) {
+    size_t n = pow(10,i+1);
+    experiment[i] = newExperiment(n);
+    int data[n];
+    startvector(data, n);
+    randomize(data, n);
+    burbuja(data, n, &experiment[i]);
+    //count[i] = experimento[i].comparaciones;
+    //movs[i] = experimento[i].movimientos;
+    //tims[i] = tiempoNanosegundos(&experimento[i]);
   }
 
-  comp = identify(number,count,p,TRANS,NTRANS); costToString(comp, comp_str);
-  mov = identify(number,movs,p,TRANS,NTRANS); costToString(mov, mov_str);
-  timing = identify(number,tims,p,TRANS,NTRANS); costToString(timing, timing_str);
+  //comp = identify(number,count,p,TRANS,NTRANS); costToString(comp, comp_str);
+  //mov = identify(number,movs,p,TRANS,NTRANS); costToString(mov, mov_str);
+  //timing = identify(number,tims,p,TRANS,NTRANS); costToString(timing, timing_str);
+
+  costIdentification(experiment, p, mov_str, comp_str, nanos_str);
 
   printf("BURBUJA\n");
 
   printf("Comparaciones: %s\n", comp_str);
   printf("Movimientos: %s\n", mov_str);
-  printf("Tiempo: %s\n", timing_str);
+  printf("Tiempo: %s\n", nanos_str);
 
   return 0;
 }
