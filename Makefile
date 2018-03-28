@@ -3,7 +3,7 @@ CC=gcc
 
 #Flags
 #(-I.) Buscar en este directorio las dependencias
-CFLAGS=-I. -lm -std=c99
+CFLAGS=-I. -lm
 
 #Dependencias (archivo.h)
 DEPS = Benchmark.h Cost.h Datacreator.h TUI.h
