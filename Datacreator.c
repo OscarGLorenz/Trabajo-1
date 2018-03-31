@@ -3,13 +3,13 @@
 #include <time.h>
 #include "Datacreator.h"
 
-void swap(int * a, int * b){
+static void swap(int * a, int * b){
   int aux = *a;
   *a = *b;
   *b = aux;
 }
 
-void startVector(int * datavector, int datasize, int dataspacing){
+static void startVector(int * datavector, int datasize, int dataspacing){
 	int i;
 	srand(clock());
 	datavector[0] = 1 + dataspacing * (rand() % datasize);
@@ -20,14 +20,14 @@ void startVector(int * datavector, int datasize, int dataspacing){
 	}
 }
 
-void invertVector(int * datavector, int datasize){
+static void invertVector(int * datavector, int datasize){
 	int i, j;
 	for (i = 0, j = datasize - 1; i < j; i++, j--){
 		swap(datavector + i, datavector + j);
 	}
 }
 
-void randomize(int * datavector, int datasize){
+static void randomize(int * datavector, int datasize){
 	int i, j;
 	srand(clock());
 	for(j = 0; j < datasize; j++){
@@ -37,7 +37,7 @@ void randomize(int * datavector, int datasize){
 	}
 }
 
-void duplicate(int * datavector, int datasize){
+static void duplicate(int * datavector, int datasize){
 	int i, j;
 	srand(clock());
 	j = rand() % datasize;
