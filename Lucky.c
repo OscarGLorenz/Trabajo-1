@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "Lucky.h"
 
-int distance(int a, int b){
+static int distance(int a, int b){
 	int dist = a - b;
 	return dist < 0 ? - dist : dist;
 }
 
-double maxorder(int datasize){
+static double maxorder(int datasize){
 	int i, factor = 0;
 	for(i = 1; i <= datasize; i++){
 		factor += i * i;
@@ -14,7 +14,7 @@ double maxorder(int datasize){
 	return factor;
 }
 
-double minorder(int datasize){
+static double minorder(int datasize){
 	int i, factor = 0;
 	for(i = 1; i <= datasize; i++){
 		factor += i * (datasize - i + 1);
@@ -22,7 +22,7 @@ double minorder(int datasize){
 	return factor;
 }
 
-char incremental(int * datavector, int datasize){
+static char incremental(int * datavector, int datasize){
 	int i;
 	double entropy = 0;
 	for(i = 0; i < datasize - 1; i++){

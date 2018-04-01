@@ -22,7 +22,7 @@ int fileCreator(FILE ** datafile){
 	return datasize;
 }
 
-char dataSpacingMode(){
+int dataSpacingMode(){
 	char mode;
 	printf("\nDe que tipo desea que sean los datos generados? Segun su disposicion una vez queden ordenados:\n");
 	printf("a) De valores consecutivos\n");
@@ -32,7 +32,7 @@ char dataSpacingMode(){
 		fflush(stdin);
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b'));
-	return mode;
+	return mode == 'a' ? 0 : 1;
 }
 
 void filePrinter(FILE * datafile, int * datavector, int datasize){
@@ -50,9 +50,8 @@ int main(){
 	int datasize = fileCreator(&datafile);
 	int datavector[datasize];
 	datamode dataorder = dataOrderMode();
-	char dataspacing = dataSpacingMode();
+	int dataspacing = dataSpacingMode();
 	dataCreator(datavector, datasize, dataorder, dataspacing);
-//	showVector(datavector, datasize);
 	filePrinter(datafile, datavector, datasize);
 	return 0;
 }
