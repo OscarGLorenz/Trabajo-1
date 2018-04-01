@@ -26,7 +26,7 @@
 /*ALGORITMO DE INSERCIÓN*/
    void insertion( int *lista, int N, Experiment*experiment){ /* paso por dirección primer elemento de lista, N es el número de elementos, Experimento*exp puntero a estructura*/
  
- startCount(experiment);
+   startCount(experiment);
   
       int i,j,aux;
          for(i=1; i<N;i++){
@@ -77,7 +77,7 @@
    /* ORDENACIÓN POR EL MÉTODO SHELL*/
    
      void Shell(int *lista, int N, Experiment * experiment){
-         
+      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
       int i,j,aux,paso=1,k,h;
        
       /*En primer lugar se calcula el paso sabiendo que 2^k0 < N+1*/
@@ -106,6 +106,7 @@
                }
             }  
          }
+         endCount(experiment);/*Finaliza la medida de tiempo relativo*/
   
    
    }
@@ -121,7 +122,7 @@
       experiment-> movements++; /*Suma un movimiento */
       
       for(i=izq; doble= 2*i+1,doble<=dcha; i =doble){
-        if(compare(doble<dcha && lista[doble] < lista[doble +1]),experiment){/*Devuelve al if la expresión y aumenta el contador comparaciones*/
+        if(compare((doble<dcha && lista[doble] < lista[doble +1]),experiment)){/*Devuelve al if la expresión y aumenta el contador comparaciones*/
         
         /*caso de que sean dos comparaciones las que contar usar esto: */
         /* if((experiment->comparations+=2),(doble<dcha && lista[doble] < lista[doble +1]))*/
@@ -141,7 +142,8 @@
    }
    
    
-   void heapshort( int *lista, int N, Experiment * experiment){
+   void heapsort( int *lista, int N, Experiment * experiment){
+      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
       int i;
       for(i=N/2 -1;i>=0;i--){
          criba(i,N-1,lista,experiment);
@@ -150,6 +152,7 @@
          swap(lista[0],lista[i+1],experiment); /* intercambia los valores y suma tres movimientos*/
          criba(0,i,lista,experiment);
       }
+      endCount(experiment);/*Finaliza la medida de tiempo relativo*/
    }
    
    
@@ -159,10 +162,10 @@
       int i= first, j = last, pivote;
       pivote=lista[(first + last)/2];
       do{
-         while(compare(lista[i]<pivote && i< last),experiment){
+         while(compare((lista[i]<pivote && i< last),experiment)){
             i++;
          }
-         while(compare(lista[j] > pivote && j > first), experiment){
+         while(compare((lista[j] > pivote && j > first), experiment)){
             j--;
          }
          if(i<=j){
@@ -177,10 +180,12 @@
           qs(lista,i,last,experiment);
        }
    }
-     void quickshort(int *lista, int N,Experiment * experiment){ /* función para pasarle a quicksort la tabla a ordenar*/
+     void quicksort(int *lista, int N,Experiment * experiment){ /* función para pasarle a quicksort la tabla a ordenar*/
+      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
       int first, last;
       first = 0;
       last = N-1;
       qs(lista,first, last, experiment);
+      endCount(experiment);/*Finaliza la medida de tiempo relativo*/
    
    }

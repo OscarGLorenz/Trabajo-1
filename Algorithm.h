@@ -15,9 +15,9 @@
    void Shell(int *lista, int N, Experiment * experiment);
    
    /*Ejecuta la ordenación por montículo al array lista de N elementos y guarda información en la estructura Experiment*/ 
-   void heapshort( int *lista, int N, Experiment * experiment);
+   void heapsort( int *lista, int N, Experiment * experiment);
    
    /*Ejecuta la ordenación por quicksort al array lista de N elementos y guarda información en la estructura Experiment*/ 
-   void quickshort(int *lista, int N,Experiment * experiment);
+   void quicksort(int *lista, int N,Experiment * experiment);
    
    #endif
