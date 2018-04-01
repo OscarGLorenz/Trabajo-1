@@ -65,23 +65,15 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str, char 
 typedef struct {
 	char cost[6][4][3][30]; // Costes con coeficientes
 	char costTypes[][30]; // Nombres de los costes
-	int n_cost; // Nñumero de costes
+	int n_cost; // Número de costes
 	char algorithms[][30]; // Nombres de los algoritmos
 	int n_algorithm; // Números de algoritmos
   char dataTypes[][30]; // Nombres de los tipos de datos
 	int n_data; // Números de tipos de datos
-} Results;
+} ResTable;
 
 // Puntero a función para los diferentes algoritmos
 typedef void(*algorithm_ptr)(int*,size_t,Experiment*);
-
-// Tipo enumerado con los tipos de datos generados por ordenador
-typedef enum {
-	CRESCENT,
-	DECRESCENT,
-	DISORDERED,
-	REPEATED
-} dataType;
 
 // Genera una estructura Results con los costes computacionales de cada algoritmo y para cada dato suministrado
 void calculateTable(Results * result, size_t nelements[], int n_nelement,

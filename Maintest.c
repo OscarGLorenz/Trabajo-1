@@ -9,26 +9,11 @@
 #include "Algorithm.h"
 #include "Cost.h"
 
-typedef struct {
-	char * cost[][][];
-
-	char * costTypes[];
-	int n_cost;
-
-	char * algorithms[];
-	int n_algorithm;
-
-  char * dataTypes[];
-	int n_data;
-
-} Results;
-
-
-
 void runExperiment(){
 	char mode = experimentMode();
 	switch (mode){
 		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
+		
 			break;
 		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
 
@@ -63,14 +48,14 @@ void runExperiment(){
 
 				memcpy(buffer,random,nelem*sizeof(unsigned int));
 				heap[i] = newExperiment(nelem);
-				heapshort(buffer,nelem,&heap[i]);
+				heapsort(buffer,nelem,&heap[i]);
 
 				memcpy(buffer,random,nelem*sizeof(unsigned int));
 				quick[i] = newExperiment(nelem);
-				quickshort(buffer,nelem,&quick[i]);
+				quicksort(buffer,nelem,&quick[i]);
 
 			}
-			printf("Algorithm\tMoves\t\tComps\t\tTime\n");;
+			printf("Algorithm\tMoves\t\tComps\t\tTime\n");
 			char comp_str[40], move_str[40], nanos_str[40];
 
 			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';

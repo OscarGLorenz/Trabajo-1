@@ -2,6 +2,7 @@
 #define GUI_H_
 
 #include "Datacreator.h"
+#include "Benchmark.h"
 
 //Pide modo de uso del programa. Opciones: modo EXPERIMENTO, modo ORDENADOR
 char programMode();
@@ -23,5 +24,7 @@ datamode dataOrderMode();
 
 // Abre el archivo de datos introduciendo su nombre
 int fileOpener(FILE ** datafile);
+
+
 
 #endif
