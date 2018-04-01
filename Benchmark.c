@@ -217,24 +217,22 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str, char 
   costToString(nanos_cost, nanos_str);
 }
 
-Results calculateTable(size_t nelements[], int n_nelement,
+void calculateTable(Results * result, size_t nelements[], int n_nelement,
   algorithm_ptr algorithms[], char algorithm_str[][30], int num_algorithm,
   dataType types[], char type_str[][30], int num_types) {
 
-    Results result;
-
-    result.n_algorithm = num_algorithm;
+    result->n_algorithm = num_algorithm;
     for (int k = 0; k < num_algorithm; k++)
-      strcpy(result.algorithms[k], algorithm_str[k]);
+      strcpy(result->algorithms[k], algorithm_str[k]);
 
-    result.n_data = num_types;
+    result->n_data = num_types;
     for (int i = 0; i < num_types; i++)
-      strcpy(result.dataTypes[i], type_str[i]);
+      strcpy(result->dataTypes[i], type_str[i]);
 
-    result.n_cost = 3;
-    strcpy(result.costTypes[0], "Movimientos");
-    strcpy(result.costTypes[1], "Comparaciones");
-    strcpy(result.costTypes[2], "Tiempo");
+    result->n_cost = 3;
+    strcpy(result->costTypes[0], "Movimientos");
+    strcpy(result->costTypes[1], "Comparaciones");
+    strcpy(result->costTypes[2], "Tiempo");
 
     Experiment experiment[num_types][num_algorithm][n_nelement];
 
@@ -244,7 +242,7 @@ Results calculateTable(size_t nelements[], int n_nelement,
         int raw_data[nelem];
         int buffer[nelem];
 
-        dataCreator(raw_data, nelem, types[i], 0);
+        //dataCreator(raw_data, nelem, types[i], 0);
 
         for (int k = 0; k < num_algorithm; k++) {
           memcpy(buffer,raw_data,nelem*sizeof(int));
@@ -255,10 +253,8 @@ Results calculateTable(size_t nelements[], int n_nelement,
 
       for (int k = 0; k < num_algorithm; k++)
         costIdentification(experiment[i][k], n_nelement,
-          result.cost[k][i][0], result.cost[k][i][1], result.cost[k][i][2]);
+          result->cost[k][i][0], result->cost[k][i][1], result->cost[k][i][2]);
 
     }
-
-    return result;
 
 }

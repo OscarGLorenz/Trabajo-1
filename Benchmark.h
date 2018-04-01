@@ -84,8 +84,9 @@ typedef enum {
 } dataType;
 
 // Genera una estructura Results con los costes computacionales de cada algoritmo y para cada dato suministrado
-Results calculateTable(size_t nelements[], int n_nelement, algorithm_ptr algoritms[], char* algorithm_str[], int num_algorithm,
-                      dataType types[], char* type_str[], int num_types);
+void calculateTable(Results * result, size_t nelements[], int n_nelement,
+  algorithm_ptr algorithms[], char algorithm_str[][30], int num_algorithm,
+  dataType types[], char type_str[][30], int num_types);
 
 
 #endif
