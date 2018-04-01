@@ -3,32 +3,31 @@
 #include <time.h>
 #include "Datacreator.h"
 
-void swap(int * a, int * b){
+static void swap(int * a, int * b){
   int aux = *a;
   *a = *b;
   *b = aux;
 }
 
-void startVector(int * datavector, int datasize, char dataspacing){
+static void startVector(int * datavector, int datasize, int dataspacing){
 	int i;
-	int mode = dataspacing == 'a' ? 0 : 1;
 	srand(clock());
-	datavector[0] = 1 + mode * (rand() % datasize);
+	datavector[0] = 1 + dataspacing * (rand() % datasize);
 	if(datasize > 1){
 		for (i = 1; i < datasize; i++){
-			datavector[i] = datavector[i - 1] + 1 + mode * (rand() % datasize);
+			datavector[i] = datavector[i - 1] + 1 + dataspacing * (rand() % datasize);
 		}
 	}
 }
 
-void invertVector(int * datavector, int datasize){
+static void invertVector(int * datavector, int datasize){
 	int i, j;
 	for (i = 0, j = datasize - 1; i < j; i++, j--){
 		swap(datavector + i, datavector + j);
 	}
 }
 
-void randomize(int * datavector, int datasize){
+static void randomize(int * datavector, int datasize){
 	int i, j;
 	srand(clock());
 	for(j = 0; j < datasize; j++){
@@ -38,7 +37,7 @@ void randomize(int * datavector, int datasize){
 	}
 }
 
-void duplicate(int * datavector, int datasize){
+static void duplicate(int * datavector, int datasize){
 	int i, j;
 	srand(clock());
 	j = rand() % datasize;
@@ -48,7 +47,7 @@ void duplicate(int * datavector, int datasize){
 	}
 }
 
-void dataCreator(int * datavector, int datasize, datamode dataorder, char dataspacing){
+void dataCreator(int * datavector, int datasize, datamode dataorder, int dataspacing){
 	startVector(datavector, datasize, dataspacing);
 	switch(dataorder){
 		case CRECIENTE:
