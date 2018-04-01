@@ -3,9 +3,14 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "TUI.h"
+#include "Datacreator.h"
+#include "Dataorganizer.h"
 #include "Benchmark.h"
+#include "Algorithm.h"
 #include "Cost.h"
 
+/*
 void swapN(int * a, int * b) {
   int aux = *a;
   *a = *b;
@@ -26,13 +31,13 @@ void randomize(int * datos, int longitud){
   }
 }
 
-void burbuja(int * list, size_t n, Experiment * experiment){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
+void burbuja(int * list, size_t n, Experiment * experiment){
 
   startCount(experiment);
 
   for(size_t i = 0; i < n-1 ;i++){
-    for(size_t j = n-1; j > i ;j--){    /* me voy al último elemento*/
-      if (compare(list[j] < list[j-1], experiment)){   /* lo comparo con el anterior y si es necesario lo cambio*/
+    for(size_t j = n-1; j > i ;j--){
+      if (compare(list[j] < list[j-1], experiment)){
         swap(&list[j], &list[j-1], experiment);
 
       }
@@ -42,6 +47,7 @@ void burbuja(int * list, size_t n, Experiment * experiment){ /* datos se pasa po
   endCount(experiment);
 
 }
+*/
 
 int main(int argc, char const *argv[]) {
   size_t p = 4;
@@ -52,17 +58,12 @@ int main(int argc, char const *argv[]) {
     size_t n = pow(10,i+1);
     experiment[i] = newExperiment(n);
     int data[n];
-    startvector(data, n);
-    randomize(data, n);
-    burbuja(data, n, &experiment[i]);
-    //count[i] = experimento[i].comparaciones;
-    //movs[i] = experimento[i].movimientos;
-    //tims[i] = tiempoNanosegundos(&experimento[i]);
-  }
+    //startvector(data, n);
+    //randomize(data, n);
 
-  //comp = identify(number,count,p,TRANS,NTRANS); costToString(comp, comp_str);
-  //mov = identify(number,movs,p,TRANS,NTRANS); costToString(mov, mov_str);
-  //timing = identify(number,tims,p,TRANS,NTRANS); costToString(timing, timing_str);
+    dataCreator(data, n, DESORDENADO, 0);
+    bubble(data, n, &experiment[i]);
+  }
 
   costIdentification(experiment, p, mov_str, comp_str, nanos_str);
 

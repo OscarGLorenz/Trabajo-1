@@ -20,44 +20,66 @@ void runExperiment(){
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
 
 			int iter = 4;
-			Experiment bubbleS[iter], insert[iter], select[iter], heap[iter], shell[iter], quick[iter];
-
+			Experiment bubbleS[iter], insert[iter], select[iter], heap[iter], quick[iter], shell[iter];
+			const int pressets[] = {10,100,1000,10000};
 			for (size_t i = 0; i < iter; i++) {
-				size_t nelem = pow(10,1+i);
+				size_t nelem = pressets[i];
 				unsigned int random[nelem];
 				unsigned int buffer[nelem];
 
-				startVector(random, nelem,'a');
-				randomize(random,nelem);
+				dataCreator(random, nelem, DESORDENADO, 0);
 
-				memcpy(buffer,random,nelem);
+				memcpy(buffer,random,nelem*sizeof(unsigned int));
 				bubbleS[i] = newExperiment(nelem);
 				bubble(buffer, nelem, &bubbleS[i]);
 
-				memcpy(buffer,random,nelem);
+				memcpy(buffer,random,nelem*sizeof(unsigned int));
 				insert[i] = newExperiment(nelem);
 				insertion(buffer,nelem,&insert[i]);
 
-				memcpy(buffer,random,nelem);
+				memcpy(buffer,random,nelem*sizeof(unsigned int));
 				select[i] = newExperiment(nelem);
 				selection(buffer,nelem,&select[i]);
 
+				memcpy(buffer,random,nelem*sizeof(unsigned int));
+				shell[i] = newExperiment(nelem);
+				Shell(buffer,nelem,&shell[i]);
+
+				memcpy(buffer,random,nelem*sizeof(unsigned int));
+				heap[i] = newExperiment(nelem);
+				heapshort(buffer,nelem,&heap[i]);
+
+				memcpy(buffer,random,nelem*sizeof(unsigned int));
+				quick[i] = newExperiment(nelem);
+				quickshort(buffer,nelem,&quick[i]);
 
 			}
-			printf("Algo Moves Comps Time\n");;
+			printf("Algorithm\tMoves\t\tComps\t\tTime\n");;
 			char comp_str[40], move_str[40], nanos_str[40];
 
 			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
 			costIdentification(bubbleS, iter, move_str, comp_str, nanos_str);
-			printf("Bubble: %s  %s  %s\n", move_str, comp_str, nanos_str);
+			printf("Bubble:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
 
 			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
 			costIdentification(insert, iter, move_str, comp_str, nanos_str);
-			printf("Insert: %s  %s  %s\n", move_str, comp_str, nanos_str);
+			printf("Insert:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
 
 			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
 			costIdentification(select, iter, move_str, comp_str, nanos_str);
-			printf("Select: %s  %s  %s\n", move_str, comp_str, nanos_str);
+			printf("Select:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
+
+			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
+			costIdentification(shell, iter, move_str, comp_str, nanos_str);
+			printf("Shell:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
+
+			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
+			costIdentification(heap, iter, move_str, comp_str, nanos_str);
+			printf("Heap:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
+
+			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
+			costIdentification(quick, iter, move_str, comp_str, nanos_str);
+			printf("Quick:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
 			break;
 	}
 }
