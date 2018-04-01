@@ -1,4 +1,3 @@
-#include <time.h>
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -217,6 +216,8 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str, char 
   costToString(nanos_cost, nanos_str);
 }
 
+
+
 void calculateTable(Results * result, size_t nelements[], int n_nelement,
   algorithm_ptr algorithms[], char algorithm_str[][30], int num_algorithm,
   dataType types[], char type_str[][30], int num_types) {
@@ -228,11 +229,6 @@ void calculateTable(Results * result, size_t nelements[], int n_nelement,
     result->n_data = num_types;
     for (int i = 0; i < num_types; i++)
       strcpy(result->dataTypes[i], type_str[i]);
-
-    result->n_cost = 3;
-    strcpy(result->costTypes[0], "Movimientos");
-    strcpy(result->costTypes[1], "Comparaciones");
-    strcpy(result->costTypes[2], "Tiempo");
 
     Experiment experiment[num_types][num_algorithm][n_nelement];
 

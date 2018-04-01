@@ -1,26 +1,29 @@
 #include <stdio.h>
-#include <string.h>
-#include <math.h>
 
 #include "TUI.h"
 #include "Datacreator.h"
 #include "Dataorganizer.h"
-#include "Benchmark.h"
-#include "Algorithm.h"
-#include "Cost.h"
 
 void runExperiment(){
-	char mode = experimentMode();
+	Types typestable;
+	typeDefiner(&typestable);
+	char mode = experimentMode(&typestable);
 	switch (mode){
 		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
-		
+		typestable.n_algorithms = 6;
+		typestable.n_data = 4;
+		typestable.n_costs = 3;
+		resultVisualizer(typestable);
 			break;
 		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
+		algorithmMode(&typestable);
 
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
-
-			size_t iter = 4;
+			dataOrderMode(&typestable);
+			break;
+	}
+		/*	size_t iter = 4;
 			Experiment bubbleS[iter], insert[iter], select[iter], heap[iter], quick[iter], shell[iter];
 			const size_t pressets[] = {10,100,1000,10000};
 			for (size_t i = 0; i < iter; i++) {
@@ -82,7 +85,8 @@ void runExperiment(){
 			costIdentification(quick, iter, move_str, comp_str, nanos_str);
 			printf("Quick:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
 			break;
-	}
+			
+			*/
 }
 
 void runOrganizer(){

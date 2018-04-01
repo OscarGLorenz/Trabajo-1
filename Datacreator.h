@@ -1,7 +1,7 @@
 #ifndef DATACREATOR_H_
 #define DATACREATOR_H_
 
-typeDef enum {
+typedef enum datatype{
 	INCREASING,
 	DECREASING,
 	RANDOM,
