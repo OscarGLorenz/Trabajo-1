@@ -102,3 +102,34 @@ int fileOpener(FILE ** datafile){
 	return datasize;
 }
 
+void LUT(ResTable results, char mode){
+	int i, j, k;
+	switch (mode){
+		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
+			printf("\t\tOrden inicial en datos:"\n);
+			for(j = 0; j < results.n_data; j++){
+				printf("%s\t\t", results.dataType[j]);
+			}
+			printf("\n");
+			for(i = 0; i < results.n_algorithm; i++){
+				printf("%s:\n", results.algorithms[i]);
+				for(k = 0; k < results.n_cost; k++){
+					printf("%s:\t",results.costTypes[k]);
+					for(j = 0; j < results.n_data; j++){
+						printf("%s\t", results.cost[i][j][k]);
+					}
+					printf("\n");
+				}
+			}
+			break;
+		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
+			
+			break;
+		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
+			
+			
+
+	
+	
+}
+
