@@ -20,10 +20,10 @@ static void startVector(int * datavector, int datasize, int dataspacing);
 // Invierte el orden de un array
 static void invertVector(int * datavector, int datasize);
 
-// Aleatoriza un array dado realizando tantas pasadas de swaps como su tamaño
+// Aleatoriza un array dado realizando tantas pasadas de swaps como su tamaï¿½o
 static void randomize(int * datavector, int datasize);
 
-// Modifica array en un numero aleatorio de posiciones, duplicando posiciones también aleatorias
+// Modifica array en un numero aleatorio de posiciones, duplicando posiciones tambiï¿½n aleatorias
 static void duplicate(int * datavector, int datasize);
 */
 

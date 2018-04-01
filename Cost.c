@@ -55,7 +55,9 @@ Cost identify(float * x, float * y, size_t n, trans_ptr * trans, size_t ntrans) 
 
     for (size_t i = 0; i < ntrans; i++) {
       res[i] = regrex(x,y,n,&b0[i],&b1[i],trans[i]);
+      printf("res=%.2f b0=%.2f b1=%.2f\n",res[i], b0[i], b1[i]);
     }
+    printf("\n");
 
     size_t less = 0;
     for (size_t i = 1; i < ntrans; i++)

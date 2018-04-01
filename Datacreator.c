@@ -52,7 +52,7 @@ void dataCreator(int * datavector, int datasize, datamode dataorder, int dataspa
 	switch(dataorder){
 		case CRECIENTE:
 			break;
-		case DECRECIENTE: 
+		case DECRECIENTE:
 			invertVector(datavector, datasize);
 			break;
 		case DESORDENADO:
@@ -64,4 +64,3 @@ void dataCreator(int * datavector, int datasize, datamode dataorder, int dataspa
 			break;
 	}
 }
-
