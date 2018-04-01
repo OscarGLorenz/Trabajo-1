@@ -4,16 +4,29 @@
 #include "Datacreator.h"
 #include "Dataorganizer.h"
 
+#define SIZES 10, 100, 1000, 10000
+
 void runExperiment(){
 	Types typestable;
 	typeDefiner(&typestable);
 	char mode = experimentMode(&typestable);
+	int j, l;
+	int iterations[] = {SIZES};
+	int n_iter = sizeof(iterations) / sizeof(int);
+	int datavector[4][iterations[n_iter - 1]];
+	typestable.n_costs = 3;
 	switch (mode){
 		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
 		typestable.n_algorithms = 6;
 		typestable.n_data = 4;
-		typestable.n_costs = 3;
-		resultVisualizer(typestable);
+		printf("\nGenerando datos");
+		for (j = 0; j < typestable.n_data; j++){
+			for (l = 0; l < n_iter; l++){
+				dataCreator(&datavector[l][j], iterations[n_iter - 1], j, 0);
+				printf(".");
+			}
+		}
+		resultVisualizer(datavector, typestable, iterations, n_iter);
 			break;
 		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
 		algorithmMode(&typestable);
@@ -21,6 +34,7 @@ void runExperiment(){
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
 			dataOrderMode(&typestable);
+			
 			break;
 	}
 		/*	size_t iter = 4;

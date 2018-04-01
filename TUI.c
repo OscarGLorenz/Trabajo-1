@@ -120,36 +120,41 @@ int fileOpener(FILE ** datafile){
 }
 
 void typeDefiner(Types* typestable){
+	// i: algoritmo
 	strcpy(typestable->algorithmTypes[0], "Burbuja  ");
-	strcpy(typestable->algorithmTypes[1], "Inserción");
-	strcpy(typestable->algorithmTypes[2], "Selección");
+	strcpy(typestable->algorithmTypes[1], "Insercion");
+	strcpy(typestable->algorithmTypes[2], "Seleccion");
 	strcpy(typestable->algorithmTypes[3], "Shell    ");
-	strcpy(typestable->algorithmTypes[4], "Montículo");
+	strcpy(typestable->algorithmTypes[4], "Monticulo");
 	strcpy(typestable->algorithmTypes[5], "Quicksort");
 	
+	// j: tipo de dato
 	strcpy(typestable->dataTypes[0], "Crecientes  ");
 	strcpy(typestable->dataTypes[1], "Decrecientes");
 	strcpy(typestable->dataTypes[2], "Aleatorios  ");
 	strcpy(typestable->dataTypes[3], "Repetidos   ");
 	
+	// k: coste
     strcpy(typestable->costTypes[0], "Comparaciones");
     strcpy(typestable->costTypes[1], "Movimientos  ");
 	strcpy(typestable->costTypes[2], "Tiempo       ");
+	
+	// l: iteración
 }
 
-void resultVisualizer(Types typestable){
+void resultVisualizer(int data[][4], Types typestable, int* iterations, int n_iter){
 	int i, j, k;
 	if(typestable.n_algorithms == 6 && typestable.n_data == 4){		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
-		printf("\n\nAlgoritmos\tOrden inicial en datos:\n\t\t");
-		for(j = 0; j < typestable.n_data; j++){
-			printf("%s\t", typestable.dataTypes[j]);
+		printf("\n\nAlgoritmos\tTipo de coste computacional:\n\t\t");
+		for(j = 0; j < typestable.n_costs; j++){
+			printf("%s\t", typestable.costTypes[j]);
 		}
 		printf("\n");
 		for(i = 0; i < typestable.n_algorithms; i++){
 			printf("** %s **\n", typestable.algorithmTypes[i]);
-			for(k = 0; k < typestable.n_costs; k++){
-				printf("%s:\t",typestable.costTypes[k]);
-				for(j = 0; j < typestable.n_data; j++){
+			for(k = 0; k < typestable.n_data; k++){
+				printf("%s:\t",typestable.dataTypes[k]);
+				for(j = 0; j < typestable.n_costs; j++){
 					// DO SOMETHING [i][j][k]
 					printf("%d %d %d\t\t", i, j, k);
 				}

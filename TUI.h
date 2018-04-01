@@ -45,6 +45,6 @@ int fileOpener(FILE ** datafile);
 void typeDefiner(Types* typestable);
 
 // Visualiza los resultados de los benchmark
-void resultVisualizer(Types typestable);
+void resultVisualizer(int data[][4], Types typestable, int* iterations, int n_iter);
 
 #endif
