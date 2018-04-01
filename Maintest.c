@@ -9,6 +9,22 @@
 #include "Algorithm.h"
 #include "Cost.h"
 
+typedef struct {
+	char * cost[][][];
+
+	char * costTypes[];
+	int n_cost;
+
+	char * algorithms[];
+	int n_algorithm;
+
+  char * dataTypes[];
+	int n_data;
+
+} Results;
+
+
+
 void runExperiment(){
 	char mode = experimentMode();
 	switch (mode){
@@ -19,13 +35,13 @@ void runExperiment(){
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
 
-			int iter = 4;
+			size_t iter = 4;
 			Experiment bubbleS[iter], insert[iter], select[iter], heap[iter], quick[iter], shell[iter];
-			const int pressets[] = {10,100,1000,10000};
+			const size_t pressets[] = {10,100,1000,10000};
 			for (size_t i = 0; i < iter; i++) {
 				size_t nelem = pressets[i];
-				unsigned int random[nelem];
-				unsigned int buffer[nelem];
+				int random[nelem];
+				int buffer[nelem];
 
 				dataCreator(random, nelem, DESORDENADO, 0);
 
