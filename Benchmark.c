@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "Benchmark.h"
-#include "Datacreator.h"
 
 /* En windows no existe la función clock_gettime, asi que emularemos su
 funcionamiento con windows */
@@ -216,21 +215,28 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str, char 
   costToString(nanos_cost, nanos_str);
 }
 
+// *************** FOR OGL ***************************************
 
+Costs runBenchmark(int data[][4], Types typestable, int* datasize, algorithm_ptr, int dataType, int iterations){
+	int k, l;
+	Experiment results[iterations];
+	Costs experimentcosts;
+	for (l = 0; l < iterations; l++){
+		results[i] = newExperiment(datasize[l]);
+		int buffer[datasize[l]];
+		memcpy(buffer,data[l][dataType],nelem*sizeof(int));
+		algorithm[k](buffer, datasize[l], results[l];
+	}
+	costIdentification(results, datasize, &experimentcosts);
+	return experimentcosts;
+}
 
+/*
 void calculateTable(Results * result, size_t nelements[], int n_nelement,
   algorithm_ptr algorithms[], char algorithm_str[][30], int num_algorithm,
   dataType types[], char type_str[][30], int num_types) {
 
-    result->n_algorithm = num_algorithm;
-    for (int k = 0; k < num_algorithm; k++)
-      strcpy(result->algorithms[k], algorithm_str[k]);
-
-    result->n_data = num_types;
-    for (int i = 0; i < num_types; i++)
-      strcpy(result->dataTypes[i], type_str[i]);
-
-    Experiment experiment[num_types][num_algorithm][n_nelement];
+  Experiment experiment[num_types][num_algorithm][n_nelement];
 
     for (int i = 0; i < num_types; i++) {
       for (int j = 0; j < n_nelement; j++) {
@@ -254,3 +260,4 @@ void calculateTable(Results * result, size_t nelements[], int n_nelement,
     }
 
 }
+*/

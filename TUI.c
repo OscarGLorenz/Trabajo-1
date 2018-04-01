@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "TUI.h"
+#include "Benchmark.h"
 
 
 char programMode(){
@@ -49,7 +50,7 @@ void algorithmMode(Types* typestable){
 	typestable->n_algorithms = mode - 'a';
 }
 
-dataType dataOrderMode(Types* typestable){
+void dataTypeMode(Types* typestable){
 	int i;
 	char mode;
 	printf("\nComo desea que se encuentren los datos inicialmente?\n");
@@ -61,7 +62,7 @@ dataType dataOrderMode(Types* typestable){
 		fflush(stdin);
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
-	return mode == 'a' ? INCREASING : mode == 'b' ? DECREASING : mode == 'c' ? RANDOM : REPEATED;
+	typesTable->n_data = mode - 'a';
 }
 
 char dataInputMode(int* datasize){
@@ -142,8 +143,9 @@ void typeDefiner(Types* typestable){
 	// l: iteración
 }
 
-void resultVisualizer(int data[][4], Types typestable, int* iterations, int n_iter){
-	int i, j, k;
+void resultVisualizer(int data[][4], Types typestable, int* datasize, int datasize){
+	int i, j;
+	Costs experimentcosts;
 	if(typestable.n_algorithms == 6 && typestable.n_data == 4){		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
 		printf("\n\nAlgoritmos\tTipo de coste computacional:\n\t\t");
 		for(j = 0; j < typestable.n_costs; j++){
@@ -152,13 +154,10 @@ void resultVisualizer(int data[][4], Types typestable, int* iterations, int n_it
 		printf("\n");
 		for(i = 0; i < typestable.n_algorithms; i++){
 			printf("** %s **\n", typestable.algorithmTypes[i]);
-			for(k = 0; k < typestable.n_data; k++){
+			for(j = 0; j < typestable.n_data; j++){
 				printf("%s:\t",typestable.dataTypes[k]);
-				for(j = 0; j < typestable.n_costs; j++){
-					// DO SOMETHING [i][j][k]
-					printf("%d %d %d\t\t", i, j, k);
-				}
-				printf("\n");
+				experimentcosts = runBenchmark();
+				printf("%s\t%s\t%s\n", experimentcosts.comps, experimentcosts.moves, experimentcosts.time);
 			}
 			printf("\n");
 		}

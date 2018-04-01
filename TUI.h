@@ -25,7 +25,7 @@ char experimentMode();
 void algorithmMode(Types* typestable);
 
 //Pide orden inicial de datos
-dataType dataOrderMode(Types* typestable);
+int dataTypeMode(Types* typestable);
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
 char dataInputMode();
@@ -35,8 +35,6 @@ char sorterInputMode();
 
 // Visualiza el array de datos
 void showVector(int * datavector, int datasize);
-
-
 
 // Abre el archivo de datos introduciendo su nombre
 int fileOpener(FILE ** datafile);

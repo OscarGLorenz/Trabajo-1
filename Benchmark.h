@@ -21,6 +21,15 @@ typedef struct cost{
   float coef; 							// Coeficiente del coste
 } Cost;
 
+// *************** FOR OGL ***************************************
+
+// Costes de un algoritmo
+typedef struct costs{
+	Cost[0] comps;
+	Cost[1] moves;
+	Cost[2] time;
+} Costs;
+
 // Puntero a función para los diferentes costes computacionales
 typedef float(*trans_ptr)(float,float);
 
