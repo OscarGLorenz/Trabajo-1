@@ -1,6 +1,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "Benchmark.h"
 
@@ -215,36 +216,59 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str, char 
   costToString(nanos_cost, nanos_str);
 }
 
-// *************** FOR OGL ***************************************
+/* Ejecuta la combinación de experimentos pedida
+ARGUMENTOS: nelements, array con el tamaño de los vectores a experimentar
+            num_nelement, tamaño del array nelements
+            algorithms, array con punteros a función de los algoritmos a probar
+            num_algorithm, tamaño del array algorithms
+            types, tipos de datos a generar y probar
+            num_types, tamaño del array types
+RESULTADOS: Devuelve un puntero a char* multidimensional, con el tamaño dado y
+            que contiene los costes computacionales por tipo de dato y algoritmos
+            el último índice contiene movimientos, comparaciones y tiempo en ese orden
+            Ej: char* c [num_types][num_algorithm][3];
 
-Costs runBenchmark(int data[][4], Types typestable, int* datasize, algorithm_ptr, int dataType, int iterations){
-	int k, l;
-	Experiment results[iterations];
-	Costs experimentcosts;
-	for (l = 0; l < iterations; l++){
-		results[i] = newExperiment(datasize[l]);
-		int buffer[datasize[l]];
-		memcpy(buffer,data[l][dataType],nelem*sizeof(int));
-		algorithm[k](buffer, datasize[l], results[l];
-	}
-	costIdentification(results, datasize, &experimentcosts);
-	return experimentcosts;
+
+Ejemplo:
+size_t nelements[] = {1,10};
+int num_nelement = 2;
+algorithm_ptr algorithms[] = {bubble,insertion};
+int num_algorithm = 2;
+dataType types[] = {RANDOM, INVERSE};
+int num_types = 2;
+char **** data = calculateTable(nelements,num_nelement,algorithms,num_algorithm,types,num_types);
+for (int i = 0; i < num_types; i++) {
+  for (int j = 0; j < num_algorithm; j++) {
+    printf("Coste: %s %s %s\n", data[i][j][0], data[i][j][1], data[i][j][2]);
+  }
 }
+*/
+ char **** calculateTable(size_t nelements[], int num_nelement,
+  algorithm_ptr algorithms[], int num_algorithm,
+  dataType types[], int num_types) {
 
-/*
-void calculateTable(Results * result, size_t nelements[], int n_nelement,
-  algorithm_ptr algorithms[], char algorithm_str[][30], int num_algorithm,
-  dataType types[], char type_str[][30], int num_types) {
+  const int num_costs = 3;
 
-  Experiment experiment[num_types][num_algorithm][n_nelement];
+  char **** costs = (char ****) calloc(num_types, sizeof(char ***));
+  for(int i = 0; i < num_types; i++) {
+    costs[i] = (char ***) calloc(num_algorithm, sizeof(char**));
+    for(int j = 0; j < num_algorithm; j++) {
+      costs[i][j] = (char **) calloc(num_costs , sizeof(char*));
+      for (int k = 0; k < num_costs; k++) {
+        costs[i][j][k] = (char *) calloc(30 , sizeof(char));
+      }
+    }
+  }
+
+  Experiment experiment[num_types][num_algorithm][num_nelement];
 
     for (int i = 0; i < num_types; i++) {
-      for (int j = 0; j < n_nelement; j++) {
+      for (int j = 0; j < num_nelement; j++) {
         size_t nelem = nelements[j];
         int raw_data[nelem];
         int buffer[nelem];
 
-        //dataCreator(raw_data, nelem, types[i], 0);
+        dataCreator(raw_data, nelem, types[i], 0);
 
         for (int k = 0; k < num_algorithm; k++) {
           memcpy(buffer,raw_data,nelem*sizeof(int));
@@ -254,10 +278,24 @@ void calculateTable(Results * result, size_t nelements[], int n_nelement,
       }
 
       for (int k = 0; k < num_algorithm; k++)
-        costIdentification(experiment[i][k], n_nelement,
-          result->cost[k][i][0], result->cost[k][i][1], result->cost[k][i][2]);
+        costIdentification(experiment[i][k], num_nelement,
+          costs[i][k][0], costs[i][k][1], costs[i][k][2]);
 
     }
 
+    return costs;
 }
-*/
+
+// Libera la estructura creada por la función anterior.
+void freeTable(char **** c, int first, int second, int third) {
+  for(int i = 0; i < first; i++) {
+    for(int j = 0; j < second; j++) {
+      for (int k = 0; k < third; k++) {
+        free(c[i][j][k]);
+      }
+      free(c[i][j]);
+    }
+    free(c[i]);
+  }
+  free(c);
+}

@@ -15,23 +15,14 @@ typedef struct experiment{
   size_t elements; 	      				//Tamaño del experimento
 } Experiment;
 
+// Puntero a función para los diferentes costes computacionales
+typedef float(*trans_ptr)(float,float);
+
 // Coste de un algoritmo
 typedef struct cost{
   trans_ptr transform; 					// Tipo de coste computacional
   float coef; 							// Coeficiente del coste
 } Cost;
-
-// *************** FOR OGL ***************************************
-
-// Costes de un algoritmo
-typedef struct costs{
-	Cost[0] comps;
-	Cost[1] moves;
-	Cost[2] time;
-} Costs;
-
-// Puntero a función para los diferentes costes computacionales
-typedef float(*trans_ptr)(float,float);
 
 // Puntero a función para los diferentes algoritmos
 typedef void(*algorithm_ptr)(int*,size_t,Experiment*);
@@ -72,8 +63,10 @@ float linlog(float x, float y);
 void costIdentification(Experiment * experiment, size_t n, char * mov_str, char * comp_str, char * nanos_str);
 
 // Genera una estructura Results con los costes computacionales de cada algoritmo y para cada dato suministrado
-void calculateTable(ResTable * result, size_t nelements[], int n_nelement,
-  algorithm_ptr algorithms[], char algorithm_str[][30], int num_algorithm,
-  dataType types[], char type_str[][30], int num_types);
+char **** calculateTable(size_t nelements[], int num_nelement,
+ algorithm_ptr algorithms[], int num_algorithm,
+ dataType types[], int num_types);
 
+ // Libera la estructura creada por la función anterior.
+ void freeTable(char **** c, int first, int second, int third);
 #endif
