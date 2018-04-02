@@ -249,10 +249,10 @@ for (int i = 0; i < num_types; i++) {
 
   const int num_costs = 3;
 
-  char **** costs = (char ****) calloc(num_types, sizeof(char ***));
-  for(int i = 0; i < num_types; i++) {
-    costs[i] = (char ***) calloc(num_algorithm, sizeof(char**));
-    for(int j = 0; j < num_algorithm; j++) {
+  char **** costs = (char ****) calloc(num_algorithm, sizeof(char ***));
+  for(int i = 0; i < num_algorithm; i++) {
+    costs[i] = (char ***) calloc(num_types, sizeof(char**));
+    for(int j = 0; j < num_types; j++) {
       costs[i][j] = (char **) calloc(num_costs , sizeof(char*));
       for (int k = 0; k < num_costs; k++) {
         costs[i][j][k] = (char *) calloc(30 , sizeof(char));
@@ -260,26 +260,26 @@ for (int i = 0; i < num_types; i++) {
     }
   }
 
-  Experiment experiment[num_types][num_algorithm][num_nelement];
+  Experiment experiment[num_algorithm][num_types][num_nelement];
 
-    for (int i = 0; i < num_types; i++) {
-      for (int j = 0; j < num_nelement; j++) {
-        size_t nelem = nelements[j];
+    for (int j = 0; j < num_types; j++) {
+      for (int l = 0; l < num_nelement; l++) {
+        size_t nelem = nelements[l];
         int raw_data[nelem];
         int buffer[nelem];
 
-        dataCreator(raw_data, nelem, types[i], 0);
+        dataCreator(raw_data, nelem, types[j], 0);
 
-        for (int k = 0; k < num_algorithm; k++) {
+        for (int i = 0; i < num_algorithm; i++) {
           memcpy(buffer,raw_data,nelem*sizeof(int));
-          experiment[i][k][j] = newExperiment(nelem);
-          algorithms[k](buffer, nelem, &experiment[i][k][j]);
+          experiment[i][j][l] = newExperiment(nelem);
+          algorithms[i](buffer, nelem, &experiment[i][j][l]);
         }
       }
 
-      for (int k = 0; k < num_algorithm; k++)
-        costIdentification(experiment[i][k], num_nelement,
-          costs[i][k][0], costs[i][k][1], costs[i][k][2]);
+      for (int i = 0; i < num_algorithm; i++)
+        costIdentification(experiment[i][j], num_nelement,
+          costs[i][j][0], costs[i][j][1], costs[i][j][2]);
 
     }
 

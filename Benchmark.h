@@ -2,6 +2,7 @@
 #define BENCHMARK_H_
 
 #include <time.h>
+#include "Datacreator.h"
 
 #define TRANS {lin,quad,linlog}			// Array de las transformaciones por defecto
 #define NTRANS 3						// Número de transformaciones por defecto

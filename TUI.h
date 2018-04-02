@@ -6,10 +6,12 @@
 // Tabla de resultados
 typedef struct modetypes{
 	int n_algorithms; 					// Números de algoritmos
-	char algorithmTypes[6][32]; 		// Nombres de los algoritmos
+	char algorithmNames[6][32]; 		// Nombres de los algoritmos a visualizar
+	char algorithmTypes[6][32];			// Nombres de los algoritmos a ejecutar
 	
 	int n_data; 						// Números de tipos de datos
-	char dataTypes[4][32]; 				// Nombres de los tipos de datos
+	char dataNames[4][32]; 				// Nombres de los tipos de datos a visualizar
+	dataType dataTypes[4];				// Nombres de los tipos de datos a utilizar
 	
 	int n_costs; 						// Número de costes
 	char costTypes[3][32]; 				// Nombres de los costes
@@ -25,7 +27,7 @@ char experimentMode();
 void algorithmMode(Types* typestable);
 
 //Pide orden inicial de datos
-int dataTypeMode(Types* typestable);
+void dataTypeMode(Types* typestable);
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
 char dataInputMode();
@@ -43,6 +45,6 @@ int fileOpener(FILE ** datafile);
 void typeDefiner(Types* typestable);
 
 // Visualiza los resultados de los benchmark
-void resultVisualizer(int data[][4], Types typestable, int* iterations, int n_iter);
+void resultVisualizer(char**** results, Types typestable);
 
 #endif
