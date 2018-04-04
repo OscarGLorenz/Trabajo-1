@@ -53,8 +53,8 @@ de esta forma podremos ejecutar funciones POSIX. Se necesita en clock_gettime */
 #include <time.h>
 #include "Datacreator.h"
 
-#define TRANS {lin,quad,linlog}	/* Array de las transformaciones por defecto */
-#define NTRANS 3				/* Número de transformaciones por defecto */
+#define TRANS {lin,quad,linlog}			// Array de las transformaciones por defecto
+#define NTRANS 3						// Número de transformaciones por defecto
 
 /*
  *  Funciones, lin, quad y linlog
@@ -70,25 +70,25 @@ float lin(float x, float y);
 float quad(float x, float y);
 float linlog(float x, float y);
 
-/* Estructura básica de la librería */
+// Estructura básica de la librería
 typedef struct experiment{
-  unsigned int comparations; 			/* Guarda número de comparaciones */
-  unsigned int movements;   			/* Guarda número de movimientos */
-  struct timespec start;    			/* Estructura con el tiempo al inicio */
-  struct timespec end;        		/* Estructura con el tiempo al final */
-  size_t elements; 	      				/* Tamaño del experimento */
+  unsigned int comparations; 			//Guarda número de comparaciones
+  unsigned int movements;   			//Guarda número de movimientos
+  struct timespec start;    			//Estructura con el tiempo al inicio
+  struct timespec end;        			//Estructura con el tiempo al final
+  size_t elements; 	      				//Tamaño del experimento
 } Experiment;
 
-/* Puntero a función para los diferentes costes computacionales */
+// Puntero a función para los diferentes costes computacionales
 typedef float(*trans_ptr)(float,float);
 
-/* Coste de un algoritmo  */
+// Coste de un algoritmo
 typedef struct cost{
-  trans_ptr transform; 					/*  Tipo de coste computacional */
-  float coef; 						/* Coeficiente del coste */
+  trans_ptr transform; 					// Tipo de coste computacional
+  float coef; 							// Coeficiente del coste
 } Cost;
 
-/* Puntero a función para los diferentes algoritmos */
+// Puntero a función para los diferentes algoritmos
 typedef void(*algorithm_ptr)(int*,size_t,Experiment*);
 
 /*
@@ -190,7 +190,13 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
 
 /*
  *  Función: calculateTable
- * -----------------------------------------------
+ * --------------------------------------------------------
+ *   Ejecuta una serie de experimentos dadas las combinaciones que se quieren
+ *   de orden inicial, número de elementos y algoritmos
+ *
+ *   nelements: array con el número de elementos de cada tanda de experimentos
+ *   num_nelement: tamaño de nelements
+ *   algorithms: array con los algoritmos a ejecutar
  *   num_algorithm: tamaño de num_algorithm
  *   types: array con los ordenes iniciales de los datos a ejecutar
  *   num_types: tamaño de types
