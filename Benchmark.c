@@ -4,20 +4,21 @@
 * AUTOR :    Óscar García Lorenz
 ******************************************************************************/
 
+#include "Benchmark.h"
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Benchmark.h"
 
 /* En windows no existe la función clock_gettime, asi que emularemos su
 funcionamiento con windows */
 #ifdef _WIN32
 
 #include <Windows.h>
-#define CLOCK_PROCESS_CPUTIME_ID 1  // Esta macro funcionará como dummy
-static int firstTime = 1; // Variable estática para registrar las llamadas
+#define CLOCK_PROCESS_CPUTIME_ID 1  /* Esta macro funcionará como dummy */
+static int firstTime = 1; /* Variable estática para registrar las llamadas */
 static LARGE_INTEGER frecuency;
 
 /*
@@ -33,17 +34,17 @@ static LARGE_INTEGER frecuency;
 int clock_gettime(int dummy, struct timespec *ct) {
     LARGE_INTEGER count;
 
-    // Si es la primera vez obtiene el valor de la frecuencia
+    /* Si es la primera vez obtiene el valor de la frecuencia */
     if (firstTime) {
         firstTime = 0;
         QueryPerformanceFrequency(&frecuency);
     }
 
-    // Obtención del tiempo transcurrido desde el inicio
+    /* Obtención del tiempo transcurrido desde el inicio */
     QueryPerformanceCounter(&count);
-    // Cálculo de los segundos
+    /* Cálculo de los segundos */
     ct->tv_sec = count.QuadPart / frecuency.QuadPart;
-    // Cálculo de los nanosegundos
+    /* Cálculo de los nanosegundos */
     ct->tv_nsec = ((count.QuadPart % frecuency.QuadPart) * 1e9) /
           frecuency.QuadPart;
     return 0;
@@ -79,8 +80,8 @@ Experiment newExperiment(size_t n) {
  *   experiment: puntero al experimento
  */
 void swap(int * x, int * y, Experiment * experiment) {
-  experiment->movements+=3;
   int aux = *x;
+  experiment->movements+=3;
   *x = *y;
   *y = aux;
 }
@@ -193,35 +194,39 @@ float linlog(float x, float y) {
  */
 float regrex(float * x, float * y, size_t n, float * b0, float * b1,
               trans_ptr trans) {
-  float yT[n]; // Vector auxiliar para guardar las y transformadas
+  /* Vector auxiliar para guardar las y transformaciones */
+  float* yT = (float*) malloc(sizeof(float) * n);
+  float meanX = 0, meanY = 0; /* Medias de X e Y */
+  float num = 0, denom = 0; /* Denominador y numerador de b1 */
+  size_t i;
+  float residue2 = 0; /* Residuo al cuadrado */
 
-  // Transforma los puntos con la funcion dada
-  for (size_t i = 0; i < n; i++)
+  /* Transforma los puntos con la funcion dada */
+  for (i = 0; i < n; i++)
       yT[i] = trans(x[i],y[i]);
 
-  //Cálculo de las medias
-  float meanX = 0, meanY = 0;
-  for (size_t i = 0; i < n; i++) {
+  /*Cálculo de las medias */
+  for (i = 0; i < n; i++) {
     meanY += yT[i];
     meanX += x[i];
   }
   meanX /= n; meanY /= n;
 
-  //Cálculo de la pendiente de la recta de regresión
-  float num = 0, denom = 0;
-  for (size_t i = 0; i < n; i++) {
+  /*Cálculo de la pendiente de la recta de regresión */
+  for (i = 0; i < n; i++) {
     num += (yT[i]-meanY)*(x[i]-meanX);
     denom += (x[i]-meanX)*(x[i]-meanX);
   }
   *b1 = num/denom;
 
-  //Cálculo de la ordenada en el origen
+  /*Cálculo de la ordenada en el origen */
   *b0 = meanY - *b1 * meanX;
 
-  //Cálculo de los residuos
-  float residue2 = 0;
-  for (size_t i = 0; i < n; i++)
+  /*Cálculo de los residuos */
+  for (i = 0; i < n; i++)
     residue2 += (*b0 + *b1 * x[i] - yT[i]) * (*b0 + *b1 * x[i] - yT[i]);
+
+  free(yT);
   return sqrt(residue2);
 }
 
@@ -240,17 +245,22 @@ float regrex(float * x, float * y, size_t n, float * b0, float * b1,
  *
  *   resultado: estructura Cost, con la transformación y coeficiente
  */
-#define EPS 0.02 // Tolerancia para la identificación
+#define EPS 0.02 /* Tolerancia para la identificación */
 Cost identify(float * x, float * y, size_t n, trans_ptr * trans,
                 size_t ntrans) {
     Cost cost;
-    // Pendiente, ordenada en el origen y residuo
-    float b1[ntrans], b0[ntrans], res[ntrans];
+    size_t i;
+    size_t less = 0; /* Índice de la mejor regresión */
+    /* Pendiente, ordenada en el origen y residuo */
+    float * b1 = (float*) malloc(n * sizeof(float));
+    float * b0 = (float*) malloc(n * sizeof(float));
+    float * res = (float*) malloc(n * sizeof(float));
 
-    // Probar todas las transformaciones y guardar el resultado
-    for (size_t i = 0; i < ntrans; i++) {
+    /* Probar todas las transformaciones y guardar el resultado */
+    for (i = 0; i < ntrans; i++) {
       res[i] = regrex(x,y,n,&b0[i],&b1[i],trans[i]);
-      #ifdef DEBUG  //Muestra por pantalla los resultados si DEBUG está definido
+      #ifdef DEBUG
+      /* Muestra por pantalla los resultados si DEBUG está definido */
         printf("res=%.2f b0=%.2f b1=%.2f\n",res[i], b0[i], b1[i]);
       #endif
     }
@@ -260,14 +270,18 @@ Cost identify(float * x, float * y, size_t n, trans_ptr * trans,
 
     /* Búsqueda de la transformación que resulte en un residuo menor y con
     pendiente distinta de 0 */
-    size_t less = 0;
-    for (size_t i = 1; i < ntrans; i++)
+    for (i = 1; i < ntrans; i++)
       if (res[i] < res[less] && b1[i] >= EPS)
         less = i;
 
-    // Una vez encontrado el óptimo guardar y devolver como resultado
+    /* Una vez encontrado el óptimo guardar y devolver como resultado */
     cost.transform = trans[less];
     cost.coef = b1[less];
+
+    free(b1);
+    free(b0);
+    free(res);
+
     return cost;
 }
 
@@ -276,11 +290,11 @@ Cost identify(float * x, float * y, size_t n, trans_ptr * trans,
  * --------------------------------------------------------
  *   Transforma una estructura coste en un char *
  *
- *   cost: coste a transformar
+ *   cost: coste a transfor * mar
  *   c: char* por referencia como resultado. Recomendable tamaño superior a 20
  */
 void costToString(Cost cost, char * c) {
-  char type[10];
+  char type[20];
   if (cost.transform == lin) {
     strcpy(type,"O(n)");
   } else if (cost.transform == quad) {
@@ -309,29 +323,39 @@ void costToString(Cost cost, char * c) {
  */
 void costIdentification(Experiment * experiment, size_t n, char * mov_str,
                           char * comp_str, char * nanos_str) {
-  // Vector auxiliar que almacena las transformaciones disponibles
+  /* Vector auxiliar que almacena las transformaciones disponibles */
   trans_ptr transformations[NTRANS] = TRANS;
+  size_t i;
+  Cost comp_cost, mov_cost, nanos_cost;
 
-  // Variables para almacenar los datos a los que se efectuaran regresiones
-  float comp_f[n], move_f[n], nanos_f[n], number_f[n];
+  /* Variables para almacenar los datos a los que se efectuaran regresiones */
+  float * comp_f = (float*) malloc(n * sizeof(float));
+  float * move_f = (float*) malloc(n * sizeof(float));
+  float * nanos_f = (float*) malloc(n * sizeof(float));
+  float * number_f = (float*) malloc(n * sizeof(float));
 
-  // Iteración por toda la lista de experimentos para recabar los datos
-  for (size_t i = 0; i < n; i++) {
+  /* Iteración por toda la lista de experimentos para recabar los datos */
+  for (i = 0; i < n; i++) {
     comp_f[i] = experiment[i].comparations;
     move_f[i] = experiment[i].movements;
     nanos_f[i] = nanos(&experiment[i]);
     number_f[i] = experiment[i].elements;
   }
 
-  // Identificación de los costes de comparaciones, moviemientos y tiempo
-  Cost comp_cost = identify(number_f, comp_f, n, transformations, NTRANS);
-  Cost mov_cost = identify(number_f, move_f, n, transformations, NTRANS);
-  Cost nanos_cost = identify(number_f, nanos_f, n, transformations, NTRANS);
+  /* Identificación de los costes de comparaciones, moviemientos y tiempo */
+  comp_cost = identify(number_f, comp_f, n, transformations, NTRANS);
+  mov_cost = identify(number_f, move_f, n, transformations, NTRANS);
+  nanos_cost = identify(number_f, nanos_f, n, transformations, NTRANS);
 
-  // Conversión a char* de los anteriores costes
+  /* Conversión a char* de los anteriores costes */
   costToString(comp_cost, comp_str);
   costToString(mov_cost, mov_str);
   costToString(nanos_cost, nanos_str);
+
+  free(comp_f);
+  free(move_f);
+  free(nanos_f);
+  free(number_f);
 }
 
 /*
@@ -356,44 +380,72 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
  char **** calculateTable(size_t nelements[], int num_nelement,
   algorithm_ptr algorithms[], int num_algorithm,
   dataType types[], int num_types) {
-
+  int i, j, k, l;
   const int num_costs = 3;
+  size_t nelem;
+  int * raw_data;
+  int * buffer;
 
-  char **** costs = (char ****) calloc(num_algorithm, sizeof(char ***));
-  for(int i = 0; i < num_algorithm; i++) {
-    costs[i] = (char ***) calloc(num_types, sizeof(char**));
-    for(int j = 0; j < num_types; j++) {
-      costs[i][j] = (char **) calloc(num_costs , sizeof(char*));
-      for (int k = 0; k < num_costs; k++) {
-        costs[i][j][k] = (char *) calloc(30 , sizeof(char));
+  char **** costs;
+  Experiment *** experiment;
+
+  /* Reservar memoria para costs */
+  costs = (char ****) malloc(num_algorithm * sizeof(char ***));
+  for(i = 0; i < num_algorithm; i++) {
+    costs[i] = (char ***) malloc(num_types * sizeof(char**));
+    for(j = 0; j < num_types; j++) {
+      costs[i][j] = (char **) malloc(num_costs * sizeof(char*));
+      for (k = 0; k < num_costs; k++) {
+        costs[i][j][k] = (char *) malloc(30 * sizeof(char));
+        costs[i][j][k][0] = '\0'; /* Inicialización del char* */
       }
     }
   }
 
-  Experiment experiment[num_algorithm][num_types][num_nelement];
+  /* Reservar memoria para experiment */
+  experiment = (Experiment ***) malloc(num_algorithm * sizeof(Experiment **));
+  for(i = 0; i < num_algorithm; i++) {
+    experiment[i] = (Experiment **) malloc(num_types * sizeof(Experiment*));
+    for(j = 0; j < num_types; j++) {
+      experiment[i][j] = (Experiment *) malloc(num_nelement * sizeof(Experiment));
+    }
+  }
 
-    for (int j = 0; j < num_types; j++) {
-      for (int l = 0; l < num_nelement; l++) {
-        size_t nelem = nelements[l];
-        int raw_data[nelem];
-        int buffer[nelem];
+  for (j = 0; j < num_types; j++) {
+    for (l = 0; l < num_nelement; l++) {
+      nelem = nelements[l];
 
-        dataCreator(raw_data, nelem, types[j], 0);
+      raw_data = (int *) malloc(nelem * sizeof(int));
+      buffer = (int *) malloc(nelem * sizeof(int));
 
-        for (int i = 0; i < num_algorithm; i++) {
-          memcpy(buffer,raw_data,nelem*sizeof(int));
-          experiment[i][j][l] = newExperiment(nelem);
-          algorithms[i](buffer, nelem, &experiment[i][j][l]);
-        }
+      dataCreator(raw_data, nelem, types[j], 0);
+
+      for (i = 0; i < num_algorithm; i++) {
+         memcpy(buffer,raw_data,nelem*sizeof(int));
+         experiment[i][j][l] = newExperiment(nelem);
+         algorithms[i](buffer, nelem, &experiment[i][j][l]);
       }
 
-      for (int i = 0; i < num_algorithm; i++)
-        costIdentification(experiment[i][j], num_nelement,
-          costs[i][j][0], costs[i][j][1], costs[i][j][2]);
+      free(raw_data);
+      free(buffer);
+  }
 
+  for (i = 0; i < num_algorithm; i++)
+    costIdentification(experiment[i][j], num_nelement,
+      costs[i][j][0], costs[i][j][1], costs[i][j][2]);
+
+  }
+
+  /* Liberar memoria para experiment */
+  for(i = 0; i < num_algorithm; i++) {
+    for(j = 0; j < num_types; j++) {
+      free(experiment[i][j]);
     }
+    free(experiment[i]);
+  }
+  free(experiment);
 
-    return costs;
+  return costs;
 }
 
 /*
@@ -407,9 +459,10 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
  *   first: tamaño del tercer índice de la tabla (costes, normalmente 3)
  */
 void freeTable(char **** c, int first, int second, int third) {
-  for(int i = 0; i < first; i++) {
-    for(int j = 0; j < second; j++) {
-      for (int k = 0; k < third; k++) {
+  int i,j,k;
+  for(i = 0; i < first; i++) {
+    for(j = 0; j < second; j++) {
+      for (k = 0; k < third; k++) {
         free(c[i][j][k]);
       }
       free(c[i][j]);
