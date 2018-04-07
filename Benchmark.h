@@ -1,22 +1,12 @@
 #ifndef BENCHMARK_H_
 #define BENCHMARK_H_
 
-#include <time.h>
 #include "Datacreator.h"
 
 #define TRANS {lin,quad,linlog}			// Array de las transformaciones por defecto
 #define NTRANS 3						// Número de transformaciones por defecto
 
-// Estructura básica de la librería
-typedef struct experiment{
-  unsigned int comparations; 			//Guarda número de comparaciones
-  unsigned int movements;   			//Guarda número de movimientos
-  struct timespec start;    			//Estructura con el tiempo al inicio
-  struct timespec end;        			//Estructura con el tiempo al final
-  size_t elements; 	      				//Tamaño del experimento
-} Experiment;
-
-// Puntero a función para los diferentes costes computacionales
+/* Puntero a función para los diferentes costes computacionales */
 typedef float(*trans_ptr)(float,float);
 
 // Coste de un algoritmo
@@ -24,9 +14,6 @@ typedef struct cost{
   trans_ptr transform; 					// Tipo de coste computacional
   float coef; 							// Coeficiente del coste
 } Cost;
-
-// Puntero a función para los diferentes algoritmos
-typedef void(*algorithm_ptr)(int*,size_t,Experiment*);
 
 /* Genera un nuevo experimento, inicializa variables */
 Experiment newExperiment(size_t n);

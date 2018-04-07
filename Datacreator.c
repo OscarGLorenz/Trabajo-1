@@ -3,7 +3,22 @@
 #include <time.h>
 #include "Datacreator.h"
 
-// Conmuta 2 variables proporcionadas por referencia
+Types typestable;
+	typestable.n_algorithms = 6;
+	typestable.algorithmTypes = {bubble,insertion,selection,shell,heapsort,quicksort};
+	typestable.algorithmNames = {"Burbuja  ", "Insercion", "Seleccion", "Shell    ", "Monticulo", "Quicksort"};
+	
+	typestable.n_data = 4;
+	typestable.dataTypes = {INCREASING, DECREASING, RANDOM, REPEATED};
+	typestable.dataNames = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
+	
+	typestable.n_costs = 3;
+	typestable.costTypes = {"Comparaciones", "Movimientos  ", "Tiempo       "};
+	
+	typestable.iterations = 4;
+	typestable.datasizes = {10, 100, 1000, 10000};
+
+	Conmuta 2 variables proporcionadas por referencia
 static void swap(int * a, int * b){
   int aux = *a;
   *a = *b;

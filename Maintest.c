@@ -8,8 +8,7 @@
 #define SIZES 10, 100, 1000, 10000
 
 void runExperiment(){
-	Types typestable;
-	typeDefiner(&typestable);
+	extern Types typestable;
 	char mode = experimentMode(&typestable);
 	int i, j, l;
 	int datasize[] = {SIZES};

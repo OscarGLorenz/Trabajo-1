@@ -120,41 +120,6 @@ int fileOpener(FILE ** datafile){
 	return datasize;
 }
 
-void typeDefiner(Types* typestable){
-	// i: algoritmo
-	strcpy(typestable->algorithmNames[0], "Burbuja  ");
-	strcpy(typestable->algorithmNames[1], "Insercion");
-	strcpy(typestable->algorithmNames[2], "Seleccion");
-	strcpy(typestable->algorithmNames[3], "Shell    ");
-	strcpy(typestable->algorithmNames[4], "Monticulo");
-	strcpy(typestable->algorithmNames[5], "Quicksort");
-	
-	strcpy(typestable->algorithmTypes[0], "bubble");
-	strcpy(typestable->algorithmTypes[1], "insertion");
-	strcpy(typestable->algorithmTypes[2], "selection");
-	strcpy(typestable->algorithmTypes[3], "shell");
-	strcpy(typestable->algorithmTypes[4], "heapsort");
-	strcpy(typestable->algorithmTypes[5], "quicksort");	
-	
-	// j: tipo de dato
-	strcpy(typestable->dataNames[0], "Crecientes  ");
-	strcpy(typestable->dataNames[1], "Decrecientes");
-	strcpy(typestable->dataNames[2], "Aleatorios  ");
-	strcpy(typestable->dataNames[3], "Repetidos   ");
-
-	typestable->dataTypes[0] = INCREASING;
-	typestable->dataTypes[1] = DECREASING;
-	typestable->dataTypes[2] = RANDOM;
-	typestable->dataTypes[3] = REPEATED;
-	
-	// k: coste
-    strcpy(typestable->costTypes[0], "Comparaciones");
-    strcpy(typestable->costTypes[1], "Movimientos  ");
-	strcpy(typestable->costTypes[2], "Tiempo       ");
-	
-	// l: iteración
-}
-
 void resultVisualizer(char**** results, Types typestable){
 	int i, j;
 	if(typestable.n_algorithms == 6 && typestable.n_data == 4){		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n

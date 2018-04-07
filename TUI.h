@@ -3,20 +3,6 @@
 
 #include "Datacreator.h"
 
-// Tabla de resultados
-typedef struct modetypes{
-	int n_algorithms; 					// Números de algoritmos
-	char algorithmNames[6][32]; 		// Nombres de los algoritmos a visualizar
-	char algorithmTypes[6][32];			// Nombres de los algoritmos a ejecutar
-	
-	int n_data; 						// Números de tipos de datos
-	char dataNames[4][32]; 				// Nombres de los tipos de datos a visualizar
-	dataType dataTypes[4];				// Nombres de los tipos de datos a utilizar
-	
-	int n_costs; 						// Número de costes
-	char costTypes[3][32]; 				// Nombres de los costes
-} Types;
-
 //Pide modo de uso del programa. Opciones: modo EXPERIMENTO, modo ORDENADOR
 char programMode();
 
@@ -40,9 +26,6 @@ void showVector(int * datavector, int datasize);
 
 // Abre el archivo de datos introduciendo su nombre
 int fileOpener(FILE ** datafile);
-
-// Inicializa la tabla de tipos
-void typeDefiner(Types* typestable);
 
 // Visualiza los resultados de los benchmark
 void resultVisualizer(char**** results, Types typestable);
