@@ -1,8 +1,7 @@
+#include "Benchmark.h"
 #include <stdio.h>
 #include <string.h>
 #include "TUI.h"
-#include "Benchmark.h"
-
 
 char programMode(){
 	char mode;
@@ -128,14 +127,14 @@ void typeDefiner(Types* typestable){
 	strcpy(typestable->algorithmNames[3], "Shell    ");
 	strcpy(typestable->algorithmNames[4], "Monticulo");
 	strcpy(typestable->algorithmNames[5], "Quicksort");
-	
+
 	strcpy(typestable->algorithmTypes[0], "bubble");
 	strcpy(typestable->algorithmTypes[1], "insertion");
 	strcpy(typestable->algorithmTypes[2], "selection");
 	strcpy(typestable->algorithmTypes[3], "shell");
 	strcpy(typestable->algorithmTypes[4], "heapsort");
-	strcpy(typestable->algorithmTypes[5], "quicksort");	
-	
+	strcpy(typestable->algorithmTypes[5], "quicksort");
+
 	// j: tipo de dato
 	strcpy(typestable->dataNames[0], "Crecientes  ");
 	strcpy(typestable->dataNames[1], "Decrecientes");
@@ -146,12 +145,12 @@ void typeDefiner(Types* typestable){
 	typestable->dataTypes[1] = DECREASING;
 	typestable->dataTypes[2] = RANDOM;
 	typestable->dataTypes[3] = REPEATED;
-	
+
 	// k: coste
     strcpy(typestable->costTypes[0], "Comparaciones");
     strcpy(typestable->costTypes[1], "Movimientos  ");
 	strcpy(typestable->costTypes[2], "Tiempo       ");
-	
+
 	// l: iteración
 }
 
@@ -173,9 +172,9 @@ void resultVisualizer(char**** results, Types typestable){
 		}
 	}
 	else if(typestable.n_algorithms != 6){		// Comparar la velocidad un algoritmo para diferentes tipos de datos
-		
+
 	}
 	else {			// Comparar diferentes algoritmos dado un tipo de dato
-		
+
 	}
 }

@@ -3,13 +3,12 @@
 *
 * AUTOR :    Óscar García Lorenz
 ******************************************************************************/
+#include "Benchmark.h"
 
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "Benchmark.h"
 
 /* En windows no existe la función clock_gettime, asi que emularemos su
 funcionamiento con windows */
