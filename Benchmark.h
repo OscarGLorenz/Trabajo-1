@@ -47,7 +47,7 @@
 /* En el standard ISO o ANSI de C no están permitidas las funciones POSIX
 de esta forma podremos ejecutar funciones POSIX. Se necesita en clock_gettime */
 #ifdef __unix__
-#define _POSIX_C_SOURCE 199309L
+#define _POSIX_C_SOURCE 200809L
 #endif
 
 #include <time.h>
@@ -71,7 +71,7 @@ float quad(float x, float y);
 float linlog(float x, float y);
 
 // Estructura básica de la librería
-typedef struct experiment{
+typedef struct {
   unsigned int comparations; 			//Guarda número de comparaciones
   unsigned int movements;   			//Guarda número de movimientos
   struct timespec start;    			//Estructura con el tiempo al inicio
@@ -83,13 +83,13 @@ typedef struct experiment{
 typedef float(*trans_ptr)(float,float);
 
 // Coste de un algoritmo
-typedef struct cost{
+typedef struct {
   trans_ptr transform; 					// Tipo de coste computacional
   float coef; 							// Coeficiente del coste
 } Cost;
 
 // Puntero a función para los diferentes algoritmos
-typedef void(*algorithm_ptr)(int*,size_t,Experiment*);
+typedef void(*algorithm_ptr)(int*,int,Experiment*);
 
 /*
  *  Función: newExperiment
@@ -105,9 +105,7 @@ Experiment newExperiment(size_t n);
 /*
  *  Función: swap
  * --------------------------------------------------------
- *   Intercambia el valor de las variables dadas y suma
- *   tres movimientos al experimento. Esta función debe usarse dentro
- *   de los algoritmos para contabilizar los intercambios.
+ *   Intercambia el os para contabilizar los intercambios.
  *
  *   x: puntero al primer entero
  *   y: puntero al segundo entero
