@@ -44,6 +44,8 @@
 #ifndef BENCHMARK_H_
 #define BENCHMARK_H_
 
+// #define DEBUG // Descomentar Para mostrar resultados adicionales
+
 /* En el standard ISO o ANSI de C no están permitidas las funciones POSIX
 de esta forma podremos ejecutar funciones POSIX. Se necesita en clock_gettime */
 #ifdef __unix__
@@ -53,8 +55,8 @@ de esta forma podremos ejecutar funciones POSIX. Se necesita en clock_gettime */
 #include <time.h>
 #include "Datacreator.h"
 
-#define TRANS {lin,quad,linlog}			// Array de las transformaciones por defecto
-#define NTRANS 3						// Número de transformaciones por defecto
+#define TRANS {unity,lin,quad,linlog}			// Array de las transformaciones por defecto
+#define NTRANS 4						// Número de transformaciones por defecto
 
 /*
  *  Funciones, lin, quad y linlog
@@ -69,11 +71,13 @@ de esta forma podremos ejecutar funciones POSIX. Se necesita en clock_gettime */
 float lin(float x, float y);
 float quad(float x, float y);
 float linlog(float x, float y);
+float unity(float x, float y);
 
 // Estructura básica de la librería
 typedef struct {
   unsigned int comparations; 			//Guarda número de comparaciones
   unsigned int movements;   			//Guarda número de movimientos
+  unsigned int memory;   			//Guarda número de movimientos
   struct timespec start;    			//Estructura con el tiempo al inicio
   struct timespec end;        			//Estructura con el tiempo al final
   size_t elements; 	      				//Tamaño del experimento
@@ -184,7 +188,7 @@ unsigned int nanos(Experiment * experiment);
  *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
  */
 void costIdentification(Experiment * experiment, size_t n, char * mov_str,
-    char * comp_str, char * nanos_str);
+    char * comp_str, char * nanos_str, char * memory_str);
 
 /*
  *  Función: calculateTable

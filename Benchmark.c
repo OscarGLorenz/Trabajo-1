@@ -63,6 +63,7 @@ Experiment newExperiment(size_t n) {
   experiment.comparations = 0;
   experiment.movements = 0;
   experiment.elements = n;
+  experiment.memory = 0;
   return experiment;
 }
 
@@ -162,6 +163,9 @@ unsigned int nanos(Experiment * experiment) {
  *
  *   resultado: variable real resultado de la transformación
  */
+float unity(float x, float y) {
+   return y*x;
+}
 float lin(float x, float y) {
   return y;
 }
@@ -286,6 +290,8 @@ void costToString(Cost cost, char * c) {
     strcpy(type,"O(n^2)");
   } else if (cost.transform == linlog) {
     strcpy(type,"O(n log n)");
+  } else if (cost.transform == unity) {
+    strcpy(type,"O(1)");
   }
 
   sprintf(c,"%.2f %s", cost.coef, type);
@@ -303,16 +309,18 @@ void costToString(Cost cost, char * c) {
  *            en comparaciones
  *   nanos_str: cadena de caracteres con el coste coste computacional
  *            en nanosegundos
+ *   memory_str: cadena de caracteres con el coste coste computacional
+ *            de memoria
  *
  *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
  */
 void costIdentification(Experiment * experiment, size_t n, char * mov_str,
-                          char * comp_str, char * nanos_str) {
+                          char * comp_str, char * nanos_str, char * memory_str) {
   // Vector auxiliar que almacena las transformaciones disponibles
   trans_ptr transformations[NTRANS] = TRANS;
 
   // Variables para almacenar los datos a los que se efectuaran regresiones
-  float comp_f[n], move_f[n], nanos_f[n], number_f[n];
+  float comp_f[n], move_f[n], nanos_f[n], number_f[n], memory_f[n];
 
   // Iteración por toda la lista de experimentos para recabar los datos
   for (size_t i = 0; i < n; i++) {
@@ -320,17 +328,20 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
     move_f[i] = experiment[i].movements;
     nanos_f[i] = nanos(&experiment[i]);
     number_f[i] = experiment[i].elements;
+    memory_f[i] = experiment[i].memory;
   }
 
   // Identificación de los costes de comparaciones, moviemientos y tiempo
   Cost comp_cost = identify(number_f, comp_f, n, transformations, NTRANS);
   Cost mov_cost = identify(number_f, move_f, n, transformations, NTRANS);
   Cost nanos_cost = identify(number_f, nanos_f, n, transformations, NTRANS);
+  Cost memory_cost = identify(number_f, memory_f, n, transformations, NTRANS);
 
   // Conversión a char* de los anteriores costes
   costToString(comp_cost, comp_str);
   costToString(mov_cost, mov_str);
   costToString(nanos_cost, nanos_str);
+  costToString(memory_cost, memory_str);
 }
 
 /*
@@ -356,7 +367,8 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
   algorithm_ptr algorithms[], int num_algorithm,
   dataType types[], int num_types) {
 
-  const int num_costs = 3;
+  const int num_costs = 4;
+  const int lenght_str = 20; // Longitud de la cadena char *
 
   char **** costs = (char ****) calloc(num_algorithm, sizeof(char ***));
   for(int i = 0; i < num_algorithm; i++) {
@@ -364,7 +376,7 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
     for(int j = 0; j < num_types; j++) {
       costs[i][j] = (char **) calloc(num_costs , sizeof(char*));
       for (int k = 0; k < num_costs; k++) {
-        costs[i][j][k] = (char *) calloc(30 , sizeof(char));
+        costs[i][j][k] = (char *) calloc(lenght_str , sizeof(char));
       }
     }
   }
@@ -388,7 +400,7 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
 
       for (int i = 0; i < num_algorithm; i++)
         costIdentification(experiment[i][j], num_nelement,
-          costs[i][j][0], costs[i][j][1], costs[i][j][2]);
+          costs[i][j][0], costs[i][j][1], costs[i][j][2], costs[i][j][3]);
 
     }
 
