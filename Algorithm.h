@@ -12,7 +12,7 @@
    void selection( int*lista, int N, Experiment*experiment);
    
    /*Ejecuta la ordenación por Shell al array lista de N elementos y guarda información en la estructura Experiment*/ 
-   void Shell(int *lista, int N, Experiment * experiment);
+   void shell(int *lista, int N, Experiment * experiment);
    
    /*Ejecuta la ordenación por montículo al array lista de N elementos y guarda información en la estructura Experiment*/ 
    void heapsort( int *lista, int N, Experiment * experiment);

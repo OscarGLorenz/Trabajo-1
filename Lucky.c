@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include "Lucky.h"
 
+// Calcula el incremento de valor entre dos posiciones consecutivas
 static int distance(int a, int b){
 	int dist = a - b;
 	return dist < 0 ? - dist : dist;
 }
 
+// Calcula la 'entropia global' en el caso de mayor orden ascendente
 static double maxorder(int datasize){
 	int i, factor = 0;
 	for(i = 1; i <= datasize; i++){
@@ -14,6 +16,7 @@ static double maxorder(int datasize){
 	return factor;
 }
 
+// Calcula la 'entropia global' en el caso de mayor orden descendente
 static double minorder(int datasize){
 	int i, factor = 0;
 	for(i = 1; i <= datasize; i++){
@@ -22,6 +25,7 @@ static double minorder(int datasize){
 	return factor;
 }
 
+// Calcula la 'entropia incremental' del array, segun la distancia entre valores de posiciones consecutivas
 static char incremental(int * datavector, int datasize){
 	int i;
 	double entropy = 0;
@@ -32,6 +36,7 @@ static char incremental(int * datavector, int datasize){
 	return 'd';
 }
 
+// Calcula el 'tipo de orden' segun la 'entropia global' y 'entropia incremental'
 char orderType(int * datavector, int datasize){
 	int i; 
 	double entropy = 0;

@@ -3,16 +3,16 @@ CC=gcc
 
 #Flags
 #(-I.) Buscar en este directorio las dependencias
-CFLAGS=-I. -lm
+CFLAGS=-lm -std=c99 
 
 #Objetivo
-TARGET=Maintest
+TARGET=main
 
 #Dependencias (archivo.h)
-DEPS = Benchmark.h Cost.h Datacreator.h TUI.h Algorithm.h Dataorganizer.h Lucky.h
+DEPS = Benchmark.h Datacreator.h TUI.h Algorithm.h Dataorganizer.h Lucky.h
 
 #Objetos (archivo.o)
-OBJ = $(TARGET).o Benchmark.o Cost.o Datacreator.o TUI.o Algorithm.o Dataorganizer.o Lucky.o
+OBJ = Benchmark.o Datacreator.o TUI.o Algorithm.o Dataorganizer.o Lucky.o $(TARGET).o
 
 
 #Compila todos los archivos objeto

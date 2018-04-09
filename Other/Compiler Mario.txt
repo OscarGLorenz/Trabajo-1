@@ -1,0 +1,3 @@
+gcc TUI.c Maintest.c Datacreator.c Dataorganizer.c Lucky.c Benchmark.c -o Maintest
+
+gcc TUI.c Datacreator.c Filecreator.c -o Filecreator

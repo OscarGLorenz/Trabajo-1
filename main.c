@@ -1,77 +1,36 @@
-#include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <stdlib.h>
+#define DEBUG
 
-#include "TUI.h"
-#include "Datacreator.h"
-#include "Dataorganizer.h"
 #include "Benchmark.h"
+#include "Datacreator.h"
 #include "Algorithm.h"
-#include "Cost.h"
+#include <stdio.h>
 
-/*
-void swapN(int * a, int * b) {
-  int aux = *a;
-  *a = *b;
-  *b = aux;
-}
+size_t nelements[] = {10, 100, 1000, 10000};
+int num_nelement = 4;
 
-void startvector(int * datos, int longitud){
-  for (int i = 0; i < longitud; i++)
-    datos[i]=i+1;
-}
+algorithm_ptr algorithms[] = {bubble,insertion,selection,shell,heapsort, quicksort};
+char algorithms_str[][30] = {"Burbuja", "Inserción", "Selección", "Shell", "Heapsort", "Quicksort"};
+int num_algorithm = 6;
 
-void randomize(int * datos, int longitud){
-  srand(clock());
-  for(int j = 0; j < longitud; j++){
-    for(int i = 0; i < longitud; i++){
-      swapN(datos + i, datos + (rand() % longitud));
+dataType types[] = {INCREASING, DECREASING, RANDOM, REPEATED};
+char types_str[][30] = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
+int num_types = 4;
+
+int main () {
+
+  char ****  data = calculateTable(nelements,num_nelement,
+                                    algorithms,num_algorithm,types,num_types);
+                                    
+  printf("Movements Comparations Time Memory\n");
+
+  for (int i = 0; i < num_algorithm; i++) {
+    printf("\t%s:\n", algorithms_str[i]);
+    for (int j = 0; j < num_types; j++) {
+      printf("%s:\t%s\t%s\t%s\t%s\n", types_str[j],
+        data[i][j][0],  data[i][j][1], data[i][j][2], data[i][j][3]);
     }
   }
-}
 
-void burbuja(int * list, size_t n, Experiment * experiment){
-
-  startCount(experiment);
-
-  for(size_t i = 0; i < n-1 ;i++){
-    for(size_t j = n-1; j > i ;j--){
-      if (compare(list[j] < list[j-1], experiment)){
-        swap(&list[j], &list[j-1], experiment);
-
-      }
-    }
-
-  }
-  endCount(experiment);
-
-}
-*/
-
-int main(int argc, char const *argv[]) {
-  size_t p = 4;
-  Experiment experiment[p];
-  char comp_str[10], mov_str[10], nanos_str[10];
-
-  for (size_t i = 0; i < p; i++) {
-    size_t n = pow(10,i+1);
-    experiment[i] = newExperiment(n);
-    int data[n];
-    //startvector(data, n);
-    //randomize(data, n);
-
-    dataCreator(data, n, DESORDENADO, 0);
-    bubble(data, n, &experiment[i]);
-  }
-
-  costIdentification(experiment, p, mov_str, comp_str, nanos_str);
-
-  printf("BURBUJA\n");
-
-  printf("Comparaciones: %s\n", comp_str);
-  printf("Movimientos: %s\n", mov_str);
-  printf("Tiempo: %s\n", nanos_str);
-
-  return 0;
+  freeTable(data, num_algorithm, num_types, 4);
+  return(0);
 }

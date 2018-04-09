@@ -1,85 +1,45 @@
 #include <stdio.h>
-#include <string.h>
-#include <math.h>
 
 #include "TUI.h"
 #include "Datacreator.h"
 #include "Dataorganizer.h"
 #include "Benchmark.h"
-#include "Algorithm.h"
-#include "Cost.h"
+
+#define SIZES 10, 100, 1000, 10000
 
 void runExperiment(){
-	char mode = experimentMode();
+	Types typestable;
+	typeDefiner(&typestable);
+	char mode = experimentMode(&typestable);
+	int i, j, l;
+	int datasize[] = {SIZES};
+	int iterations = sizeof(datasize) / sizeof(int);
+	typestable.n_costs = 3;
+	algorithm_ptr algorithms[6];
+	dataType datatypes[4];
+	char **** results;
 	switch (mode){
 		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
+			typestable.n_algorithms = 6;
+			typestable.n_data = 4;
+			for (i = 0; i < typestable.n_algorithms; i++){
+				algorithms[i] = typestable.algorithmTypes[i];
+			}
+			for (j = 0; j < typestable.n_data; j++){
+				datatypes[i] = typestable.dataTypes[i];
+			}
+			results = calculateTable(datasize, iterations, algorithms, typestable.n_algorithms, typestable.dataTypes, typestable.n_data);
+			resultVisualizer(results, typestable);
 			break;
 		case 'b':		// Comparar la velocidad un algoritmo para diferentes tipos de datos
-
+			algorithmMode(&typestable);
+		
+			resultVisualizer(results, typestable);
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
-
-			int iter = 4;
-			Experiment bubbleS[iter], insert[iter], select[iter], heap[iter], quick[iter], shell[iter];
-			const int pressets[] = {10,100,1000,10000};
-			for (size_t i = 0; i < iter; i++) {
-				size_t nelem = pressets[i];
-				unsigned int random[nelem];
-				unsigned int buffer[nelem];
-
-				dataCreator(random, nelem, DESORDENADO, 0);
-
-				memcpy(buffer,random,nelem*sizeof(unsigned int));
-				bubbleS[i] = newExperiment(nelem);
-				bubble(buffer, nelem, &bubbleS[i]);
-
-				memcpy(buffer,random,nelem*sizeof(unsigned int));
-				insert[i] = newExperiment(nelem);
-				insertion(buffer,nelem,&insert[i]);
-
-				memcpy(buffer,random,nelem*sizeof(unsigned int));
-				select[i] = newExperiment(nelem);
-				selection(buffer,nelem,&select[i]);
-
-				memcpy(buffer,random,nelem*sizeof(unsigned int));
-				shell[i] = newExperiment(nelem);
-				Shell(buffer,nelem,&shell[i]);
-
-				memcpy(buffer,random,nelem*sizeof(unsigned int));
-				heap[i] = newExperiment(nelem);
-				heapshort(buffer,nelem,&heap[i]);
-
-				memcpy(buffer,random,nelem*sizeof(unsigned int));
-				quick[i] = newExperiment(nelem);
-				quickshort(buffer,nelem,&quick[i]);
-
-			}
-			printf("Algorithm\tMoves\t\tComps\t\tTime\n");;
-			char comp_str[40], move_str[40], nanos_str[40];
-
-			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
-			costIdentification(bubbleS, iter, move_str, comp_str, nanos_str);
-			printf("Bubble:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
-
-			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
-			costIdentification(insert, iter, move_str, comp_str, nanos_str);
-			printf("Insert:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
-
-			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
-			costIdentification(select, iter, move_str, comp_str, nanos_str);
-			printf("Select:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
-
-			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
-			costIdentification(shell, iter, move_str, comp_str, nanos_str);
-			printf("Shell:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
-
-			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
-			costIdentification(heap, iter, move_str, comp_str, nanos_str);
-			printf("Heap:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
-
-			comp_str[0] = '\0'; move_str[0] = '\0'; nanos_str[0] = '\0';
-			costIdentification(quick, iter, move_str, comp_str, nanos_str);
-			printf("Quick:\t\t%s\t%s\t%s\n", move_str, comp_str, nanos_str);
+			dataTypeMode(&typestable);
+			
+			resultVisualizer(results, typestable);
 			break;
 	}
 }

@@ -1,4 +1,6 @@
+#include "Benchmark.h"
 #include <stdio.h>
+#include <string.h>
 #include "TUI.h"
 
 char programMode(){
@@ -19,7 +21,7 @@ char experimentMode(){
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo EXPERIMENTO\n");
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
-	printf("\tprobando con un numero de datos de la forma 10^n, con n = 2..4\n");
+	printf("\tprobando con un numero de datos de la forma 10^n, con n = 1..4\n");
 	printf("Como desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
 	printf("b) Comparar la velocidad un algoritmo para diferentes tipos de datos\n");
@@ -30,6 +32,36 @@ char experimentMode(){
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b') && (mode != 'c'));
 	return mode;
+}
+
+void algorithmMode(Types* typestable){
+	int i;
+	char mode;
+	printf("Que tipo de algoritmo desea analizar?\n");
+	for (i = 0; i < 6; i++){
+		printf("%c) %s\n", 'a'+i, typestable->algorithmTypes[i]);
+	}
+	do{
+		printf("Introducza su opcion: ");
+		fflush(stdin);
+		scanf("%c", &mode);
+	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd') && (mode != 'e') && (mode != 'f'));
+	typestable->n_algorithms = mode - 'a';
+}
+
+void dataTypeMode(Types* typestable){
+	int i;
+	char mode;
+	printf("\nComo desea que se encuentren los datos inicialmente?\n");
+	for (i = 0; i < 4; i++){
+		printf("%c) %s\n", 'a'+i, typestable->dataTypes[i]);
+	}
+	do{
+		printf("Introducza su opcion: ");
+		fflush(stdin);
+		scanf("%c", &mode);
+	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
+	typestable->n_data = mode - 'a';
 }
 
 char dataInputMode(int* datasize){
@@ -71,21 +103,6 @@ void showVector(int * datavector, int datasize){
 	printf("\n");
 }
 
-datamode dataOrderMode(){
-	char mode;
-	printf("\nComo desea que se encuentren los datos inicialmente?\n");
-	printf("a) Ordenados sentido creciente\n");
-	printf("b) Ordenados sentido decreciente\n");
-	printf("c) Desordenados\n");
-	printf("d) Con duplicados\n");
-	do{
-		printf("Introducza su opcion: ");
-		fflush(stdin);
-		scanf("%c", &mode);
-	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
-	return mode == 'a' ? CRECIENTE : mode == 'b' ? DECRECIENTE : mode == 'c' ? DESORDENADO : REPETIDOS;
-}
-
 int fileOpener(FILE ** datafile){
 	char filename[32];
 	int datasize;
@@ -102,3 +119,62 @@ int fileOpener(FILE ** datafile){
 	return datasize;
 }
 
+void typeDefiner(Types* typestable){
+	// i: algoritmo
+	strcpy(typestable->algorithmNames[0], "Burbuja  ");
+	strcpy(typestable->algorithmNames[1], "Insercion");
+	strcpy(typestable->algorithmNames[2], "Seleccion");
+	strcpy(typestable->algorithmNames[3], "Shell    ");
+	strcpy(typestable->algorithmNames[4], "Monticulo");
+	strcpy(typestable->algorithmNames[5], "Quicksort");
+
+	strcpy(typestable->algorithmTypes[0], "bubble");
+	strcpy(typestable->algorithmTypes[1], "insertion");
+	strcpy(typestable->algorithmTypes[2], "selection");
+	strcpy(typestable->algorithmTypes[3], "shell");
+	strcpy(typestable->algorithmTypes[4], "heapsort");
+	strcpy(typestable->algorithmTypes[5], "quicksort");
+
+	// j: tipo de dato
+	strcpy(typestable->dataNames[0], "Crecientes  ");
+	strcpy(typestable->dataNames[1], "Decrecientes");
+	strcpy(typestable->dataNames[2], "Aleatorios  ");
+	strcpy(typestable->dataNames[3], "Repetidos   ");
+
+	typestable->dataTypes[0] = INCREASING;
+	typestable->dataTypes[1] = DECREASING;
+	typestable->dataTypes[2] = RANDOM;
+	typestable->dataTypes[3] = REPEATED;
+
+	// k: coste
+    strcpy(typestable->costTypes[0], "Comparaciones");
+    strcpy(typestable->costTypes[1], "Movimientos  ");
+	strcpy(typestable->costTypes[2], "Tiempo       ");
+
+	// l: iteración
+}
+
+void resultVisualizer(char**** results, Types typestable){
+	int i, j;
+	if(typestable.n_algorithms == 6 && typestable.n_data == 4){		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n
+		printf("\n\nAlgoritmos\tTipo de coste computacional:\n\t\t");
+		for(j = 0; j < typestable.n_costs; j++){
+			printf("%s\t", typestable.costTypes[j]);
+		}
+		printf("\n");
+		for(i = 0; i < typestable.n_algorithms; i++){
+			printf("** %s **\n", typestable.algorithmTypes[i]);
+			for(j = 0; j < typestable.n_data; j++){
+				printf("%s:\t",typestable.dataTypes[j]);
+				printf("%s\t%s\t%s\n", results[i][j][0], results[i][j][1], results[i][j][2]);
+			}
+			printf("\n");
+		}
+	}
+	else if(typestable.n_algorithms != 6){		// Comparar la velocidad un algoritmo para diferentes tipos de datos
+
+	}
+	else {			// Comparar diferentes algoritmos dado un tipo de dato
+
+	}
+}
