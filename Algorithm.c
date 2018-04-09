@@ -76,14 +76,8 @@
 
    /* ORDENACIÓN POR EL MÉTODO SHELL*/
 
-<<<<<<< HEAD
      void shell(int *lista, int N, Experiment * experiment){
        startCount(experiment);/*Comienzo de la cuenta del tiempo*/
-
-=======
-     void Shell(int *lista, int N, Experiment * experiment){
-      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
->>>>>>> master
       int i,j,aux,paso=1,k,h;
 
       /*En primer lugar se calcula el paso sabiendo que 2^k0 < N+1*/
@@ -146,18 +140,9 @@
       lista[i]=aux;
       experiment-> movements++; /*Suma un movimiento*/
    }
-<<<<<<< HEAD
 
-
-   void heapsort( int *lista, int N, Experiment * experiment){
-     startCount(experiment);/*Finaliza la medida de tiempo relativo*/
-
-=======
-   
-   
    void heapsort( int *lista, int N, Experiment * experiment){
       startCount(experiment);/*Comienzo de la cuenta del tiempo*/
->>>>>>> master
       int i;
       for(i=N/2 -1;i>=0;i--){
          criba(i,N-1,lista,experiment);
@@ -195,12 +180,7 @@
        }
    }
      void quicksort(int *lista, int N,Experiment * experiment){ /* función para pasarle a quicksort la tabla a ordenar*/
-<<<<<<< HEAD
-       startCount(experiment);/*Finaliza la medida de tiempo relativo*/
-
-=======
       startCount(experiment);/*Comienzo de la cuenta del tiempo*/
->>>>>>> master
       int first, last;
       first = 0;
       last = N-1;
