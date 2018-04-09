@@ -76,7 +76,7 @@
 
    /* ORDENACIÓN POR EL MÉTODO SHELL*/
 
-     void Shell(int *lista, int N, Experiment * experiment){
+     void shell(int *lista, int N, Experiment * experiment){
        startCount(experiment);/*Comienzo de la cuenta del tiempo*/
 
       int i,j,aux,paso=1,k,h;
@@ -143,7 +143,7 @@
    }
 
 
-   void heapshort( int *lista, int N, Experiment * experiment){
+   void heapsort( int *lista, int N, Experiment * experiment){
      startCount(experiment);/*Finaliza la medida de tiempo relativo*/
 
       int i;
@@ -183,7 +183,7 @@
           qs(lista,i,last,experiment);
        }
    }
-     void quickshort(int *lista, int N,Experiment * experiment){ /* función para pasarle a quicksort la tabla a ordenar*/
+     void quicksort(int *lista, int N,Experiment * experiment){ /* función para pasarle a quicksort la tabla a ordenar*/
        startCount(experiment);/*Finaliza la medida de tiempo relativo*/
 
       int first, last;

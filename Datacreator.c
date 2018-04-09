@@ -52,18 +52,18 @@ static void duplicate(int * datavector, int datasize){
 	}
 }
 
-void dataCreator(int * datavector, int datasize, datamode dataorder, int dataspacing){
+void dataCreator(int * datavector, int datasize, dataType dataorder, int dataspacing){
 	startVector(datavector, datasize, dataspacing);
 	switch(dataorder){
-		case CRECIENTE:
+		case INCREASING:
 			break;
-		case DECRECIENTE:
+		case DECREASING:
 			invertVector(datavector, datasize);
 			break;
-		case DESORDENADO:
+		case RANDOM:
 			randomize(datavector, datasize);
 			break;
-		case REPETIDOS:
+		case REPEATED:
 			randomize(datavector, datasize);
 			duplicate(datavector, datasize);
 			break;
