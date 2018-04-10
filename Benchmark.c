@@ -1,44 +1,83 @@
+/******************************************************************************
+* ARCHIVO :        Benchmark.c
+*
+* AUTOR :    Óscar García Lorenz
+******************************************************************************/
+#include "Benchmark.h"
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "Benchmark.h"
 
 /* En windows no existe la función clock_gettime, asi que emularemos su
 funcionamiento con windows */
 #ifdef _WIN32
 
 #include <Windows.h>
-#define CLOCK_PROCESS_CPUTIME_ID 1
-static int firstTime = 1;
+#define CLOCK_PROCESS_CPUTIME_ID 1  // Esta macro funcionará como dummy
+static int firstTime = 1; // Variable estática para registrar las llamadas
 static LARGE_INTEGER frecuency;
 
+/*
+ *  Función: clock_gettime
+ * --------------------------------------------------------
+ *   Emulación de la función clock_gettime de POSIX
+ *
+ *   dummy: este argumentos está solo para emular la funcionalidad de POSIX
+ *      solo admitirá CLOCK_PROCESS_CPUTIME_ID
+ *   ct: estructura timespec para guardar el timestamp actual
+ *
+ */
 int clock_gettime(int dummy, struct timespec *ct) {
     LARGE_INTEGER count;
 
+    // Si es la primera vez obtiene el valor de la frecuencia
     if (firstTime) {
         firstTime = 0;
         QueryPerformanceFrequency(&frecuency);
     }
+
+    // Obtención del tiempo transcurrido desde el inicio
     QueryPerformanceCounter(&count);
+    // Cálculo de los segundos
     ct->tv_sec = count.QuadPart / frecuency.QuadPart;
-    ct->tv_nsec = ((count.QuadPart % frecuency.QuadPart) * 1e9) / frecuency.QuadPart;
+    // Cálculo de los nanosegundos
+    ct->tv_nsec = ((count.QuadPart % frecuency.QuadPart) * 1e9) /
+          frecuency.QuadPart;
     return 0;
 }
 #endif
 
-/* Inicializa los campos de una estrucura experimento */
+/*
+ *  Función: newExperiment
+ * --------------------------------------------------------
+ *   Genera un nuevo experimento, inicializa variabless
+ *
+ *   n: tamaño del vector asociado a este experimento
+ *
+ *   resultado: estructura experimento inicializada
+ */
 Experiment newExperiment(size_t n) {
   Experiment experiment;
   experiment.comparations = 0;
   experiment.movements = 0;
   experiment.elements = n;
+  experiment.memory = 0;
   return experiment;
 }
 
-/* USO EN ALGORITMOS. Hace un intercambio entre dos variables y computa
-como tres movimientos adicionales para el experimento */
+/*
+ *  Función: swap
+ * --------------------------------------------------------
+ *   Intercambia el valor de las variables dadas y suma
+ *   tres movimientos al experimento. Esta función debe usarse dentro
+ *   de los algoritmos para contabilizar los intercambios.
+ *
+ *   x: puntero al primer entero
+ *   y: puntero al segundo entero
+ *   experiment: puntero al experimento
+ */
 void swap(int * x, int * y, Experiment * experiment) {
   experiment->movements+=3;
   int aux = *x;
@@ -46,40 +85,87 @@ void swap(int * x, int * y, Experiment * experiment) {
   *y = aux;
 }
 
-/* USO EN ALGORITMOS. Evalua una expresión lógica y la devuelve. Computa una
-comparación adicional al experimento */
+/*
+ *  Función: compare
+ * --------------------------------------------------------
+ *   Intercambia el valor de las variables dadas y suma
+ *   tres movimientos al experimento. Esta función debe usarse dentro
+ *   de los algoritmos para contabilizar los intercambios.
+ *
+ *   x: puntero al primer entero
+ *   y: puntero al segundo entero
+ *   experiment: puntero al experimento
+ */
 int compare(int expresion, Experiment * experiment) {
   experiment->comparations++;
   return expresion;
 }
 
-/* USO EN ALGORITMOS. Inicia la cuenta al principio del fragmento de código a
-evaluar */
+/*
+ *  Función: startCount
+ * --------------------------------------------------------
+ *   Inicia a contar el tiempo del algoritmo en el que se ejecute
+ *
+ *   experiment: puntero al experimento
+ */
 void startCount(Experiment * experiment) {
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &experiment->start);
 }
 
-/* USO EN ALGORITMOS. Finaliza la cuenta al final del fragmento de código a
-evaluar */
+/*
+ *  Función: endCount
+ * --------------------------------------------------------
+ *   Finaliza la cuenta de tiempo del algoritmo en el que se ejecute
+ *
+ *   experiment: puntero al experimento
+ */
 void endCount(Experiment * experiment) {
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &experiment->end);
 }
 
-/* Devuelve el tiempo transcurrido desde startCount hasta endCount en
-milisegundos */
+/*
+ *  Función: millis
+ * --------------------------------------------------------
+ *   Devuelve el tiempo transcurrido en milisegundos desde la llamada
+ *   a startCount y la de endCount
+ *
+ *   experiment: puntero al experimento
+ *
+ *   resultado: tiempo en milisegundos transcurridos
+ */
 unsigned int millis(Experiment * experiment) {
   return (experiment->end.tv_nsec-experiment->start.tv_nsec)/10e6 +
   (experiment->end.tv_sec-experiment->start.tv_sec) * 10e3;
 }
 
-/* Devuelve el tiempo transcurrido desde startCount hasta endCount en
-nanosegundos */
+/*
+ *  Función: nanos
+ * --------------------------------------------------------
+ *   Devuelve el tiempo transcurrido en nanosegundos desde la llamada
+ *   a startCount y la de endCount
+ *
+ *   experiment: puntero al experimento
+ *
+ *   resultado: tiempo en nanosegundos transcurridos
+ */
 unsigned int nanos(Experiment * experiment) {
   return (experiment->end.tv_nsec-experiment->start.tv_nsec)+
   (experiment->end.tv_sec-experiment->start.tv_sec) * 10e9;
 }
 
-/* COSTES COMPUTACIONALES */
+/*
+ *  Funciones, lin, quad y linlog
+ * --------------------------------------------------------
+ *   Diferentes costes computacionales. Transformaciones de los datos.
+ *
+ *   x: abcisas
+ *   y: ordenadas
+ *
+ *   resultado: variable real resultado de la transformación
+ */
+float unity(float x, float y) {
+   return y*x;
+}
 float lin(float x, float y) {
   return y;
 }
@@ -90,15 +176,26 @@ float linlog(float x, float y) {
   return y/log(x);
 }
 
-
-/* Cálcula la regresión lineal de una variable de un conjunto de puntos
-ARGUMENTOS: vectores de ordenadas (x) y abcisas (y) de los puntos y su número (n)
-            trans, transformacion matemática a efectuar con el conjunto de puntos
-RESULTADOS: b0 ordenada en el origen de la recta de regresión
-            b1 pendiente de la recta de regresión
-            Devuelve el residuo del los puntos con respecto a la recta de regresión
-*/
-float regrex(float * x, float * y, size_t n, float * b0, float * b1, trans_ptr trans) {
+/*
+ *  Función: regrex
+ * --------------------------------------------------------
+ *   Calcula la regresión lineal de una variable de un conjunto de puntos
+ *   transformando en primer lugar los datos con una función dada
+ *
+ *   x: array de abcisas
+ *   y: array de ordenadas
+ *   n: tamaño de los arrays anteriores
+ *   b0: resultado por referencia de la ordenada en el origen de la
+ *    recta de regresión
+ *   b1: resultado por referencia de la pendiente de la recta de regresión
+ *   trans: puntero a función de la transformación a aplicar antes de hacer la
+ *    regresión a los datos obtenidos
+ *
+ *   resultado: residuo de los datos datos dados con respecto a la recta de
+ *    regresión
+ */
+float regrex(float * x, float * y, size_t n, float * b0, float * b1,
+              trans_ptr trans) {
   float yT[n]; // Vector auxiliar para guardar las y transformadas
 
   // Transforma los puntos con la funcion dada
@@ -131,15 +228,24 @@ float regrex(float * x, float * y, size_t n, float * b0, float * b1, trans_ptr t
   return sqrt(residue2);
 }
 
-/* Identifica la transformación que hay que aplicar al conjunto de puntos dado
-para que pueda ser aproximado por una recta
-ARGUMENTOS: vectores de ordenadas (x) y abcisas (y) de los puntos y su número (n)
-            trans, vector de transformaciones para probar y su número ntrans
-RESULTADO:  Devuelve una estructura Coste, con la transformación adecuada y la
-            pendiente de la recta de regresión que aproxima a ese conjunto.
-*/
-#define EPS 0.01 // Tolerancia para la identificación
-Cost identify(float * x, float * y, size_t n, trans_ptr * trans, size_t ntrans) {
+/*
+ *  Función: indentify
+ * --------------------------------------------------------
+ *   Identifica la transformación que hay que aplicar al conjunto de puntos dado
+ *    para que pueda ser aproximado por una recta
+ *
+ *   x: array de abcisas
+ *   y: array de ordenadas
+ *   n: tamaño de los arrays anteriores
+ *   trans: array de punteros a función de transformaciones a probar y buscar
+ *     la óptima
+ *   ntrans: tamaño del array trans
+ *
+ *   resultado: estructura Cost, con la transformación y coeficiente
+ */
+#define EPS 0.02 // Tolerancia para la identificación
+Cost identify(float * x, float * y, size_t n, trans_ptr * trans,
+                size_t ntrans) {
     Cost cost;
     // Pendiente, ordenada en el origen y residuo
     float b1[ntrans], b0[ntrans], res[ntrans];
@@ -168,7 +274,14 @@ Cost identify(float * x, float * y, size_t n, trans_ptr * trans, size_t ntrans) 
     return cost;
 }
 
-/* Transforma una estructura coste en un char * */
+/*
+ *  Función: costToString
+ * --------------------------------------------------------
+ *   Transforma una estructura coste en un char *
+ *
+ *   cost: coste a transformar
+ *   c: char* por referencia como resultado. Recomendable tamaño superior a 20
+ */
 void costToString(Cost cost, char * c) {
   char type[10];
   if (cost.transform == lin) {
@@ -177,25 +290,37 @@ void costToString(Cost cost, char * c) {
     strcpy(type,"O(n^2)");
   } else if (cost.transform == linlog) {
     strcpy(type,"O(n log n)");
+  } else if (cost.transform == unity) {
+    strcpy(type,"O(1)");
   }
 
   sprintf(c,"%.2f %s", cost.coef, type);
 }
 
-/* Dada una lista de experimentos, calcula los costes computacionales en
-movimientos, comparaciones y tiempo
-ARGUMENTOS: experiment, vector de experimentos y su número n
-RESULTADOS: mov_str, coste en movimientos
-            comp_str, coste en comparaciones
-            nanos_str, coste en tiempo
-            El tamaño de estos char* deben ser de al menos unos 20 caracteres
-*/
-void costIdentification(Experiment * experiment, size_t n, char * mov_str, char * comp_str, char * nanos_str) {
+/*
+ *  Función: costIdentification
+ * --------------------------------------------------------
+ *   Identifica el coste computacional de una serie de experimentos
+ *
+ *   experiment: array de experimentos
+ *   n: número de experimentos
+ *   mov_str: cadena de caracteres con el coste computacional en movimientos
+ *   comp_str: cadena de caracteres con el coste coste computacional
+ *            en comparaciones
+ *   nanos_str: cadena de caracteres con el coste coste computacional
+ *            en nanosegundos
+ *   memory_str: cadena de caracteres con el coste coste computacional
+ *            de memoria
+ *
+ *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
+ */
+void costIdentification(Experiment * experiment, size_t n, char * mov_str,
+                          char * comp_str, char * nanos_str, char * memory_str) {
   // Vector auxiliar que almacena las transformaciones disponibles
   trans_ptr transformations[NTRANS] = TRANS;
 
-  // Variables reales para almacenar los datos a los que se efectuaran regresiones
-  float comp_f[n], move_f[n], nanos_f[n], number_f[n];
+  // Variables para almacenar los datos a los que se efectuaran regresiones
+  float comp_f[n], move_f[n], nanos_f[n], number_f[n], memory_f[n];
 
   // Iteración por toda la lista de experimentos para recabar los datos
   for (size_t i = 0; i < n; i++) {
@@ -203,51 +328,47 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str, char 
     move_f[i] = experiment[i].movements;
     nanos_f[i] = nanos(&experiment[i]);
     number_f[i] = experiment[i].elements;
+    memory_f[i] = experiment[i].memory;
   }
 
   // Identificación de los costes de comparaciones, moviemientos y tiempo
   Cost comp_cost = identify(number_f, comp_f, n, transformations, NTRANS);
   Cost mov_cost = identify(number_f, move_f, n, transformations, NTRANS);
   Cost nanos_cost = identify(number_f, nanos_f, n, transformations, NTRANS);
+  Cost memory_cost = identify(number_f, memory_f, n, transformations, NTRANS);
 
   // Conversión a char* de los anteriores costes
   costToString(comp_cost, comp_str);
   costToString(mov_cost, mov_str);
   costToString(nanos_cost, nanos_str);
+  costToString(memory_cost, memory_str);
 }
 
-/* Ejecuta la combinación de experimentos pedida
-ARGUMENTOS: nelements, array con el tamaño de los vectores a experimentar
-            num_nelement, tamaño del array nelements
-            algorithms, array con punteros a función de los algoritmos a probar
-            num_algorithm, tamaño del array algorithms
-            types, tipos de datos a generar y probar
-            num_types, tamaño del array types
-RESULTADOS: Devuelve un puntero a char* multidimensional, con el tamaño dado y
-            que contiene los costes computacionales por tipo de dato y algoritmos
-            el último índice contiene movimientos, comparaciones y tiempo en ese orden
-            Ej: char* c [num_types][num_algorithm][3];
-
-
-Ejemplo:
-size_t nelements[] = {1,10};
-int num_nelement = 2;
-algorithm_ptr algorithms[] = {bubble,insertion};
-int num_algorithm = 2;
-dataType types[] = {RANDOM, INVERSE};
-int num_types = 2;
-char **** data = calculateTable(nelements,num_nelement,algorithms,num_algorithm,types,num_types);
-for (int i = 0; i < num_types; i++) {
-  for (int j = 0; j < num_algorithm; j++) {
-    printf("Coste: %s %s %s\n", data[i][j][0], data[i][j][1], data[i][j][2]);
-  }
-}
-*/
+/*
+ *  Función: calculateTable
+ * --------------------------------------------------------
+ *   Ejecuta una serie de experimentos dadas las combinaciones que se quieren
+ *   de orden inicial, número de elementos y algoritmos
+ *
+ *   nelements: array con el número de elementos de cada tanda de experimentos
+ *   num_nelement: tamaño de nelements
+ *   algorithms: array con los algoritmos a ejecutar
+ *   num_algorithm: tamaño de num_algorithm
+ *   types: array con los ordenes iniciales de los datos a ejecutar
+ *   num_types: tamaño de types
+ *
+ *   resultado: tabla con los costes computacionales en forma de char*,
+ *        el primer índice son los algoritmos, el segundo los datos y el tercero
+ *        son los costes 0 movimientos, 1 comparaciones, 2 tiempo.
+ *
+ *   NOTA: Hay que liberar la tabla una vez terminado de usarla con freeTable
+ */
  char **** calculateTable(size_t nelements[], int num_nelement,
   algorithm_ptr algorithms[], int num_algorithm,
   dataType types[], int num_types) {
 
-  const int num_costs = 3;
+  const int num_costs = 4;
+  const int lenght_str = 20; // Longitud de la cadena char *
 
   char **** costs = (char ****) calloc(num_algorithm, sizeof(char ***));
   for(int i = 0; i < num_algorithm; i++) {
@@ -255,7 +376,7 @@ for (int i = 0; i < num_types; i++) {
     for(int j = 0; j < num_types; j++) {
       costs[i][j] = (char **) calloc(num_costs , sizeof(char*));
       for (int k = 0; k < num_costs; k++) {
-        costs[i][j][k] = (char *) calloc(30 , sizeof(char));
+        costs[i][j][k] = (char *) calloc(lenght_str , sizeof(char));
       }
     }
   }
@@ -279,14 +400,23 @@ for (int i = 0; i < num_types; i++) {
 
       for (int i = 0; i < num_algorithm; i++)
         costIdentification(experiment[i][j], num_nelement,
-          costs[i][j][0], costs[i][j][1], costs[i][j][2]);
+          costs[i][j][0], costs[i][j][1], costs[i][j][2], costs[i][j][3]);
 
     }
 
     return costs;
 }
 
-// Libera la estructura creada por la función anterior.
+/*
+ *  Función: freeTable
+ * --------------------------------------------------------
+ *   Libera la memoria de la tabla anterior
+ *
+ *   c: tabla dinámica generada por calculateTable
+ *   first: tamaño del primer índice de la tabla (número de algoritmos)
+ *   second: tamaño del segundo índice de la tabla (número de datos)
+ *   first: tamaño del tercer índice de la tabla (costes, normalmente 3)
+ */
 void freeTable(char **** c, int first, int second, int third) {
   for(int i = 0; i < first; i++) {
     for(int j = 0; j < second; j++) {
