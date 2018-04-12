@@ -1,96 +1,147 @@
+/********************************
+* ARCHIVO:		Algorithm.c
+*
+* AUTOR:	Alejandro Redondo
+*********************************/
+/* LIBRERIAS:
+ * Algorithm.h incluye la arquitectura de las funciones
+ * Benchmark.h incluye la estructura Experiment dónde se almacenan
+ * los contadores de número de comparaciones, intercambios...
+ * Además en esta libreria están definidas:
+ * startCount: inicializa la cuenta de tiempo
+ * endCount: finaliza la cuenta de tiempo
+ * swap: intercambia dos valores y actualiza el contador intercambios
+ * compare: compara dos valores y actualiza el contador comparaciones
+ */
+ 
+
+/* NOTAS:
+ * en ciertas funciones para actualizar el valor de los contadores
+ * se accede directamente a la estructura y no a través de swap o compare
+ * experiment -> movements++ 
+ * experiment -> memory++
+ */
+ 
 #include "Benchmark.h"
 #include "Algorithm.h"
 
-/*ALGORIMO DE LA BURBUJA*/
+/*ALGORITMO DE LA BURBUJA*/
 
-   void bubble( int *lista ,int N, Experiment*experiment){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
+/* Función: bubble
+ * Ejecuta el algoritmo de la burbuja
+ * lista: array de datos a ordenar
+ * N: número de elementos a ordenar
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+*/ 
 
-         startCount(experiment); /* inicializamos la cuenta de tiempo relativo*/
+   void bubble( int *lista ,int N, Experiment*experiment){ 
+		 experiment->memory++;
+         startCount(experiment); 
 
          int i, j;
 
             for(i=0;i<N-1;i++){
-               for(j=N-1;j>i;j--){    /* me voy al último elemento*/
-                  if (compare(lista[j] < lista[j-1], experiment)){   /*comparamos y actualizamos el contador correspondiente*/
-                  swap(&lista[j], &lista[j-1], experiment);/*Intercambiamos si es necesiario y actualizamos el contador correspondiente*/
-
+               for(j=N-1;j>i;j--){    
+                  if (compare(lista[j] < lista[j-1], experiment)){   
+                  swap(&lista[j], &lista[j-1], experiment);
+               
                   }
                }
-
-            }
-            endCount(experiment); /*finalizamos la medición del tiempo*/
+      
+            }   
+            endCount(experiment); 
 
       }
+      
+/*ALGORITMO POR MÉTODO DE INSERCIÓN*/    
 
-
-/*ALGORITMO DE INSERCIÓN*/
-   void insertion( int *lista, int N, Experiment*experiment){ /* paso por dirección primer elemento de lista, N es el número de elementos, Experimento*exp puntero a estructura*/
- 
-   startCount(experiment);
+/* Función: insertion
+ * Ejecuta el algoritmo de ordenación por el método de inserción
+ * lista: array de datos a ordenar
+ * N: número de elementos a ordenar
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+*/ 
+   void insertion( int *lista, int N, Experiment*experiment){ 
+      experiment->memory++;
+      startCount(experiment);
   
-      int i,j,aux;
-         for(i=1; i<N;i++){
-            aux= lista[i]; /* Guardo en aux el valor del elemento con clave i*/
-            experiment -> movements++; /* aumento el contador de movimientos*/
-            for(j=i-1;j>=0; j--){
-                  if (compare(lista[j] > aux, experiment)){ /*Si el elemento con clave j (el anterior a i) es mayor que aux*/
-                  lista[j+1]=lista[j]; /*En el elemento con clave j guardo el de clave j+1 (el siguiente)*/
-                  experiment -> movements++;
-
+         int i,j,aux;
+            for(i=1; i<N;i++){
+               aux= lista[i]; 
+               experiment -> movements++; 
+               for(j=i-1;j>=0; j--){
+                     if (compare(lista[j] > aux, experiment)){ 
+                     lista[j+1]=lista[j]; 
+                     experiment -> movements++;
+                 
+                  }
+                  else{
+                     break; 
+               
+                  }
                }
-               else{
-                  break; /*en caso de que no sea mayor sacame del bucle j*/
-
-               }
+               lista[j+1]=aux;
+               experiment -> movements++;
             }
-            lista[j+1]=aux;
-            experiment -> movements++;/*actualizo el valor de los movimientos*/
-         }
-
-
-       endCount(experiment);
-
-
+         
+           
+       endCount(experiment); 
+  
+   
    }
+/*ALGORITMO POR MÉTODO DE SELECCIÓN*/
 
-   /*ALGORITMO DE SELECCIÓN*/
-
-   void selection( int*lista, int N, Experiment*experiment){
-      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
+/* Función: selection
+ * Ejecuta el algoritmo de ordenación por el método de selección
+ * lista: array de datos a ordenar
+ * N: número de elementos a ordenar
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+*/ 
+   
+   void selection( int*lista, int N, Experiment*experiment){  
+      experiment->memory++;
+	  startCount(experiment);
       int i,j,menor;
       for(i=0;i<N-1;i++){
          menor=i;
             for(j=i+1;j<N;j++){
-            if (compare(lista[j] < lista[menor], experiment)){/*Comparación y actualización contador de comparaciones*/
+            if (compare(lista[j] < lista[menor], experiment)){
                menor=j;
             }
             }
           if(menor!=i){
-          swap(&lista[i], &lista[menor], experiment);/*Intercambio de números y actualización del contador de movimientos*/
-
-          }
-      }
-     endCount(experiment);/*Finaliza la medida de tiempo relativo*/
+          swap(&lista[i], &lista[menor], experiment);
+            
+          } 
+      } 
+     endCount(experiment);
    }
-
-
-   /* ORDENACIÓN POR EL MÉTODO SHELL*/
-
-     void shell(int *lista, int N, Experiment * experiment){
-       startCount(experiment);/*Comienzo de la cuenta del tiempo*/
+   
+/*ALGORITMO POR MÉTODO DE SHELL*/
+   
+/* Función: Shell
+ * Ejecuta el algoritmo de ordenación por el método de Shell
+ * lista: array de datos a ordenar
+ * N: número de elementos a ordenar
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+ * En primer lugar se calcula el paso sabiendo que 2^k0 < N+1
+*/
+   
+     void Shell(int *lista, int N, Experiment * experiment){
+	  experiment->memory++;
+      startCount(experiment);
       int i,j,aux,paso=1,k,h;
-
-      /*En primer lugar se calcula el paso sabiendo que 2^k0 < N+1*/
-      while(2*paso-1< N){ /*cálculo del paso inicial */
-         paso=paso*2;
+       
+      
+      while(2*paso-1< N){ 
+         paso=paso*2;          
       }
-      /* lo combinaremos con el método de inserción*/
-
+            
          for(h=paso;h>0;h=((h-1)/2)){ /*definimos h como el valor del salto para cada iteración*/
             for(k=0;k<h;k++){
                for(i=h+k; i<N;i+=h){
                   aux = lista[i];
-                  experiment-> movements++; /* actualizo el número de movimientos*/
+                  experiment-> movements++; 
                   for(j=i-h;j>=0; j-=h){
                      if(compare(lista[j]>aux, experiment)){
                      lista[j+h]=lista[j];
@@ -106,58 +157,71 @@
                }
             }
          }
-         endCount(experiment);/*Finaliza la medida de tiempo relativo*/
+         endCount(experiment);
   
    
    }
+    
+/*ALGORIMTO DEL MONTÍCULO*/
 
-
-   /*ORDENACIÓN POR EL MÉTODO DEL MONTÍCULO*/
-
-
-
+/* Función: criba
+ * realiza la criba del método del montículo ordenando el vector
+*/
+  
    static void criba(int izq, int dcha, int *lista,Experiment * experiment){
+	  experiment->memory++;
       int i, doble,aux;
       aux=lista[izq];
-      experiment-> movements++; /*Suma un movimiento */
-
+      experiment-> movements++; 
+      
       for(i=izq; doble= 2*i+1,doble<=dcha; i =doble){
-        if(compare((doble<dcha && lista[doble] < lista[doble +1]),experiment)){/*Devuelve al if la expresión y aumenta el contador comparaciones*/
-        
-        /*caso de que sean dos comparaciones las que contar usar esto: */
-        /* if((experiment->comparations+=2),(doble<dcha && lista[doble] < lista[doble +1]))*/
-
+        if(compare((doble<dcha && lista[doble] < lista[doble +1]),experiment)){
            doble++;
         }
         if(compare(aux<lista[doble],experiment)){
            lista[i]=lista[doble];
-           experiment-> movements++; /*Suma un movimiento*/
+           experiment-> movements++; 
         }
            else{
               break;
            }
       }
       lista[i]=aux;
-      experiment-> movements++; /*Suma un movimiento*/
+      experiment-> movements++; 
    }
+   
+/* Función: heapsort
+ * Ejecuta el algoritmo de ordenación por el método del montículo
+ * lista: array de datos a ordenar
+ * N: número de elementos a ordenar
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+*/  
 
    void heapsort( int *lista, int N, Experiment * experiment){
-      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
+      startCount(experiment);
       int i;
       for(i=N/2 -1;i>=0;i--){
          criba(i,N-1,lista,experiment);
       }
       for(i=N-2;i>=0;i--){
-         swap(&lista[0],&lista[i+1],experiment); /* intercambia los valores y suma tres movimientos*/
+         swap(lista[0],lista[i+1],experiment); 
          criba(0,i,lista,experiment);
       }
-      endCount(experiment);/*Finaliza la medida de tiempo relativo*/
+      endCount(experiment);
    }
 
+/*ALGORITMO POR MÉTODO DE QUICKSORT*/
 
-   /*ORDENACIÓN POR QUICKSORT*/
-
+/* Función: qs
+ * Realiza la ordenación por el método quicksort
+ * lista: array de datos a ordenar
+ * first: primer elemento de la tabla
+ * last último elemento de la tabla
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+*/  
+      
    static void qs(int *lista, int first, int last,Experiment * experiment){
+	  experiment->memory++;
       int i= first, j = last, pivote;
       pivote=lista[(first + last)/2];
       do{
@@ -179,12 +243,18 @@
           qs(lista,i,last,experiment);
        }
    }
-     void quicksort(int *lista, int N,Experiment * experiment){ /* función para pasarle a quicksort la tabla a ordenar*/
-      startCount(experiment);/*Comienzo de la cuenta del tiempo*/
-      int first, last;
-      first = 0;
-      last = N-1;
-      qs(lista,first, last, experiment);
-      endCount(experiment);/*Finaliza la medida de tiempo relativo*/
+/* Función: quicksort
+ * Prepara los argumentos de la función qs y se los pasa a esta
+ * lista: array de datos a ordenar
+ * N: número de elementos a ordenar
+ * Experiment: puntero a la estructura donde se guardan los parámetros medidos
+*/  
+     void quicksort(int *lista, int N,Experiment * experiment){ 
+        startCount(experiment);
+        int first, last;
+        first = 0;
+        last = N-1;
+        qs(lista,first, last, experiment);
+        endCount(experiment);
    
    }
