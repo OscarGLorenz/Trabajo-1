@@ -1,76 +1,110 @@
+/******************************************************************************
+* ARCHIVO :  Main.c
+*
+* DESCRIPCION: Archivo principal del programa. Sintetizado en llamadas a funciones de las librerias
+*
+* AUTOR :    Mario Musicò Cortés
+******************************************************************************/
+
 #include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <stdlib.h>
+#include <string.h>
 
-#include "Benchmark.h"
-#include "Cost.h"
+#include "TUI.h"
+#include "Dataorganizer.h"
+#include "Algorithm.h"
 
-void swapN(int * a, int * b) {
-  int aux = *a;
-  *a = *b;
-  *b = aux;
+//****************************************************************************
+// Declaración e inicializacion de variables de tipos
+
+// Nombres de los algoritmos a ejecutar
+algorithm_ptr algorithmTypes[] = {bubble,insertion,selection,shell,heapsort,quicksort};
+// Nombres de los algoritmos a visualizar
+char algorithmNames[][16] = {"Burbuja  ", "Insercion", "Seleccion", "Shell    ", "Monticulo", "Quicksort"};
+// Número de algoritmos						(i)
+int n_algorithms = sizeof(algorithmNames) / sizeof(*algorithmNames);
+
+// Nombres de los tipos de datos a utilizar
+dataType dataTypes[] = {INCREASING, DECREASING, RANDOM, REPEATED};
+// Nombres de los tipos de datos a visualizar
+char dataNames[][16] = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
+// Número de tipos de datos					(j)
+int n_data = sizeof(dataNames) / sizeof(*dataNames);
+
+// Nombres de los costes
+char costNames[][16] = {"Comparaciones", "Movimientos  ", "Tiempo       "};
+// Número de costes							(k)
+int n_costs = sizeof(costNames) / sizeof(*costNames);
+
+// Cantidades de datos con las que se iteran
+size_t dataSizes[] = {10, 100, 1000, 10000};
+// Número de iteraciones por experimento	(l)
+int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
+
+//****************************************************************************
+
+void runExperiment(){
+	char mode = experimentMode();
+	int i, j;
+	
+	char run_algorithmID;
+	dataType run_dataType;
+	
+	char **** results;
+	switch (mode){
+		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos
+			results = calculateTable(dataSizes, iterations, algorithmTypes, n_algorithms, dataTypes, n_data);
+			resultVisualizer(results, algorithmNames, n_algorithms, dataNames, n_data, costNames, n_costs);
+			break;
+		case 'b':		// Comparar la velocidad de un algoritmo para diferentes tipos de datos
+			n_algorithms = 1;
+			run_algorithmID = algorithmMode(algorithmNames);
+			results = calculateTable(dataSizes, iterations, &algorithmTypes[run_algorithmID], n_algorithms, dataTypes, n_data);
+			resultVisualizer(results, &algorithmNames[run_algorithmID], n_algorithms, dataNames, n_data, costNames, n_costs);
+			break;
+		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
+			n_data = 1;
+			run_dataType = dataTypeMode(dataNames);
+			results = calculateTable(dataSizes, iterations, algorithmTypes, n_algorithms, &dataTypes[run_dataType], n_data);
+			resultVisualizer(results, algorithmNames, n_algorithms, &dataNames[run_dataType], n_data, costNames, n_costs);
+			break;
+	}
+	freeTable(results, n_algorithms, n_data, n_costs);
 }
 
-void startvector(int * datos, int longitud){
-  for (int i = 0; i < longitud; i++)
-    datos[i]=i+1;
+void runOrganizer(){
+	int datasize, orderType;
+	FILE * datafile;
+	char datamode = dataInputMode();
+	switch (datamode){
+		case 'a':
+			printf("\nNumero de elementos que desea introducir: ");
+			scanf("%d", &datasize);
+			break;
+		case 'b':
+			datasize = fileOpener(&datafile);
+			break;
+	}
+	int datavector[datasize];
+	switch (datamode){
+		case 'a':
+			inputData(datavector, datasize);
+			break;
+		case 'b':
+			fileReader(datavector, datasize, datafile);
+			break;
+	}
+	multiSorter(datavector, datasize);
 }
 
-void randomize(int * datos, int longitud){
-  srand(clock());
-  for(int j = 0; j < longitud; j++){
-    for(int i = 0; i < longitud; i++){
-      swapN(datos + i, datos + (rand() % longitud));
-    }
-  }
-}
-
-void burbuja(int * list, size_t n, Experiment * experiment){ /* datos se pasa por dirección, N es el número de elementos, Experimento *exp es puntero a la estructura Experimento */
-
-  startCount(experiment);
-
-  for(size_t i = 0; i < n-1 ;i++){
-    for(size_t j = n-1; j > i ;j--){    /* me voy al último elemento*/
-      if (compare(list[j] < list[j-1], experiment)){   /* lo comparo con el anterior y si es necesario lo cambio*/
-        swap(&list[j], &list[j-1], experiment);
-
-      }
-    }
-
-  }
-  endCount(experiment);
-
-}
-
-int main(int argc, char const *argv[]) {
-  size_t p = 4;
-  Experiment experiment[p];
-  char comp_str[10], mov_str[10], nanos_str[10];
-
-  for (size_t i = 0; i < p; i++) {
-    size_t n = pow(10,i+1);
-    experiment[i] = newExperiment(n);
-    int data[n];
-    startvector(data, n);
-    randomize(data, n);
-    burbuja(data, n, &experiment[i]);
-    //count[i] = experimento[i].comparaciones;
-    //movs[i] = experimento[i].movimientos;
-    //tims[i] = tiempoNanosegundos(&experimento[i]);
-  }
-
-  //comp = identify(number,count,p,TRANS,NTRANS); costToString(comp, comp_str);
-  //mov = identify(number,movs,p,TRANS,NTRANS); costToString(mov, mov_str);
-  //timing = identify(number,tims,p,TRANS,NTRANS); costToString(timing, timing_str);
-
-  costIdentification(experiment, p, mov_str, comp_str, nanos_str);
-
-  printf("BURBUJA\n");
-
-  printf("Comparaciones: %s\n", comp_str);
-  printf("Movimientos: %s\n", mov_str);
-  printf("Tiempo: %s\n", nanos_str);
-
-  return 0;
+int main(int argc, char const *argv[]){
+	char mode = programMode();
+	switch (mode){
+		case 'a':
+			runExperiment();
+			break;
+		case 'b':
+			runOrganizer();
+			break;
+	}
+	return 0;
 }

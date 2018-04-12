@@ -1,3 +1,9 @@
+/******************************************************************************
+* ARCHIVO :  TUI.c
+*
+* AUTOR :    Mario Musicò Cortés
+******************************************************************************/
+
 #include <stdio.h>
 #include "TUI.h"
 
@@ -19,7 +25,7 @@ char experimentMode(){
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo EXPERIMENTO\n");
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
-	printf("\tprobando con un numero de datos de la forma 10^n, con n = 2..4\n");
+	printf("\tprobando con un numero de datos de la forma 10^n, con n = 1..4\n");
 	printf("Como desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
 	printf("b) Comparar la velocidad un algoritmo para diferentes tipos de datos\n");
@@ -32,29 +38,43 @@ char experimentMode(){
 	return mode;
 }
 
-char dataInputMode(int* datasize){
+char algorithmMode(char algorithmNames[][16]){
+	int i;
+	char mode;
+	printf("Que tipo de algoritmo desea analizar?\n");
+	for (i = 0; i < 6; i++){
+		printf("%c) %s\n", 'a'+i, algorithmNames[i]);
+	}
+	do{
+		printf("Introducza su opcion: ");
+		fflush(stdin);
+		scanf("%c", &mode);
+	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd') && (mode != 'e') && (mode != 'f'));
+	return mode - 'a';
+}
+
+dataType dataTypeMode(char dataNames[][16]){
+	int i;
+	char mode;
+	printf("\nComo desea que se encuentren los datos inicialmente?\n");
+	for (i = 0; i < 4; i++){
+		printf("%c) %s\n", 'a'+i, dataNames[i]);
+	}
+	do{
+		printf("Introducza su opcion: ");
+		fflush(stdin);
+		scanf("%c", &mode);
+	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
+	return (dataType)mode - 'a';
+}
+
+char dataInputMode(){
 	char mode;
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo ORDENADOR\n");
 	printf("\nIndique que tipo de datos desea introducir:\n");
 	printf("a) Por teclado\n");
 	printf("b) Datos que se encuentran en un fichero en la misma carpeta que el programa\n");
-	do{
-		printf("Introducza su opcion: ");
-		fflush(stdin);
-		scanf("%c", &mode);
-	} while((mode!= 'a') && (mode != 'b'));
-	if (mode == 'a'){
-
-	}
-	return mode;
-}
-
-char sorterInputMode(){
-	char mode;
-	printf("\nComo desea que se ordenen sus datos?\n");
-	printf("a) \"I'm feeling lucky\", dime cual crees que es el algoritmo mas apropiado para este tipo de datos\n");
-	printf("b) Comparar la velocidad de todos los algoritmos al ordenar los datos introducidos\n");
 	do{
 		printf("Introducza su opcion: ");
 		fflush(stdin);
@@ -69,21 +89,6 @@ void showVector(int * datavector, int datasize){
 		printf("%d ", datavector[i]);
 	}
 	printf("\n");
-}
-
-datamode dataOrderMode(){
-	char mode;
-	printf("\nComo desea que se encuentren los datos inicialmente?\n");
-	printf("a) Ordenados sentido creciente\n");
-	printf("b) Ordenados sentido decreciente\n");
-	printf("c) Desordenados\n");
-	printf("d) Con duplicados\n");
-	do{
-		printf("Introducza su opcion: ");
-		fflush(stdin);
-		scanf("%c", &mode);
-	} while((mode!= 'a') && (mode != 'b') && (mode != 'c') && (mode != 'd'));
-	return mode == 'a' ? CRECIENTE : mode == 'b' ? DECRECIENTE : mode == 'c' ? DESORDENADO : REPETIDOS;
 }
 
 int fileOpener(FILE ** datafile){
@@ -102,3 +107,22 @@ int fileOpener(FILE ** datafile){
 	return datasize;
 }
 
+void resultVisualizer(char**** results, char algorithmNames[][16], int n_algorithms, char dataNames[][16], int n_data, char costNames[][16], int n_costs){
+	int i, j, k;
+	printf("\n\nAlgoritmos\tTipo de coste computacional:\n\t\t");
+	for(k = 0; k < n_costs; k++){
+		printf("%s\t\t", costNames[k]);
+	}
+	printf("\n");
+	for(i = 0; i < n_algorithms; i++){
+		printf("** %s **\n", algorithmNames[i]);
+		for(j = 0; j < n_data; j++){
+			printf("%s:\t",dataNames[j]);
+			for (k = 0; k < n_costs; k++){
+				printf("%s\t\t", results[i][j][k]);
+			}
+			printf("\n");
+		}
+		printf("\n");
+	}
+}
