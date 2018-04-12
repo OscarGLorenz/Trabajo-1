@@ -10,6 +10,8 @@
 #ifndef ALGORITHM_H_
 #define ALGORITHM_H_
 
+#include "Benchmark.h"
+
 
 /*Ordena por burbuja y guarda información en la estructura Experiment*/ 
    void bubble( int *lista ,int N, Experiment*experiment);

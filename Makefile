@@ -9,10 +9,10 @@ CFLAGS=-lm -std=c99
 TARGET=main
 
 #Dependencias (archivo.h)
-DEPS = Benchmark.h Datacreator.h TUI.h Algorithm.h Dataorganizer.h Lucky.h
+DEPS = Benchmark.h Datacreator.h TUI.h Algorithm.h Dataorganizer.h
 
 #Objetos (archivo.o)
-OBJ = Benchmark.o Datacreator.o TUI.o Algorithm.o Dataorganizer.o Lucky.o $(TARGET).o
+OBJ = Benchmark.o Datacreator.o TUI.o Algorithm.o Dataorganizer.o $(TARGET).o
 
 
 #Compila todos los archivos objeto

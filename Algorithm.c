@@ -22,7 +22,6 @@
  * experiment -> memory++
  */
  
-#include "Benchmark.h"
 #include "Algorithm.h"
 
 /*ALGORITMO DE LA BURBUJA*/
@@ -127,7 +126,7 @@
  * En primer lugar se calcula el paso sabiendo que 2^k0 < N+1
 */
    
-     void Shell(int *lista, int N, Experiment * experiment){
+     void shell(int *lista, int N, Experiment * experiment){
 	  experiment->memory++;
       startCount(experiment);
       int i,j,aux,paso=1,k,h;
@@ -204,7 +203,7 @@
          criba(i,N-1,lista,experiment);
       }
       for(i=N-2;i>=0;i--){
-         swap(lista[0],lista[i+1],experiment); 
+         swap(&lista[0],&lista[i+1],experiment); 
          criba(0,i,lista,experiment);
       }
       endCount(experiment);

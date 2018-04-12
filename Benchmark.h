@@ -74,7 +74,7 @@ float linlog(float x, float y);
 float unity(float x, float y);
 
 // Estructura básica de la librería
-typedef struct {
+typedef struct experiment{
   unsigned int comparations; 			//Guarda número de comparaciones
   unsigned int movements;   			//Guarda número de movimientos
   unsigned int memory;   			//Guarda número de movimientos
@@ -86,14 +86,14 @@ typedef struct {
 // Puntero a función para los diferentes costes computacionales
 typedef float(*trans_ptr)(float,float);
 
+// Puntero a función para los diferentes algoritmos
+typedef void(*algorithm_ptr)(int*,int,Experiment*);
+
 // Coste de un algoritmo
 typedef struct {
   trans_ptr transform; 					// Tipo de coste computacional
   float coef; 							// Coeficiente del coste
 } Cost;
-
-// Puntero a función para los diferentes algoritmos
-typedef void(*algorithm_ptr)(int*,int,Experiment*);
 
 /*
  *  Función: newExperiment

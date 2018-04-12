@@ -1,25 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "Datacreator.h"
 
-Types typestable;
-	typestable.n_algorithms = 6;
-	typestable.algorithmTypes = {bubble,insertion,selection,shell,heapsort,quicksort};
-	typestable.algorithmNames = {"Burbuja  ", "Insercion", "Seleccion", "Shell    ", "Monticulo", "Quicksort"};
-	
-	typestable.n_data = 4;
-	typestable.dataTypes = {INCREASING, DECREASING, RANDOM, REPEATED};
-	typestable.dataNames = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
-	
-	typestable.n_costs = 3;
-	typestable.costTypes = {"Comparaciones", "Movimientos  ", "Tiempo       "};
-	
-	typestable.iterations = 4;
-	typestable.datasizes = {10, 100, 1000, 10000};
-
-	Conmuta 2 variables proporcionadas por referencia
-static void swap(int * a, int * b){
+//	Conmuta 2 variables proporcionadas por referencia
+static void swap2(int * a, int * b){
   int aux = *a;
   *a = *b;
   *b = aux;
@@ -41,7 +25,7 @@ static void startVector(int * datavector, int datasize, int dataspacing){
 static void invertVector(int * datavector, int datasize){
 	int i, j;
 	for (i = 0, j = datasize - 1; i < j; i++, j--){
-		swap(datavector + i, datavector + j);
+		swap2(datavector + i, datavector + j);
 	}
 }
 
@@ -51,7 +35,7 @@ static void randomize(int * datavector, int datasize){
 	srand(clock());
 	for(j = 0; j < datasize; j++){
 		for(i=0; i < datasize; i++){
-			swap(datavector + i, datavector + (rand() % datasize));
+			swap2(datavector + i, datavector + (rand() % datasize));
 		}
 	}
 }
@@ -67,6 +51,7 @@ static void duplicate(int * datavector, int datasize){
 	}
 }
 
+// Crea el array de datos del tipo solicitado. dataType, dataspacing: 0 = consecutivos; 1 = incremento aleatorio
 void dataCreator(int * datavector, int datasize, dataType dataorder, int dataspacing){
 	startVector(datavector, datasize, dataspacing);
 	switch(dataorder){
