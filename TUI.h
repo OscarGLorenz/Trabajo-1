@@ -18,10 +18,10 @@ char programMode();
 char experimentMode();
 
 // Pide tipo de algoritmo a analizar
-char algorithmMode(char algorithmNames[][16]);
+char algorithmMode(int n_algorithms, char algorithmNames[][16]);
 
 //Pide orden inicial de datos
-dataType dataTypeMode(char dataNames[][16]);
+dataType dataTypeMode(int n_data, char dataNames[][16]);
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
 char dataInputMode();

@@ -57,13 +57,13 @@ void runExperiment(){
 			break;
 		case 'b':		// Comparar la velocidad de un algoritmo para diferentes tipos de datos
 			n_algorithms = 1;
-			run_algorithmID = algorithmMode(algorithmNames);
+			run_algorithmID = algorithmMode(n_algorithms, algorithmNames);
 			results = calculateTable(dataSizes, iterations, &algorithmTypes[run_algorithmID], n_algorithms, dataTypes, n_data);
 			resultVisualizer(results, &algorithmNames[run_algorithmID], n_algorithms, dataNames, n_data, costNames, n_costs);
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
 			n_data = 1;
-			run_dataType = dataTypeMode(dataNames);
+			run_dataType = dataTypeMode(n_data, dataNames);
 			results = calculateTable(dataSizes, iterations, algorithmTypes, n_algorithms, &dataTypes[run_dataType], n_data);
 			resultVisualizer(results, algorithmNames, n_algorithms, &dataNames[run_dataType], n_data, costNames, n_costs);
 			break;

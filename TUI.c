@@ -38,11 +38,11 @@ char experimentMode(){
 	return mode;
 }
 
-char algorithmMode(char algorithmNames[][16]){
+char algorithmMode(int n_algorithms, char algorithmNames[][16]){
 	int i;
 	char mode;
 	printf("Que tipo de algoritmo desea analizar?\n");
-	for (i = 0; i < 6; i++){
+	for (i = 0; i < n_algorithms; i++){
 		printf("%c) %s\n", 'a'+i, algorithmNames[i]);
 	}
 	do{
@@ -53,11 +53,11 @@ char algorithmMode(char algorithmNames[][16]){
 	return mode - 'a';
 }
 
-dataType dataTypeMode(char dataNames[][16]){
+dataType dataTypeMode(int n_data, char dataNames[][16]){
 	int i;
 	char mode;
 	printf("\nComo desea que se encuentren los datos inicialmente?\n");
-	for (i = 0; i < 4; i++){
+	for (i = 0; i < n_data; i++){
 		printf("%c) %s\n", 'a'+i, dataNames[i]);
 	}
 	do{
