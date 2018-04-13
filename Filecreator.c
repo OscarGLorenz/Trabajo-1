@@ -9,9 +9,9 @@ char dataNames[][NAMESIZE] = {"Creciente", "Decreciente", "Aleatorio", "Repetido
 // Número de tipos de datos					(j)
 int n_data = sizeof(dataNames) / sizeof(*dataNames);
 
-size_t fileCreator(FILE ** datafile){
+int fileCreator(FILE ** datafile){
 	char filename[FILESIZE];
-	size_t datasize;
+	int datasize;
 	printf("\nEste programa le permite generar un fichero de texto con una serie de datos pseudoaleatorios,\n");
 	printf("para ser utilizados como simulacion de funcionamiento con el programa [Main.exe] en el modo ORDENADOR\n");
 	printf("en caso de que usted no disponga de una serie de datos a ordenar.\n");
@@ -29,7 +29,7 @@ size_t fileCreator(FILE ** datafile){
 
 int main(){
 	FILE * datafile;
-	size_t datasize = fileCreator(&datafile);
+	int datasize = fileCreator(&datafile);
 	int datavector[datasize];
 	dataType dataorder = dataTypeMode(n_data, dataNames);
 	int dataspacing = dataSpacingMode();

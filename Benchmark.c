@@ -58,7 +58,7 @@ int clock_gettime(int dummy, struct timespec *ct) {
  *
  *   resultado: estructura experimento inicializada
  */
-Experiment newExperiment(size_t n) {
+Experiment newExperiment(int n) {
   Experiment experiment;
   experiment.comparations = 0;
   experiment.movements = 0;
@@ -178,17 +178,17 @@ float linlog(float x, float y) {
  *   resultado: residuo de los datos datos dados con respecto a la recta de
  *    regresión
  */
-float regrex(float * x, float * y, size_t n, float * b0, float * b1,
+float regrex(float * x, float * y, int n, float * b0, float * b1,
               trans_ptr trans) {
   float yT[n]; // Vector auxiliar para guardar las y transformadas
 
   // Transforma los puntos con la funcion dada
-  for (size_t i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
       yT[i] = trans(x[i],y[i]);
 
   //Cálculo de las medias
   float meanX = 0, meanY = 0;
-  for (size_t i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     meanY += yT[i];
     meanX += x[i];
   }
@@ -196,7 +196,7 @@ float regrex(float * x, float * y, size_t n, float * b0, float * b1,
 
   //Cálculo de la pendiente de la recta de regresión
   float num = 0, denom = 0;
-  for (size_t i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     num += (yT[i]-meanY)*(x[i]-meanX);
     denom += (x[i]-meanX)*(x[i]-meanX);
   }
@@ -207,7 +207,7 @@ float regrex(float * x, float * y, size_t n, float * b0, float * b1,
 
   //Cálculo de los residuos
   float residue2 = 0;
-  for (size_t i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
     residue2 += (*b0 + *b1 * x[i] - yT[i]) * (*b0 + *b1 * x[i] - yT[i]);
   return sqrt(residue2);
 }
@@ -228,14 +228,14 @@ float regrex(float * x, float * y, size_t n, float * b0, float * b1,
  *   resultado: estructura Cost, con la transformación y coeficiente
  */
 #define EPS 0.02 // Tolerancia para la identificación
-Cost identify(float * x, float * y, size_t n, trans_ptr * trans,
-                size_t ntrans) {
+Cost identify(float * x, float * y, int n, trans_ptr * trans,
+                int ntrans) {
     Cost cost;
     // Pendiente, ordenada en el origen y residuo
     float b1[ntrans], b0[ntrans], res[ntrans];
 
     // Probar todas las transformaciones y guardar el resultado
-    for (size_t i = 0; i < ntrans; i++) {
+    for (int i = 0; i < ntrans; i++) {
       res[i] = regrex(x,y,n,&b0[i],&b1[i],trans[i]);
       #ifdef DEBUG  //Muestra por pantalla los resultados si DEBUG está definido
         printf("res=%.2f b0=%.2f b1=%.2f\n",res[i], b0[i], b1[i]);
@@ -247,8 +247,8 @@ Cost identify(float * x, float * y, size_t n, trans_ptr * trans,
 
     /* Búsqueda de la transformación que resulte en un residuo menor y con
     pendiente distinta de 0 */
-    size_t less = 0;
-    for (size_t i = 1; i < ntrans; i++)
+    int less = 0;
+    for (int i = 1; i < ntrans; i++)
       if (res[i] < res[less] && b1[i] >= EPS)
         less = i;
 
@@ -298,7 +298,7 @@ void costToString(Cost cost, char * c) {
  *
  *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
  */
-void costIdentification(Experiment * experiment, size_t n, char * mov_str,
+void costIdentification(Experiment * experiment, int n, char * mov_str,
                           char * comp_str, char * nanos_str) {
   // Vector auxiliar que almacena las transformaciones disponibles
   trans_ptr transformations[NTRANS] = TRANS;
@@ -307,7 +307,7 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
   float comp_f[n], move_f[n], nanos_f[n], number_f[n];
 
   // Iteración por toda la lista de experimentos para recabar los datos
-  for (size_t i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     comp_f[i] = experiment[i].comparations;
     move_f[i] = experiment[i].movements;
     nanos_f[i] = nanos(&experiment[i]);
@@ -344,7 +344,7 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
  *
  *   NOTA: Hay que liberar la tabla una vez terminado de usarla con freeTable
  */
- char **** calculateTable(size_t nelements[], int num_nelement,
+ char **** calculateTable(int nelements[], int num_nelement,
   algorithm_ptr algorithms[], int num_algorithm,
   dataType types[], int num_types) {
 
@@ -374,7 +374,7 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
     for (int j = 0; j < num_types; j++) {
       // Iteramos para cada longitud del array
       for (int l = 0; l < num_nelement; l++) {
-        size_t nelem = nelements[l]; // Tamaño del vector
+        int nelem = nelements[l]; // Tamaño del vector
         int raw_data[nelem]; // Datos generados
         int buffer[nelem]; // Array auxiliar para ordenar
 

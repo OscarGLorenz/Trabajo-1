@@ -19,7 +19,7 @@
 *	      algorithm_ptr: punto a función a los algoritmos de ordenación
 *
 * FUNCIONES PÚBLICAS :
-*       Experiment	  newExperiment( size_t )
+*       Experiment	  newExperiment( int )
 *	      void		      swap( int* , int* , Experiment* )
 *	      int		        compare( int , Experiment* )
 *	      void		      startCount( Experiment* )
@@ -28,9 +28,9 @@
 *	      float		      lin( float , float )
 *	      float     		quad( float , float )
 *	      float     		linlog(	float , float )
-*	      void 		      costIdentification( Experiment* , size_t , char* ,
+*	      void 		      costIdentification( Experiment* , int , char* ,
 *						                           char* , char* )
-*	      char**** 	    calculateTable(	size_t[] , int , algorithm_ptr[], int ,
+*	      char**** 	    calculateTable(	int[] , int , algorithm_ptr[], int ,
 *					                            dataType[], int )
 *     	void 		       freeTable( char**** , int , int , int )
 * MACROS :
@@ -78,7 +78,7 @@ typedef struct experiment{
   unsigned long movements;   			//Guarda número de movimientos
   struct timespec start;    			//Estructura con el tiempo al inicio
   struct timespec end;        			//Estructura con el tiempo al final
-  size_t elements; 	      				//Tamaño del experimento
+  int elements; 	      				//Tamaño del experimento
 } Experiment;
 
 // Puntero a función para los diferentes costes computacionales
@@ -102,7 +102,7 @@ typedef struct {
  *
  *   resultado: estructura experimento inicializada
  */
-Experiment newExperiment(size_t n);
+Experiment newExperiment(int n);
 
 /*
  *  Función: swap
@@ -173,7 +173,7 @@ unsigned long nanos(Experiment * experiment);
  *
  *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
  */
-void costIdentification(Experiment * experiment, size_t n, char * mov_str,
+void costIdentification(Experiment * experiment, int n, char * mov_str,
     char * comp_str, char * nanos_str);
 
 /*
@@ -195,7 +195,7 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
  *
  *   NOTA: Hay que liberar la tabla una vez terminado de usarla con freeTable
  */
-char **** calculateTable(size_t nelements[], int num_nelement,
+char **** calculateTable(int nelements[], int num_nelement,
  algorithm_ptr algorithms[], int num_algorithm,
  dataType types[], int num_types);
 

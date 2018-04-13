@@ -40,14 +40,14 @@ char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo (ms)  "}
 // Número de costes							(k)
 
 // Cantidades de datos con las que se iteran
-size_t dataSizes[] = {10, 100, 1000, 2000, 3000, 4000};
+int dataSizes[] = {10, 100, 1000, 2000, 3000, 4000};
 // Número de iteraciones por experimento	(l)
 int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
 //****************************************************************************
 
 
 /*   --------------------------------------------------------------------------------
-*	void runExperiment(): 	Ejecuta el modo experimento
+*	void runExperiment(): 	Ejecuta el modo EXPERIMENTO
 */
 void runExperiment(){
 	char mode = experimentMode(iterations, dataSizes);
@@ -76,8 +76,11 @@ void runExperiment(){
 	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
+/*   --------------------------------------------------------------------------------
+*	void runOrganizer(): 	Ejecuta el modo ORDENADOR
+*/
 void runOrganizer(){
-	size_t datasize;
+	int datasize;
 	FILE* datafile;
 	char filename[FILESIZE];
 	char**** results;
@@ -87,7 +90,7 @@ void runOrganizer(){
 	switch (datamode){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
-			scanf("%u", &datasize);
+			scanf("%d", &datasize);
 			strcpy(filename, "Datos.txt");
 			break;
 		case 'b':
@@ -109,6 +112,9 @@ void runOrganizer(){
 	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
+/*   --------------------------------------------------------------------------------
+*	int main(): 	Llama al selector de modo y despues a la funcion del modo seleccionado
+*/
 int main(int argc, char const *argv[]){
 	char mode = programMode();
 	switch (mode){

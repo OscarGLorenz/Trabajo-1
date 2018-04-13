@@ -23,6 +23,6 @@ typedef enum datatype{
 } dataType;
 
 // Crea el array de datos del tipo solicitado. dataType, dataspacing: 0 = consecutivos; 1 = incremento aleatorio
-void dataCreator(int * datavector, size_t datasize, dataType dataorder, int dataspacing);
+void dataCreator(int * datavector, int datasize, dataType dataorder, int dataspacing);
 
 #endif

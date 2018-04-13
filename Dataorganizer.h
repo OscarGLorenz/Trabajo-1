@@ -18,7 +18,7 @@
 *	datavector: 		puntero al vector de datos
 *	datasize: 			tamaño del vector de datos
 */
-void inputData(int* datavector, size_t datasize);
+void inputData(int* datavector, int datasize);
 
 /*	--------------------------------------------------------------------------------
 *	void fileReader():	Permite al usuario introducir los valores del array a través de 
@@ -27,7 +27,7 @@ void inputData(int* datavector, size_t datasize);
 *	datasize: 			tamaño del vector de datos
 *	datafile:			puntero al archivo de datos
 */
-void fileReader(int* datavector, size_t datasize, FILE* datafile);
+void fileReader(int* datavector, int datasize, FILE* datafile);
 
 /*	--------------------------------------------------------------------------------
 *	void filePrinter():	Rellena el fichero de datos de salida con los valores
@@ -35,7 +35,7 @@ void fileReader(int* datavector, size_t datasize, FILE* datafile);
 *	datasize: 			tamaño del vector de datos
 *	datafile:			puntero al archivo de datos
 */
-void filePrinter(int* datavector, size_t datasize, FILE* datafile);
+void filePrinter(int* datavector, int datasize, FILE* datafile);
 
 
 /*	--------------------------------------------------------------------------------
@@ -48,6 +48,6 @@ void filePrinter(int* datavector, size_t datasize, FILE* datafile);
 *	filename:			nombre del archivo de entrada
 *	return:				devuelve el puntero a la matriz/tabla de resultados generada
 */
-char**** multiSorter(int* datavector, size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename);
+char**** multiSorter(int* datavector, int datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename);
 
 #endif

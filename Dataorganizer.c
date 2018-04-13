@@ -14,8 +14,8 @@
 #include "Dataorganizer.h"
 #include "TUI.h"
 
-void inputData(int* datavector, size_t datasize){
-	size_t i;
+void inputData(int* datavector, int datasize){
+	int i;
 	printf("\n");
 	for(i = 0; i < datasize; i++){
 		printf("Introduzca dato %lu: ", (unsigned long)i+1);
@@ -23,8 +23,8 @@ void inputData(int* datavector, size_t datasize){
 	}
 }
 
-void fileReader(int* datavector, size_t datasize, FILE* datafile){
-	size_t i;
+void fileReader(int* datavector, int datasize, FILE* datafile){
+	int i;
 	int	aux;
 	for (i = 0; i < datasize; i++){
 		fscanf(datafile, "%d\n", &aux); 
@@ -33,8 +33,8 @@ void fileReader(int* datavector, size_t datasize, FILE* datafile){
 	fclose(datafile);
 }
 
-void filePrinter(int* datavector, size_t datasize, FILE* datafile){
-	size_t i;
+void filePrinter(int* datavector, int datasize, FILE* datafile){
+	int i;
 	fprintf(datafile, "%lu,\n", (unsigned long)datasize);
 	for (i = 0; i < datasize; i++){
 		fprintf(datafile, "%d\n", datavector[i]);
@@ -49,7 +49,7 @@ void filePrinter(int* datavector, size_t datasize, FILE* datafile){
 *	datasize: 			tamaño del vector de datos
 *	input:				nombre del archivo de entrada
 */
-void dataSaver(int* datavector, size_t datasize, char* input){
+void dataSaver(int* datavector, int datasize, char* input){
 	FILE* datafile;
 	int i = 0, j = 0;
 	char output[FILESIZE];
@@ -75,7 +75,7 @@ void dataSaver(int* datavector, size_t datasize, char* input){
 }
 	
 
-char**** multiSorter(int datavector[], size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename){
+char**** multiSorter(int datavector[], int datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename){
 	Experiment experiment;
 	int buffer[datasize];
 	float millisec;
@@ -88,7 +88,7 @@ char**** multiSorter(int datavector[], size_t datasize, algorithm_ptr algorithms
 		for (k = 0; k < COSTS; k++){
 			costs[i][0][k] = (char *) calloc(NAMESIZE, sizeof(char));
 		}
-		memcpy(buffer, datavector, datasize * sizeof(*datavector));
+		memcpy(buffer, datavector, datasize * sizeof(datavector[0]));
 		experiment = newExperiment(datasize);
 		algorithms[i](buffer, datasize, &experiment);
 		millisec = nanos(&experiment) / 1000000.0;

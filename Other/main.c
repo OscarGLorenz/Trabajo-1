@@ -5,7 +5,7 @@
 #include "Algorithm.h"
 #include <stdio.h>
 
-size_t nelements[] = {10, 100, 1000, 10000};
+int nelements[] = {10, 100, 1000, 10000};
 int num_nelement = 4;
 
 algorithm_ptr algorithms[] = {bubble,insertion,selection,shell,heapsort, quicksort};

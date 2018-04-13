@@ -17,7 +17,7 @@ void clear();
 char programMode();
 
 //Pide modo de EXPERIMENTO. Opciones: modo AUTO, modo ALGORITMOS, modo TIPODATOS
-char experimentMode(int iterations, size_t* dataSizes);
+char experimentMode(int iterations, int* dataSizes);
 
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
@@ -32,10 +32,10 @@ dataType dataTypeMode(int n_data, char dataNames[][NAMESIZE]);
 int dataSpacingMode();
 
 // Visualiza el array de datos
-void showVector(int * datavector, size_t datasize);
+void showVector(int * datavector, int datasize);
 
 // Abre el archivo de datos introduciendo su nombre
-size_t fileOpener(FILE ** datafile, char* filename);
+int fileOpener(FILE ** datafile, char* filename);
 
 // Visualiza los resultados de los benchmark
 void resultVisualizer(char**** results, char algorithmNames[][NAMESIZE], int n_algorithms, char dataNames[][NAMESIZE], int n_data, char costNames[][NAMESIZE]);

@@ -41,7 +41,7 @@ char programMode(){
 	return mode;
 }
 
-char experimentMode(int iterations, size_t* dataSizes){
+char experimentMode(int iterations, int* dataSizes){
 	char mode;
 	int l;
 	clear();
@@ -122,16 +122,16 @@ int dataSpacingMode(){
 }
 
 
-void showVector(int * datavector, size_t datasize){
-	size_t i;
+void showVector(int * datavector, int datasize){
+	int i;
 	for (i = 0; i < datasize; i++){
 		printf("%d ", datavector[i]);
 	}
 	printf("\n");
 }
 
-size_t fileOpener(FILE ** datafile, char* filename){
-	size_t datasize;
+int fileOpener(FILE ** datafile, char* filename){
+	int datasize;
 	printf("\nEl fichero debe contener un elemento de tipo entero natural en cada fila,\n");
 	printf("y en la primera fila la cantidad de datos que contiene para ordenar.\n");
 	printf("Indique el nombre del fichero, situado en la misma carpeta que el programa: ");
@@ -141,7 +141,7 @@ size_t fileOpener(FILE ** datafile, char* filename){
 			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
 		}
 	} while (*datafile == NULL);
-	fscanf(*datafile, "%u,\n", &datasize);
+	fscanf(*datafile, "%d,\n", &datasize);
 	printf("\nEl archivo contiene %lu datos a ordenar", (unsigned long)datasize);
 	return datasize;
 }
