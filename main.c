@@ -107,7 +107,6 @@ void runOrganizer(){
 	}
 	results = multiSorter(datavector, datasize, algorithmTypes, n_algorithms, filename);
 	resultVisualizer(results, algorithmNames, n_algorithms, &run_dataType, n_data, costNames);
-	printf("Hola\n");
 	freeTable(results, n_algorithms, n_data, COSTS);
 }
 

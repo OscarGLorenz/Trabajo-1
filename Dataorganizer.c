@@ -71,7 +71,6 @@ static void dataSaver(int* datavector, int datasize, char* input){
 		printf("Error al crear el archivo.");
 	}
 	else filePrinter(datavector, datasize, datafile);
-	fclose(datafile);
 }
 	
 
