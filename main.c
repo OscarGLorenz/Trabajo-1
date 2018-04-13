@@ -43,11 +43,12 @@ char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo (ms)  "}
 size_t dataSizes[] = {10, 100, 1000, 2000, 3000, 4000};
 // Número de iteraciones por experimento	(l)
 int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
-
 //****************************************************************************
 
 
-
+/*   --------------------------------------------------------------------------------
+*	void runExperiment(): 	Ejecuta el modo experimento
+*/
 void runExperiment(){
 	char mode = experimentMode(iterations, dataSizes);
 	int run_algorithmID;

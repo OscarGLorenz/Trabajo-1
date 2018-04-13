@@ -27,13 +27,35 @@ void inputData(int* datavector, size_t datasize);
 *	datasize: 			tamaño del vector de datos
 *	datafile:			puntero al archivo de datos
 */
-void fileReader(int * datavector, size_t datasize, FILE * datafile);
+void fileReader(int* datavector, size_t datasize, FILE* datafile);
 
-void dataSaver(int * datavector, size_t datasize, char* input);
+/*	--------------------------------------------------------------------------------
+*	void dataSaver():	Guarda los datos ya ordenados en un fichero *.txt de salida
+*	datavector: 		puntero al vector de datos
+*	datasize: 			tamaño del vector de datos
+*	input:				nombre del archivo de entrada
+*/
+void dataSaver(int* datavector, size_t datasize, char* input);
 
-void filePrinter(int * datavector, size_t datasize, FILE * datafile);
+/*	--------------------------------------------------------------------------------
+*	void filePrinter():	Rellena el fichero de datos de salida con los valores
+*	datavector: 		puntero al vector de datos
+*	datasize: 			tamaño del vector de datos
+*	datafile:			puntero al archivo de datos
+*/
+void filePrinter(int* datavector, size_t datasize, FILE* datafile);
 
-// Ordena el array de datos introducido mediante todos los algoritmos implementados, comparando su velocidad.
-char**** multiSorter(int * datavector, size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename);
+
+/*	--------------------------------------------------------------------------------
+*	char**** multiSorter():	Ordena el vector de datos dado con todos los algoritmos,
+*								generando la tabla de datos compatible con resultVisualizer()
+*	datavector: 		puntero al vector de datos
+*	datasize: 			tamaño del vector de datos
+*	algorithms[]:		vector de funciones de los algoritmos
+*	n_algorithm:		tamaño del vector de funciones
+*	filename:			nombre del archivo de entrada
+*	return:				devuelve el puntero a la matriz/tabla de resultados generada
+*/
+char**** multiSorter(int* datavector, size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename);
 
 #endif

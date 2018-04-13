@@ -1,6 +1,8 @@
 /******************************************************************************
 * ARCHIVO :  TUI.c
 *
+* DESCRIPCION: Contiene las funciones de interfaz de usuario y visualizacion. Ver aclaraciones en header
+*
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
 
@@ -9,6 +11,7 @@
 
 #include "TUI.h"
 
+// Implementacion para vaciar la pantalla de la consola de comandos
 #if __unix__ 
 	#include <stdlib.h>
 	void clear(){

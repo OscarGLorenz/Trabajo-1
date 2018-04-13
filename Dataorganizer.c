@@ -1,7 +1,7 @@
 /******************************************************************************
 * ARCHIVO :  Dataorganizer.c
 *
-* DESCRIPCION: Contiene las funciones del modo ORDENADOR
+* DESCRIPCION: Contiene las funciones del modo ORDENADOR. Ver aclaraciones en header
 *
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
@@ -23,7 +23,7 @@ void inputData(int* datavector, size_t datasize){
 	}
 }
 
-void fileReader(int* datavector, size_t datasize, FILE * datafile){
+void fileReader(int* datavector, size_t datasize, FILE* datafile){
 	size_t i;
 	int	aux;
 	for (i = 0; i < datasize; i++){
@@ -33,7 +33,7 @@ void fileReader(int* datavector, size_t datasize, FILE * datafile){
 	fclose(datafile);
 }
 
-void filePrinter(int * datavector, size_t datasize, FILE * datafile){
+void filePrinter(int* datavector, size_t datasize, FILE* datafile){
 	size_t i;
 	fprintf(datafile, "%lu,\n", datasize);
 	for (i = 0; i < datasize; i++){
@@ -43,7 +43,7 @@ void filePrinter(int * datavector, size_t datasize, FILE * datafile){
 	printf("Fichero generado con exito.\n");
 }	
 
-void dataSaver(int * datavector, size_t datasize, char* input){
+void dataSaver(int* datavector, size_t datasize, char* input){
 	FILE* datafile;
 	int i = 0, j = 0;
 	char output[FILESIZE];
@@ -74,7 +74,7 @@ char**** multiSorter(int * datavector, size_t datasize, algorithm_ptr algorithms
 	int buffer[datasize];
 	float millisec;
 	int i, k;
-	char**** costs = (char****) calloc(n_algorithm, sizeof(char ***));
+	char**** costs = (char****) calloc(n_algorithm, sizeof(char***));
 	for(i = 0; i < n_algorithm; i++){
 		printf(".");
 		costs[i] = (char ***) calloc(1, sizeof(char**));
