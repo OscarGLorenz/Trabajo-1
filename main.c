@@ -7,6 +7,8 @@
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
 
+#include "Benchmark.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -84,7 +86,7 @@ void runOrganizer(){
 	switch (datamode){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
-			scanf("%u", &datasize);
+			scanf("%lu", &datasize);
 			strcpy(filename, "Datos.txt");
 			break;
 		case 'b':

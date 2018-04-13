@@ -1,3 +1,13 @@
+/******************************************************************************
+* ARCHIVO :  Dataorganizer.c
+*
+* DESCRIPCION: Archivo principal del programa. 
+*		Sintetizado en llamadas a funciones de las librerias y declaracion de tipos
+*
+* AUTOR :    Mario Musicò Cortés
+******************************************************************************/
+
+
 #include "Benchmark.h"
 
 #include <string.h>
@@ -10,7 +20,7 @@ void inputData(int* datavector, size_t datasize){
 	size_t i;
 	printf("\n");
 	for(i = 0; i < datasize; i++){
-		printf("Introduzca dato %d: ", i+1);
+		printf("Introduzca dato %lu: ", i+1);
 		scanf("%d", datavector + i);
 	}
 }
