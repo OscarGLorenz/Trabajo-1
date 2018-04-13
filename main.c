@@ -13,25 +13,27 @@
 #include "Dataorganizer.h"
 #include "Algorithm.h"
 
+#define NAMESIZE 16
+
 //****************************************************************************
 // Declaración e inicializacion de variables de tipos
 
 // Nombres de los algoritmos a ejecutar
 algorithm_ptr algorithmTypes[] = {bubble,insertion,selection,shell,heapsort,quicksort};
 // Nombres de los algoritmos a visualizar
-char algorithmNames[][16] = {"Burbuja  ", "Insercion", "Seleccion", "Shell    ", "Monticulo", "Quicksort"};
+char algorithmNames[][NAMESIZE] = {"Burbuja  ", "Insercion", "Seleccion", "Shell    ", "Monticulo", "Quicksort"};
 // Número de algoritmos						(i)
 int n_algorithms = sizeof(algorithmNames) / sizeof(*algorithmNames);
 
 // Nombres de los tipos de datos a utilizar
 dataType dataTypes[] = {INCREASING, DECREASING, RANDOM, REPEATED};
 // Nombres de los tipos de datos a visualizar
-char dataNames[][16] = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
+char dataNames[][NAMESIZE] = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
 // Número de tipos de datos					(j)
 int n_data = sizeof(dataNames) / sizeof(*dataNames);
 
 // Nombres de los costes
-char costNames[][16] = {"Comparaciones", "Movimientos  ", "Tiempo       "};
+char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo       "};
 // Número de costes							(k)
 int n_costs = sizeof(costNames) / sizeof(*costNames);
 
@@ -43,7 +45,7 @@ int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
 //****************************************************************************
 
 void runExperiment(){
-	char mode = experimentMode();
+	char mode = experimentMode(iterations, dataSizes);
 	int i, j;
 	
 	char run_algorithmID;
@@ -73,8 +75,11 @@ void runExperiment(){
 
 void runOrganizer(){
 	int datasize, orderType;
-	FILE * datafile;
+	FILE* datafile;
+	char**** results;
 	char datamode = dataInputMode();
+	char run_dataType[NAMESIZE] = "Usuario  ";
+	n_data = 1;
 	switch (datamode){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
@@ -93,7 +98,11 @@ void runOrganizer(){
 			fileReader(datavector, datasize, datafile);
 			break;
 	}
-	multiSorter(datavector, datasize);
+	results = multiSorter(datasize, datavector, algorithmTypes, n_algorithms, n_costs);
+	printf("\nHola4\n");
+	resultVisualizer(results, algorithmNames, n_algorithms, &run_dataType, n_data, costNames, n_costs);
+	printf("\nHola5\n");
+	freeTable(results, n_algorithms, n_data, n_costs);
 }
 
 int main(int argc, char const *argv[]){

@@ -11,17 +11,19 @@
 
 #include "Datacreator.h"
 
+#define NAMESIZE 16
+
 //Pide modo de uso del programa. Opciones: modo EXPERIMENTO, modo ORDENADOR
 char programMode();
 
 //Pide modo de EXPERIMENTO. Opciones: modo AUTO, modo ALGORITMOS, modo TIPODATOS
-char experimentMode();
+char experimentMode(int iterations, size_t* dataSizes);
 
 // Pide tipo de algoritmo a analizar
-char algorithmMode(int n_algorithms, char algorithmNames[][16]);
+char algorithmMode(int n_algorithms, char algorithmNames[][NAMESIZE]);
 
 //Pide orden inicial de datos
-dataType dataTypeMode(int n_data, char dataNames[][16]);
+dataType dataTypeMode(int n_data, char dataNames[][NAMESIZE]);
 
 //Pide tipo de datos para ORDENADOR. Opciones: modo FICHERO, modo TECLADO
 char dataInputMode();
@@ -33,6 +35,6 @@ void showVector(int * datavector, int datasize);
 int fileOpener(FILE ** datafile);
 
 // Visualiza los resultados de los benchmark
-void resultVisualizer(char**** results, char algorithmNames[][16], int n_algorithms, char dataNames[][16], int n_data, char costNames[][16], int n_costs);
+void resultVisualizer(char**** results, char algorithmNames[][NAMESIZE], int n_algorithms, char dataNames[][NAMESIZE], int n_data, char costNames[][NAMESIZE], int n_costs);
 
 #endif

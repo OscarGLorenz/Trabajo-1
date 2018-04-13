@@ -20,13 +20,17 @@ char programMode(){
 	return mode;
 }
 
-char experimentMode(){
+char experimentMode(int iterations, size_t* dataSizes){
 	char mode;
+	int l;
 	printf("\n***********************************************************");
 	printf("\nHa entrado en modo EXPERIMENTO\n");
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
-	printf("\tprobando con un numero de datos de la forma 10^n, con n = 1..4\n");
-	printf("Como desea realizar el experimento?\n");
+	printf("\tprobando con las siguientes cantidades de datos: ");
+	for (l = 0; l< iterations; l++){
+		printf("%d, ", dataSizes[l]);
+	}
+	printf("\nComo desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
 	printf("b) Comparar la velocidad un algoritmo para diferentes tipos de datos\n");
 	printf("c) Comparar diferentes algoritmos dado un tipo de dato\n");
@@ -38,7 +42,7 @@ char experimentMode(){
 	return mode;
 }
 
-char algorithmMode(int n_algorithms, char algorithmNames[][16]){
+char algorithmMode(int n_algorithms, char algorithmNames[][NAMESIZE]){
 	int i;
 	char mode;
 	printf("Que tipo de algoritmo desea analizar?\n");
@@ -53,7 +57,7 @@ char algorithmMode(int n_algorithms, char algorithmNames[][16]){
 	return mode - 'a';
 }
 
-dataType dataTypeMode(int n_data, char dataNames[][16]){
+dataType dataTypeMode(int n_data, char dataNames[][NAMESIZE]){
 	int i;
 	char mode;
 	printf("\nComo desea que se encuentren los datos inicialmente?\n");
@@ -107,7 +111,7 @@ int fileOpener(FILE ** datafile){
 	return datasize;
 }
 
-void resultVisualizer(char**** results, char algorithmNames[][16], int n_algorithms, char dataNames[][16], int n_data, char costNames[][16], int n_costs){
+void resultVisualizer(char**** results, char algorithmNames[][NAMESIZE], int n_algorithms, char dataNames[][NAMESIZE], int n_data, char costNames[][NAMESIZE], int n_costs){
 	int i, j, k;
 	printf("\n\nAlgoritmos\tTipo de coste computacional:\n\t\t");
 	for(k = 0; k < n_costs; k++){

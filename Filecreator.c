@@ -1,7 +1,6 @@
 //Hay que poner el nombre del programa!
 
 #include <stdio.h>
-#include "Datacreator.h"
 #include "TUI.h"
 
 // Nombres de los tipos de datos a visualizar
@@ -13,7 +12,7 @@ int fileCreator(FILE ** datafile){
 	char filename[32];
 	int datasize;
 	printf("\nEste programa le permite generar un fichero de texto con una serie de datos pseudoaleatorios,\n");
-	printf("para ser utilizados como simulacion de funcionamiento con el programa [NOMBREPROGRAMA] en el modo ORDENADOR\n");
+	printf("para ser utilizados como simulacion de funcionamiento con el programa [Main.exe] en el modo ORDENADOR\n");
 	printf("en caso de que usted no disponga de una serie de datos a ordenar.\n");
 	printf("\nIntroduzca el nombre que le quiere dar al fichero de datos. Ejemplo: \"Datos.txt\": ");
 	do {
@@ -47,6 +46,7 @@ void filePrinter(FILE * datafile, int * datavector, int datasize){
 		fprintf(datafile, "%d\n", datavector[i]);
 	}
 	fclose(datafile);
+	printf("\n*******************************************\n");
 	printf("Fichero generado con exito.\n");
 }
 
