@@ -49,7 +49,7 @@ void filePrinter(int* datavector, int datasize, FILE* datafile){
 *	datasize: 			tamaño del vector de datos
 *	input:				nombre del archivo de entrada
 */
-void dataSaver(int* datavector, int datasize, char* input){
+static void dataSaver(int* datavector, int datasize, char* input){
 	FILE* datafile;
 	int i = 0, j = 0;
 	char output[FILESIZE];

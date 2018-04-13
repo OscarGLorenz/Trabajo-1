@@ -16,7 +16,6 @@
 #include "Dataorganizer.h"
 #include "Algorithm.h"
 
-#define NAMESIZE 16
 
 //****************************************************************************
 // Declaración e inicializacion de variables de tipos
@@ -26,14 +25,14 @@ algorithm_ptr algorithmTypes[] = {bubble,insertion,selection,shell,heapsort,quic
 // Nombres de los algoritmos a visualizar
 char algorithmNames[][NAMESIZE] = {"Burbuja  ", "Insercion", "Seleccion", "Shell    ", "Monticulo", "Quicksort"};
 // Número de algoritmos						(i)
-int n_algorithms = sizeof(algorithmNames) / sizeof(*algorithmNames);
+int n_algorithms = sizeof(algorithmNames) / sizeof(algorithmNames[0]);
 
 // Nombres de los tipos de datos a utilizar
 dataType dataTypes[] = {INCREASING, DECREASING, RANDOM, REPEATED};
 // Nombres de los tipos de datos a visualizar
 char dataNames[][NAMESIZE] = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
 // Número de tipos de datos					(j)
-int n_data = sizeof(dataNames) / sizeof(*dataNames);
+int n_data = sizeof(dataNames) / sizeof(dataNames[0]);
 
 // Nombres de los costes
 char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo (ms)  "};
@@ -42,11 +41,11 @@ char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo (ms)  "}
 // Cantidades de datos con las que se iteran
 int dataSizes[] = {10, 100, 1000, 2000, 3000, 4000};
 // Número de iteraciones por experimento	(l)
-int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
+int iterations = sizeof(dataSizes) / sizeof(dataSizes[0]);
 //****************************************************************************
 
 
-/*   --------------------------------------------------------------------------------
+/*  --------------------------------------------------------------------------------
 *	void runExperiment(): 	Ejecuta el modo EXPERIMENTO
 */
 void runExperiment(){
@@ -76,7 +75,7 @@ void runExperiment(){
 	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
-/*   --------------------------------------------------------------------------------
+/*  --------------------------------------------------------------------------------
 *	void runOrganizer(): 	Ejecuta el modo ORDENADOR
 */
 void runOrganizer(){
@@ -112,7 +111,7 @@ void runOrganizer(){
 	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
-/*   --------------------------------------------------------------------------------
+/*  --------------------------------------------------------------------------------
 *	int main(): 	Llama al selector de modo y despues a la funcion del modo seleccionado
 */
 int main(int argc, char const *argv[]){

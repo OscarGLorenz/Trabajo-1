@@ -1,4 +1,10 @@
-//Hay que poner el nombre del programa!
+/******************************************************************************
+* ARCHIVO :  Dataorganizer.c
+*
+* DESCRIPCION: Contiene las funciones de creacion del archivo de datos para la simulacion en modo ORDENADOR
+*
+* AUTOR :    Mario Musicò Cortés
+******************************************************************************/
 
 #include <stdio.h>
 #include "TUI.h"
@@ -7,7 +13,7 @@
 // Nombres de los tipos de datos a visualizar
 char dataNames[][NAMESIZE] = {"Creciente", "Decreciente", "Aleatorio", "Repetidos"};
 // Número de tipos de datos					(j)
-int n_data = sizeof(dataNames) / sizeof(*dataNames);
+int n_data = sizeof(dataNames) / sizeof(dataNames[0]);
 
 int fileCreator(FILE ** datafile){
 	char filename[FILESIZE];

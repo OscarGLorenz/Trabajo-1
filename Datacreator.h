@@ -22,7 +22,13 @@ typedef enum datatype{
 	REPEATED 
 } dataType;
 
-// Crea el array de datos del tipo solicitado. dataType, dataspacing: 0 = consecutivos; 1 = incremento aleatorio
+/*  --------------------------------------------------------------------------------
+*	void dataCreator():	Crea el array de datos del tipo solicitado
+*	datavector: 		puntero al vector de datos
+*	datasize: 			tamaño del vector de datos
+*	dataorder:			tipo de datos (posibles valores de dataType)
+*	dataspacing:		0 = consecutivos; 1 = incremento aleatorio
+*/
 void dataCreator(int * datavector, int datasize, dataType dataorder, int dataspacing);
 
 #endif
