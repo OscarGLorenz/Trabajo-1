@@ -77,7 +77,6 @@ float unity(float x, float y);
 typedef struct experiment{
   unsigned int comparations; 			//Guarda número de comparaciones
   unsigned int movements;   			//Guarda número de movimientos
-  unsigned int memory;   			//Guarda número de movimientos
   struct timespec start;    			//Estructura con el tiempo al inicio
   struct timespec end;        			//Estructura con el tiempo al final
   size_t elements; 	      				//Tamaño del experimento
@@ -188,7 +187,7 @@ unsigned int nanos(Experiment * experiment);
  *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
  */
 void costIdentification(Experiment * experiment, size_t n, char * mov_str,
-    char * comp_str, char * nanos_str, char * memory_str);
+    char * comp_str, char * nanos_str);
 
 /*
  *  Función: calculateTable

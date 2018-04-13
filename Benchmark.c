@@ -63,7 +63,6 @@ Experiment newExperiment(size_t n) {
   experiment.comparations = 0;
   experiment.movements = 0;
   experiment.elements = n;
-  experiment.memory = 0;
   return experiment;
 }
 
@@ -315,12 +314,12 @@ void costToString(Cost cost, char * c) {
  *   NOTA: es recomendable que las cadenas de caracteres tengan al menos 20
  */
 void costIdentification(Experiment * experiment, size_t n, char * mov_str,
-                          char * comp_str, char * nanos_str, char * memory_str) {
+                          char * comp_str, char * nanos_str) {
   // Vector auxiliar que almacena las transformaciones disponibles
   trans_ptr transformations[NTRANS] = TRANS;
 
   // Variables para almacenar los datos a los que se efectuaran regresiones
-  float comp_f[n], move_f[n], nanos_f[n], number_f[n], memory_f[n];
+  float comp_f[n], move_f[n], nanos_f[n], number_f[n];
 
   // Iteración por toda la lista de experimentos para recabar los datos
   for (size_t i = 0; i < n; i++) {
@@ -328,20 +327,17 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
     move_f[i] = experiment[i].movements;
     nanos_f[i] = nanos(&experiment[i]);
     number_f[i] = experiment[i].elements;
-    memory_f[i] = experiment[i].memory;
   }
 
   // Identificación de los costes de comparaciones, moviemientos y tiempo
   Cost comp_cost = identify(number_f, comp_f, n, transformations, NTRANS);
   Cost mov_cost = identify(number_f, move_f, n, transformations, NTRANS);
   Cost nanos_cost = identify(number_f, nanos_f, n, transformations, NTRANS);
-  Cost memory_cost = identify(number_f, memory_f, n, transformations, NTRANS);
 
   // Conversión a char* de los anteriores costes
   costToString(comp_cost, comp_str);
   costToString(mov_cost, mov_str);
   costToString(nanos_cost, nanos_str);
-  costToString(memory_cost, memory_str);
 }
 
 /*
@@ -367,9 +363,11 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
   algorithm_ptr algorithms[], int num_algorithm,
   dataType types[], int num_types) {
 
-  const int num_costs = 4;
+  const int num_costs = 3; //Costes: movimientos, comparaciones y tiempo
   const int lenght_str = 20; // Longitud de la cadena char *
 
+  //Generación de la tabla de char con índices
+  //          [num_algorithm][num_types][num_costs][lenght_str]
   char **** costs = (char ****) calloc(num_algorithm, sizeof(char ***));
   for(int i = 0; i < num_algorithm; i++) {
     costs[i] = (char ***) calloc(num_types, sizeof(char**));
@@ -381,26 +379,39 @@ void costIdentification(Experiment * experiment, size_t n, char * mov_str,
     }
   }
 
+  /*
+      Combinaciones de todos los experimentos, para cada algoritmo, para cadena
+     Orden inicial de los datos y número de elementos
+  */
   Experiment experiment[num_algorithm][num_types][num_nelement];
 
+    // Iteramos con cada tipo de orden inicial
     for (int j = 0; j < num_types; j++) {
+      // Iteramos para cada longitud del array
       for (int l = 0; l < num_nelement; l++) {
-        size_t nelem = nelements[l];
-        int raw_data[nelem];
-        int buffer[nelem];
+        size_t nelem = nelements[l]; // Tamaño del vector
+        int raw_data[nelem]; // Datos generados
+        int buffer[nelem]; // Array auxiliar para ordenar
 
+        // Generación de datos
         dataCreator(raw_data, nelem, types[j], 0);
 
+        // Iteración para cada algoritmo
         for (int i = 0; i < num_algorithm; i++) {
+          // Se hace una copia de los datos
           memcpy(buffer,raw_data,nelem*sizeof(int));
+          // Se genera un nuevo experimento
           experiment[i][j][l] = newExperiment(nelem);
+          // Se ejecuta el algoritmo dando el experimento indicado
           algorithms[i](buffer, nelem, &experiment[i][j][l]);
         }
       }
 
+      // Una vez ejecutados todos los experimentos para un tipo de datos
+      // ejecutamos para cada algoritmo la identificación de costes
       for (int i = 0; i < num_algorithm; i++)
         costIdentification(experiment[i][j], num_nelement,
-          costs[i][j][0], costs[i][j][1], costs[i][j][2], costs[i][j][3]);
+          costs[i][j][0], costs[i][j][1], costs[i][j][2]);
 
     }
 
