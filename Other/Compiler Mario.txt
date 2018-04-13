@@ -1,3 +1,0 @@
-gcc Algorithm.c Benchmark.c Datacreator.c Dataorganizer.c TUI.c Main.c -o Main
-
-gcc TUI.c Datacreator.c Filecreator.c -o Filecreator
