@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "Benchmark.h"
 #include "Dataorganizer.h"
 #include "TUI.h"
 
@@ -77,8 +78,8 @@ char**** multiSorter(int * datavector, size_t datasize, algorithm_ptr algorithms
 		experiment = newExperiment(datasize);
 		algorithms[i](buffer, datasize, &experiment);
 		millisec = nanos(&experiment) / 1000000.0;
-		sprintf(costs[i][0][0], "%u", experiment.comparations);
-		sprintf(costs[i][0][1], "%u", experiment.movements);
+		sprintf(costs[i][0][0], "%lu", experiment.comparations);
+		sprintf(costs[i][0][1], "%lu", experiment.movements);
 		sprintf(costs[i][0][2], "%.3f", millisec);
 		for (k = 0; k < COSTS; k++){
 			if (strlen(costs[i][0][k]) < 8) strcat(costs[i][0][k], "\t");
