@@ -23,7 +23,7 @@ size_t fileCreator(FILE ** datafile){
 		}
 	} while (*datafile == NULL);
 	printf("\nIntroduzca la cantidad de datos que desea generar: ");
-	scanf("%u", &datasize);
+	scanf("%lu", &datasize);
 	return datasize;
 }
 

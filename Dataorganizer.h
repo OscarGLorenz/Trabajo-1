@@ -1,6 +1,7 @@
 #ifndef DATAORGANIZER_H_
 #define DATAORGANIZER_H_
 
+#include <stdio.h>
 #include "Benchmark.h"
 
 // Solicita al usuario introducir los valores del array por teclado

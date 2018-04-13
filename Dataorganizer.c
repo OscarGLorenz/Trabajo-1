@@ -1,6 +1,5 @@
 #include "Benchmark.h"
 
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -8,7 +7,7 @@
 #include "TUI.h"
 
 void inputData(int* datavector, size_t datasize){
-	int i;
+	size_t i;
 	printf("\n");
 	for(i = 0; i < datasize; i++){
 		printf("Introduzca dato %d: ", i+1);
@@ -17,7 +16,8 @@ void inputData(int* datavector, size_t datasize){
 }
 
 void fileReader(int * datavector, size_t datasize, FILE * datafile){
-	int i, aux;
+	size_t i;
+	int	aux;
 	for (i = 0; i < datasize; i++){
 		fscanf(datafile, "%d\n", &aux); 
 		datavector[i] = aux;
@@ -26,8 +26,8 @@ void fileReader(int * datavector, size_t datasize, FILE * datafile){
 }
 
 void filePrinter(int * datavector, size_t datasize, FILE * datafile){
-	int i;
-	fprintf(datafile, "%u,\n", datasize);
+	size_t i;
+	fprintf(datafile, "%lu,\n", datasize);
 	for (i = 0; i < datasize; i++){
 		fprintf(datafile, "%d\n", datavector[i]);
 	}
@@ -49,7 +49,7 @@ void dataSaver(int * datavector, size_t datasize, char* input){
 		extension[j]=output[i];
 		i++; j++;
 	} while (output[i]!='\0');
-	strcat(output, "-ordenado.");
+	strcat(output, "_ordenado.");
 	strcat(output, extension);
 	printf("\nEl archivo de salida con los datos ordenados se llamara \"%s\".\n\n", output);
 	

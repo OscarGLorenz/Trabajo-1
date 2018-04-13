@@ -12,8 +12,8 @@ static void swap2(int * a, int * b){
 }
 
 // Rellena el array de datos con valores ascendentes; dataspacing: 0 = consecutivos; 1 = incremento aleatorio
-static void startVector(int * datavector, int datasize, int dataspacing){
-	int i;
+static void startVector(int * datavector, size_t datasize, int dataspacing){
+	size_t i;
 	srand(clock());
 	datavector[0] = 1 + dataspacing * (rand() % datasize);
 	if(datasize > 1){
@@ -24,16 +24,16 @@ static void startVector(int * datavector, int datasize, int dataspacing){
 }
 
 // Invierte el orden de un array
-static void invertVector(int * datavector, int datasize){
-	int i, j;
+static void invertVector(int * datavector, size_t datasize){
+	size_t i, j;
 	for (i = 0, j = datasize - 1; i < j; i++, j--){
 		swap2(datavector + i, datavector + j);
 	}
 }
 
 // Aleatoriza un array dado realizando tantas pasadas de swaps como su tamaño
-static void randomize(int * datavector, int datasize){
-	int i, j;
+static void randomize(int * datavector, size_t datasize){
+	size_t i, j;
 	srand(clock());
 	for(j = 0; j < datasize; j++){
 		for(i=0; i < datasize; i++){
@@ -43,8 +43,8 @@ static void randomize(int * datavector, int datasize){
 }
 
 // Modifica array en un numero aleatorio de posiciones, duplicando posiciones también aleatorias
-static void duplicate(int * datavector, int datasize){
-	int i, j;
+static void duplicate(int * datavector, size_t datasize){
+	size_t i, j;
 	srand(clock());
 	j = rand() % datasize;
 	if (j < 2) j = 2;
@@ -54,7 +54,7 @@ static void duplicate(int * datavector, int datasize){
 }
 
 // Crea el array de datos del tipo solicitado. dataType, dataspacing: 0 = consecutivos; 1 = incremento aleatorio
-void dataCreator(int * datavector, int datasize, dataType dataorder, int dataspacing){
+void dataCreator(int * datavector, size_t datasize, dataType dataorder, int dataspacing){
 	startVector(datavector, datasize, dataspacing);
 	switch(dataorder){
 		case INCREASING:
