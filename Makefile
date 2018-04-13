@@ -2,7 +2,6 @@
 CC=gcc
 
 #Flags
-#(-I.) Buscar en este directorio las dependencias
 CFLAGS=-lm -std=c99 
 
 #Objetivo
