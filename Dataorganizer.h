@@ -30,15 +30,6 @@ void inputData(int* datavector, int datasize);
 void fileReader(int* datavector, int datasize, FILE* datafile);
 
 /*	--------------------------------------------------------------------------------
-*	void filePrinter():	Rellena el fichero de datos de salida con los valores
-*	datavector: 		puntero al vector de datos
-*	datasize: 			tamaño del vector de datos
-*	datafile:			puntero al archivo de datos
-*/
-void filePrinter(int* datavector, int datasize, FILE* datafile);
-
-
-/*	--------------------------------------------------------------------------------
 *	char**** multiSorter():	Ordena el vector de datos dado con todos los algoritmos,
 *								generando la tabla de datos compatible con resultVisualizer()
 *	datavector: 		puntero al vector de datos

@@ -15,6 +15,11 @@ char dataNames[][NAMESIZE] = {"Creciente", "Decreciente", "Aleatorio", "Repetido
 // Número de tipos de datos					(j)
 int n_data = sizeof(dataNames) / sizeof(dataNames[0]);
 
+/*	--------------------------------------------------------------------------------
+*	int fileCreator():	
+*	datafile: 			puntero a puntero de archivo
+*	return:				tamaño del vector de datos a guardar
+*/
 int fileCreator(FILE ** datafile){
 	char filename[FILESIZE];
 	int datasize;
@@ -33,6 +38,9 @@ int fileCreator(FILE ** datafile){
 	return datasize;
 }
 
+/*	--------------------------------------------------------------------------------
+*	int main():			Funcion principal del programa para crear un archivo con los tipos de datos deseados
+*/
 int main(){
 	FILE * datafile;
 	int datasize = fileCreator(&datafile);

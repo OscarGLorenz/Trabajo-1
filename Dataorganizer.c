@@ -33,7 +33,13 @@ void fileReader(int* datavector, int datasize, FILE* datafile){
 	fclose(datafile);
 }
 
-void filePrinter(int* datavector, int datasize, FILE* datafile){
+/*	--------------------------------------------------------------------------------
+*	void filePrinter():	Rellena el fichero de datos de salida con los valores
+*	datavector: 		puntero al vector de datos
+*	datasize: 			tamaño del vector de datos
+*	datafile:			puntero al archivo de datos
+*/
+static void filePrinter(int* datavector, int datasize, FILE* datafile){
 	int i;
 	fprintf(datafile, "%lu,\n", (unsigned long)datasize);
 	for (i = 0; i < datasize; i++){
