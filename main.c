@@ -1,7 +1,8 @@
 /******************************************************************************
 * ARCHIVO :  Main.c
 *
-* DESCRIPCION: Archivo principal del programa. Sintetizado en llamadas a funciones de las librerias
+* DESCRIPCION: Archivo principal del programa. 
+*		Sintetizado en llamadas a funciones de las librerias y declaracion de tipos
 *
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
@@ -43,11 +44,13 @@ int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
 
 //****************************************************************************
 
+
+
 void runExperiment(){
 	char mode = experimentMode(iterations, dataSizes);
 	int i, j;
 	
-	char run_algorithmID;
+	int run_algorithmID;
 	dataType run_dataType;
 	
 	char **** results;
@@ -57,14 +60,14 @@ void runExperiment(){
 			resultVisualizer(results, algorithmNames, n_algorithms, dataNames, n_data, costNames);
 			break;
 		case 'b':		// Comparar la velocidad de un algoritmo para diferentes tipos de datos
-			n_algorithms = 1;
 			run_algorithmID = algorithmMode(n_algorithms, algorithmNames);
+			n_algorithms = 1;
 			results = calculateTable(dataSizes, iterations, &algorithmTypes[run_algorithmID], n_algorithms, dataTypes, n_data);
 			resultVisualizer(results, &algorithmNames[run_algorithmID], n_algorithms, dataNames, n_data, costNames);
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
-			n_data = 1;
 			run_dataType = dataTypeMode(n_data, dataNames);
+			n_data = 1;
 			results = calculateTable(dataSizes, iterations, algorithmTypes, n_algorithms, &dataTypes[run_dataType], n_data);
 			resultVisualizer(results, algorithmNames, n_algorithms, &dataNames[run_dataType], n_data, costNames);
 			break;
