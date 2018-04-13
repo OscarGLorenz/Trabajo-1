@@ -19,7 +19,7 @@ void inputData(int* datavector, int datasize){
 	printf("\n");
 	for(i = 0; i < datasize; i++){
 		printf("Introduzca dato %lu: ", (unsigned long)i+1);
-		scanf("%d", datavector + i);
+		scanf("%d", &datavector[i]);
 	}
 }
 
