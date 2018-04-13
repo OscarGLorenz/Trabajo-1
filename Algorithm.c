@@ -19,7 +19,6 @@
  * en ciertas funciones para actualizar el valor de los contadores
  * se accede directamente a la estructura y no a través de swap o compare
  * experiment -> movements++ 
- * experiment -> memory++
  */
  
 #include "Algorithm.h"
@@ -34,7 +33,6 @@
 */ 
 
    void bubble( int *lista ,int N, Experiment*experiment){ 
-		 experiment->memory++;
          startCount(experiment); 
 
          int i, j;
@@ -61,8 +59,7 @@
  * Experiment: puntero a la estructura donde se guardan los parámetros medidos
 */ 
    void insertion( int *lista, int N, Experiment*experiment){ 
-      experiment->memory++;
-      startCount(experiment);
+         startCount(experiment);
   
          int i,j,aux;
             for(i=1; i<N;i++){
@@ -98,8 +95,7 @@
 */ 
    
    void selection( int*lista, int N, Experiment*experiment){  
-      experiment->memory++;
-	  startCount(experiment);
+      startCount(experiment);
       int i,j,menor;
       for(i=0;i<N-1;i++){
          menor=i;
@@ -127,7 +123,6 @@
 */
    
      void shell(int *lista, int N, Experiment * experiment){
-	  experiment->memory++;
       startCount(experiment);
       int i,j,aux,paso=1,k,h;
        
@@ -168,7 +163,7 @@
 */
   
    static void criba(int izq, int dcha, int *lista,Experiment * experiment){
-	  experiment->memory++;
+	  
       int i, doble,aux;
       aux=lista[izq];
       experiment-> movements++; 
@@ -220,7 +215,6 @@
 */  
       
    static void qs(int *lista, int first, int last,Experiment * experiment){
-	  experiment->memory++;
       int i= first, j = last, pivote;
       pivote=lista[(first + last)/2];
       do{
