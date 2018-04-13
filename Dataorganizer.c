@@ -1,12 +1,10 @@
 /******************************************************************************
 * ARCHIVO :  Dataorganizer.c
 *
-* DESCRIPCION: Archivo principal del programa. 
-*		Sintetizado en llamadas a funciones de las librerias y declaracion de tipos
+* DESCRIPCION: Contiene las funciones del modo ORDENADOR
 *
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
-
 
 #include "Benchmark.h"
 
@@ -25,7 +23,7 @@ void inputData(int* datavector, size_t datasize){
 	}
 }
 
-void fileReader(int * datavector, size_t datasize, FILE * datafile){
+void fileReader(int* datavector, size_t datasize, FILE * datafile){
 	size_t i;
 	int	aux;
 	for (i = 0; i < datasize; i++){

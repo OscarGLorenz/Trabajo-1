@@ -46,7 +46,7 @@ char experimentMode(int iterations, size_t* dataSizes){
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
 	printf("\tprobando con las siguientes cantidades de datos: ");
 	for (l = 0; l< iterations; l++){
-		printf("%d, ", dataSizes[l]);
+		printf("%lu, ", dataSizes[l]);
 	}
 	printf("\n\nComo desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
@@ -138,8 +138,8 @@ size_t fileOpener(FILE ** datafile, char* filename){
 			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
 		}
 	} while (*datafile == NULL);
-	fscanf(*datafile, "%u,\n", &datasize);
-	printf("\nEl archivo contiene %d datos a ordenar", datasize);
+	fscanf(*datafile, "%lu,\n", &datasize);
+	printf("\nEl archivo contiene %lu datos a ordenar", datasize);
 	return datasize;
 }
 
