@@ -24,8 +24,7 @@
 *	      int		        compare( int , Experiment* )
 *	      void		      startCount( Experiment* )
 *	      void		      endCount( Experiment* )
-*	      unsigned int	millis( Experiment* )
-*	      unsigned int	nanos( Experiment* )
+*	      unsigned long	nanos( Experiment* )
 *	      float		      lin( float , float )
 *	      float     		quad( float , float )
 *	      float     		linlog(	float , float )
@@ -75,8 +74,8 @@ float unity(float x, float y);
 
 // Estructura básica de la librería
 typedef struct experiment{
-  unsigned int comparations; 			//Guarda número de comparaciones
-  unsigned int movements;   			//Guarda número de movimientos
+  unsigned long comparations; 			//Guarda número de comparaciones
+  unsigned long movements;   			//Guarda número de movimientos
   struct timespec start;    			//Estructura con el tiempo al inicio
   struct timespec end;        			//Estructura con el tiempo al final
   size_t elements; 	      				//Tamaño del experimento
@@ -148,18 +147,6 @@ void startCount(Experiment * experiment);
 void endCount(Experiment * experiment);
 
 /*
- *  Función: millis
- * --------------------------------------------------------
- *   Devuelve el tiempo transcurrido en milisegundos desde la llamada
- *   a startCount y la de endCount
- *
- *   experiment: puntero al experimento
- *
- *   resultado: tiempo en milisegundos transcurridos
- */
-unsigned int millis(Experiment * experiment);
-
-/*
  *  Función: nanos
  * --------------------------------------------------------
  *   Devuelve el tiempo transcurrido en nanosegundos desde la llamada
@@ -169,7 +156,7 @@ unsigned int millis(Experiment * experiment);
  *
  *   resultado: tiempo en nanosegundos transcurridos
  */
-unsigned int nanos(Experiment * experiment);
+unsigned long nanos(Experiment * experiment);
 
 /*
  *  Función: costIdentification

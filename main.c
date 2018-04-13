@@ -33,12 +33,11 @@ char dataNames[][NAMESIZE] = {"Creciente", "Decreciente", "Aleatorio", "Repetido
 int n_data = sizeof(dataNames) / sizeof(*dataNames);
 
 // Nombres de los costes
-char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo       "};
+char costNames[][NAMESIZE] = {"Comparaciones", "Movimientos  ", "Tiempo (ms)  "};
 // Número de costes							(k)
-int n_costs = sizeof(costNames) / sizeof(*costNames);
 
 // Cantidades de datos con las que se iteran
-size_t dataSizes[] = {10, 100, 1000, 10000};
+size_t dataSizes[] = {10, 100, 1000, 2000, 3000, 4000};
 // Número de iteraciones por experimento	(l)
 int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
 
@@ -55,38 +54,39 @@ void runExperiment(){
 	switch (mode){
 		case 'a':		// En modo automatico, comparar todos los algoritmos con todos los tipos de datos
 			results = calculateTable(dataSizes, iterations, algorithmTypes, n_algorithms, dataTypes, n_data);
-			resultVisualizer(results, algorithmNames, n_algorithms, dataNames, n_data, costNames, n_costs);
+			resultVisualizer(results, algorithmNames, n_algorithms, dataNames, n_data, costNames);
 			break;
 		case 'b':		// Comparar la velocidad de un algoritmo para diferentes tipos de datos
 			n_algorithms = 1;
 			run_algorithmID = algorithmMode(n_algorithms, algorithmNames);
 			results = calculateTable(dataSizes, iterations, &algorithmTypes[run_algorithmID], n_algorithms, dataTypes, n_data);
-			resultVisualizer(results, &algorithmNames[run_algorithmID], n_algorithms, dataNames, n_data, costNames, n_costs);
+			resultVisualizer(results, &algorithmNames[run_algorithmID], n_algorithms, dataNames, n_data, costNames);
 			break;
 		case 'c':	;	// Comparar diferentes algoritmos dado un tipo de dato
 			n_data = 1;
 			run_dataType = dataTypeMode(n_data, dataNames);
 			results = calculateTable(dataSizes, iterations, algorithmTypes, n_algorithms, &dataTypes[run_dataType], n_data);
-			resultVisualizer(results, algorithmNames, n_algorithms, &dataNames[run_dataType], n_data, costNames, n_costs);
+			resultVisualizer(results, algorithmNames, n_algorithms, &dataNames[run_dataType], n_data, costNames);
 			break;
 	}
-	freeTable(results, n_algorithms, n_data, n_costs);
+	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
 void runOrganizer(){
-	int datasize, orderType;
+	size_t datasize;
 	FILE* datafile;
+	char filename[FILESIZE];
 	char**** results;
 	char datamode = dataInputMode();
-	char run_dataType[NAMESIZE] = "Usuario  ";
+	char run_dataType[NAMESIZE] = "Usuario";
 	n_data = 1;
 	switch (datamode){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
-			scanf("%d", &datasize);
+			scanf("%u", &datasize);
 			break;
 		case 'b':
-			datasize = fileOpener(&datafile);
+			datasize = fileOpener(&datafile, filename);
 			break;
 	}
 	int datavector[datasize];
@@ -98,11 +98,9 @@ void runOrganizer(){
 			fileReader(datavector, datasize, datafile);
 			break;
 	}
-	results = multiSorter(datasize, datavector, algorithmTypes, n_algorithms, n_costs);
-	printf("\nHola4\n");
-	resultVisualizer(results, algorithmNames, n_algorithms, &run_dataType, n_data, costNames, n_costs);
-	printf("\nHola5\n");
-	freeTable(results, n_algorithms, n_data, n_costs);
+	results = multiSorter(datavector, datasize, algorithmTypes, n_algorithms, filename);
+	resultVisualizer(results, algorithmNames, n_algorithms, &run_dataType, n_data, costNames);
+	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
 int main(int argc, char const *argv[]){

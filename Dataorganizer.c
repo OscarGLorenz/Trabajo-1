@@ -3,10 +3,9 @@
 #include <stdlib.h>
 
 #include "Dataorganizer.h"
+#include "TUI.h"
 
-#define NAMESIZE 16
-
-void inputData(int * datavector, int datasize){
+void inputData(int* datavector, size_t datasize){
 	int i;
 	int data[datasize];
 	printf("\n");
@@ -16,7 +15,7 @@ void inputData(int * datavector, int datasize){
 	}
 }
 
-void fileReader(int * datavector, int datasize, FILE * datafile){
+void fileReader(int * datavector, size_t datasize, FILE * datafile){
 	int i, aux;
 	for (i = 0; i < datasize; i++){
 		fscanf(datafile, "%d\n", &aux); 
@@ -25,24 +24,66 @@ void fileReader(int * datavector, int datasize, FILE * datafile){
 	fclose(datafile);
 }
 
-char**** multiSorter(int datasize, int * datavector, algorithm_ptr algorithms[], int n_algorithm, int n_costs){
+void filePrinter(int * datavector, size_t datasize, FILE * datafile){
+	int i;
+	fprintf(datafile, "%u,\n", datasize);
+	for (i = 0; i < datasize; i++){
+		fprintf(datafile, "%d\n", datavector[i]);
+	}
+	fclose(datafile);
+	printf("Fichero generado con exito.\n");
+}	
+
+void dataSaver(int * datavector, size_t datasize, char* input){
+	FILE* datafile;
+	int i = 0, j = 0;
+	char output[FILESIZE];
+	char extension[8] = "";
+	strcpy(output, input);
+	do i++;
+	while (output[i]!= '.');
+	output[i] = '\0';
+	i++;
+	do{
+		extension[j]=output[i];
+		i++; j++;
+	} while (output[i]!='\0');
+	strcat(output, "-ordenado.");
+	strcat(output, extension);
+	printf("\nEl archivo de salida con los datos ordenados se llamara \"%s\".\n\n", output);
+	
+	if ((datafile = fopen(output, "w+")) == NULL){
+		printf("Error al crear el archivo.");
+	}
+	else filePrinter(datavector, datasize, datafile);
+	fclose(datafile);
+}
+	
+
+char**** multiSorter(int * datavector, size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename){
 	Experiment experiment;
 	int buffer[datasize];
+	float millisec;
+	int i, k;
 	char**** costs = (char****) calloc(n_algorithm, sizeof(char ***));
-	for(int i = 0; i < n_algorithm; i++){
-		printf("\nHola1\n");
+	for(i = 0; i < n_algorithm; i++){
+		printf(".");
 		costs[i] = (char ***) calloc(1, sizeof(char**));
-		costs[i][0] = (char **) calloc(n_costs, sizeof(char*));
-		for (int k = 0; k < n_costs; k++){
-			printf("\nHola2\n");
+		costs[i][0] = (char **) calloc(COSTS, sizeof(char*));
+		for (k = 0; k < COSTS; k++){
 			costs[i][0][k] = (char *) calloc(NAMESIZE, sizeof(char));
-			printf("\nHola2b\n");
-
 		}
-		printf("\nHola3\n");
 		memcpy(buffer, datavector, datasize * sizeof(datavector));
 		experiment = newExperiment(datasize);
 		algorithms[i](buffer, datasize, &experiment);
+		millisec = nanos(&experiment) / 1000000.0;
+		sprintf(costs[i][0][0], "%u", experiment.comparations);
+		sprintf(costs[i][0][1], "%u", experiment.movements);
+		sprintf(costs[i][0][2], "%.3f", millisec);
+		for (k = 0; k < COSTS; k++){
+			if (strlen(costs[i][0][k]) < 8) strcat(costs[i][0][k], "\t");
+		}
 	}
+	dataSaver(buffer, datasize, filename);
 	return costs;
 }

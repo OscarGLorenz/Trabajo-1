@@ -11,6 +11,10 @@
 
 #include <time.h>
 
+#define NAMESIZE 	16
+#define FILESIZE	32
+#define COSTS 		3
+
 typedef enum datatype{ 
 	INCREASING, 
 	DECREASING, 

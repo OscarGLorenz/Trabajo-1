@@ -123,21 +123,6 @@ void endCount(Experiment * experiment) {
 }
 
 /*
- *  Función: millis
- * --------------------------------------------------------
- *   Devuelve el tiempo transcurrido en milisegundos desde la llamada
- *   a startCount y la de endCount
- *
- *   experiment: puntero al experimento
- *
- *   resultado: tiempo en milisegundos transcurridos
- */
-unsigned int millis(Experiment * experiment) {
-  return (experiment->end.tv_nsec-experiment->start.tv_nsec)/10e6 +
-  (experiment->end.tv_sec-experiment->start.tv_sec) * 10e3;
-}
-
-/*
  *  Función: nanos
  * --------------------------------------------------------
  *   Devuelve el tiempo transcurrido en nanosegundos desde la llamada
@@ -147,9 +132,9 @@ unsigned int millis(Experiment * experiment) {
  *
  *   resultado: tiempo en nanosegundos transcurridos
  */
-unsigned int nanos(Experiment * experiment) {
-  return (experiment->end.tv_nsec-experiment->start.tv_nsec)+
-  (experiment->end.tv_sec-experiment->start.tv_sec) * 10e9;
+unsigned long nanos(Experiment * experiment) {
+  return (unsigned long)((experiment->end.tv_nsec-experiment->start.tv_nsec)+
+  (experiment->end.tv_sec-experiment->start.tv_sec) * 10e9);
 }
 
 /*

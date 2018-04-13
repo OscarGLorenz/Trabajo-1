@@ -5,13 +5,30 @@
 ******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "TUI.h"
+
+#if __unix__ 
+	#include <stdlib.h>
+	void clear(){
+    	system("clear");
+		printf("\n");
+	}
+#elif defined(_WIN32) || defined(WIN32) 
+	void clear(){
+		system("cls");
+		printf("\n");
+	}
+#endif
+
 
 char programMode(){
 	char mode;
 	printf("\nQue desea hacer?\n");
 	printf("a) Ejecutar experimento de obtencion de la complejidad de diferentes algoritmos de ordenacion de datos\n");
-	printf("b) Ordenar una serie de datos introducidos por el usuario, en forma de fichero o por teclado\n");
+	printf("b) Ordenar una serie de datos introducidos por el usuario, en forma de fichero o por teclado.\n");
+	printf("\t\tSe compararan los diferentes algoritmos implementados y al final se devolveran los datos ordenados en un nuevo fichero\n");
 	do{
 		printf("Introducza su opcion: ");
 		fflush(stdin);
@@ -23,14 +40,14 @@ char programMode(){
 char experimentMode(int iterations, size_t* dataSizes){
 	char mode;
 	int l;
-	printf("\n***********************************************************");
+	clear();
 	printf("\nHa entrado en modo EXPERIMENTO\n");
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
 	printf("\tprobando con las siguientes cantidades de datos: ");
 	for (l = 0; l< iterations; l++){
 		printf("%d, ", dataSizes[l]);
 	}
-	printf("\nComo desea realizar el experimento?\n");
+	printf("\n\nComo desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
 	printf("b) Comparar la velocidad un algoritmo para diferentes tipos de datos\n");
 	printf("c) Comparar diferentes algoritmos dado un tipo de dato\n");
@@ -39,6 +56,21 @@ char experimentMode(int iterations, size_t* dataSizes){
 		fflush(stdin);
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b') && (mode != 'c'));
+	return mode;
+}
+
+char dataInputMode(){
+	char mode;
+	clear();
+	printf("\nHa entrado en modo ORDENADOR\n");
+	printf("\nIndique que tipo de datos desea introducir:\n");
+	printf("a) Por teclado\n");
+	printf("b) Datos que se encuentran en un fichero en la misma carpeta que el programa\n");
+	do{
+		printf("Introducza su opcion: ");
+		fflush(stdin);
+		scanf("%c", &mode);
+	} while((mode!= 'a') && (mode != 'b'));
 	return mode;
 }
 
@@ -72,32 +104,30 @@ dataType dataTypeMode(int n_data, char dataNames[][NAMESIZE]){
 	return (dataType)mode - 'a';
 }
 
-char dataInputMode(){
+int dataSpacingMode(){
 	char mode;
-	printf("\n***********************************************************");
-	printf("\nHa entrado en modo ORDENADOR\n");
-	printf("\nIndique que tipo de datos desea introducir:\n");
-	printf("a) Por teclado\n");
-	printf("b) Datos que se encuentran en un fichero en la misma carpeta que el programa\n");
+	printf("\nDe que tipo desea que sean los datos generados? Segun su disposicion una vez queden ordenados:\n");
+	printf("a) De valores consecutivos\n");
+	printf("b) De valores con incrementos aleatorios\n");
 	do{
 		printf("Introducza su opcion: ");
 		fflush(stdin);
 		scanf("%c", &mode);
 	} while((mode!= 'a') && (mode != 'b'));
-	return mode;
+	return mode == 'a' ? 0 : 1;
 }
 
-void showVector(int * datavector, int datasize){
-	int i;
+
+void showVector(int * datavector, size_t datasize){
+	size_t i;
 	for (i = 0; i < datasize; i++){
 		printf("%d ", datavector[i]);
 	}
 	printf("\n");
 }
 
-int fileOpener(FILE ** datafile){
-	char filename[32];
-	int datasize;
+size_t fileOpener(FILE ** datafile, char* filename){
+	size_t datasize;
 	printf("\nEl fichero debe contener un elemento de tipo entero natural en cada fila,\n");
 	printf("y en la primera fila la cantidad de datos que contiene para ordenar.\n");
 	printf("Indique el nombre del fichero, situado en la misma carpeta que el programa: ");
@@ -108,13 +138,14 @@ int fileOpener(FILE ** datafile){
 		}
 	} while (*datafile == NULL);
 	fscanf(*datafile, "%d,\n", &datasize);
+	printf("\nEl archivo contiene %d datos a ordenar", datasize);
 	return datasize;
 }
 
-void resultVisualizer(char**** results, char algorithmNames[][NAMESIZE], int n_algorithms, char dataNames[][NAMESIZE], int n_data, char costNames[][NAMESIZE], int n_costs){
+void resultVisualizer(char**** results, char algorithmNames[][NAMESIZE], int n_algorithms, char dataNames[][NAMESIZE], int n_data, char costNames[][NAMESIZE]){
 	int i, j, k;
 	printf("\n\nAlgoritmos\tTipo de coste computacional:\n\t\t");
-	for(k = 0; k < n_costs; k++){
+	for(k = 0; k < COSTS; k++){
 		printf("%s\t\t", costNames[k]);
 	}
 	printf("\n");
@@ -122,7 +153,7 @@ void resultVisualizer(char**** results, char algorithmNames[][NAMESIZE], int n_a
 		printf("** %s **\n", algorithmNames[i]);
 		for(j = 0; j < n_data; j++){
 			printf("%s:\t",dataNames[j]);
-			for (k = 0; k < n_costs; k++){
+			for (k = 0; k < COSTS; k++){
 				printf("%s\t\t", results[i][j][k]);
 			}
 			printf("\n");

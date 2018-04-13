@@ -5,7 +5,7 @@
 #include "TUI.h"
 
 int fileCreator(FILE ** datafile){
-	char filename[32];
+	char filename[FILESIZE];
 	int datasize;
 	printf("\nEste programa le permite generar un fichero de texto con una serie de datos pseudoaleatorios,\n");
 	printf("para ser utilizados como simulacion de funcionamiento con el programa [NOMBREPROGRAMA] en el modo ORDENADOR\n");
@@ -14,7 +14,7 @@ int fileCreator(FILE ** datafile){
 	do {
 		scanf("%s", filename);
 		if((*datafile = fopen(filename,"w+")) == NULL){
-			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
+			printf("Error al crear el archivo. Vuelva a intentarlo: ");
 		}
 	} while (*datafile == NULL);
 	printf("\nIntroduzca la cantidad de datos que desea generar: ");
