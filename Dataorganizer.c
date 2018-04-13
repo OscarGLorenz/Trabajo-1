@@ -1,14 +1,14 @@
+#include "Benchmark.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include "Benchmark.h"
 #include "Dataorganizer.h"
 #include "TUI.h"
 
 void inputData(int* datavector, size_t datasize){
 	int i;
-	int data[datasize];
 	printf("\n");
 	for(i = 0; i < datasize; i++){
 		printf("Introduzca dato %d: ", i+1);

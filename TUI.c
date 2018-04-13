@@ -28,7 +28,8 @@ char programMode(){
 	printf("\nQue desea hacer?\n");
 	printf("a) Ejecutar experimento de obtencion de la complejidad de diferentes algoritmos de ordenacion de datos\n");
 	printf("b) Ordenar una serie de datos introducidos por el usuario, en forma de fichero o por teclado.\n");
-	printf("\t\tSe compararan los diferentes algoritmos implementados y al final se devolveran los datos ordenados en un nuevo fichero\n");
+	printf("\t\tSe compararan los diferentes algoritmos implementados y\n");
+	printf("\t\tal final se devolveran los datos ordenados en un nuevo fichero\n");
 	do{
 		printf("Introducza su opcion: ");
 		fflush(stdin);
@@ -137,7 +138,7 @@ size_t fileOpener(FILE ** datafile, char* filename){
 			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
 		}
 	} while (*datafile == NULL);
-	fscanf(*datafile, "%d,\n", &datasize);
+	fscanf(*datafile, "%u,\n", &datasize);
 	printf("\nEl archivo contiene %d datos a ordenar", datasize);
 	return datasize;
 }

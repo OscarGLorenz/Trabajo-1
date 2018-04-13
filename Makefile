@@ -2,7 +2,7 @@
 CC=gcc
 
 #Flags
-CFLAGS=-lm -std=c99 
+CFLAGS=-lm -std=c99 -pedantic-errors -Wall
 
 #Objetivo
 TARGET=main

@@ -48,8 +48,6 @@ int iterations = sizeof(dataSizes) / sizeof(*dataSizes);
 
 void runExperiment(){
 	char mode = experimentMode(iterations, dataSizes);
-	int i, j;
-	
 	int run_algorithmID;
 	dataType run_dataType;
 	
@@ -87,6 +85,7 @@ void runOrganizer(){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
 			scanf("%u", &datasize);
+			strcpy(filename, "Datos.txt");
 			break;
 		case 'b':
 			datasize = fileOpener(&datafile, filename);
@@ -103,6 +102,7 @@ void runOrganizer(){
 	}
 	results = multiSorter(datavector, datasize, algorithmTypes, n_algorithms, filename);
 	resultVisualizer(results, algorithmNames, n_algorithms, &run_dataType, n_data, costNames);
+	printf("Hola\n");
 	freeTable(results, n_algorithms, n_data, COSTS);
 }
 
