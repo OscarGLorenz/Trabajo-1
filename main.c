@@ -4,7 +4,7 @@
 * DESCRIPCION: Archivo principal del programa. 
 *		Sintetizado en llamadas a funciones de las librerias y declaracion de tipos
 *
-* AUTOR :    Mario Musicò Cortés
+* AUTOR :    Mario Musicò Cortés y Óscar García Lorenz
 ******************************************************************************/
 
 #include "Benchmark.h"
@@ -87,7 +87,7 @@ void runOrganizer(){
 	switch (datamode){
 		case 'a':
 			printf("\nNumero de elementos que desea introducir: ");
-			scanf("%lu", &datasize);
+			scanf("%u", &datasize);
 			strcpy(filename, "Datos.txt");
 			break;
 		case 'b':

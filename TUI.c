@@ -1,7 +1,7 @@
 /******************************************************************************
 * ARCHIVO :  TUI.c
 *
-* DESCRIPCION: Contiene las funciones de interfaz de usuario y visualizacion. Ver aclaraciones en header
+* DESCRIPCION: Contiene las funciones de interfaz de usuario y visualizacion. Ver aclaraciones de funciones publicas en header
 *
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
@@ -49,7 +49,7 @@ char experimentMode(int iterations, size_t* dataSizes){
 	printf("\nPara cada caso, se realizara una regresion para obtener el residuo frente al modelo teorico,\n");
 	printf("\tprobando con las siguientes cantidades de datos: ");
 	for (l = 0; l< iterations; l++){
-		printf("%lu, ", dataSizes[l]);
+		printf("%lu, ", (unsigned long)dataSizes[l]);
 	}
 	printf("\n\nComo desea realizar el experimento?\n");
 	printf("a) En modo automatico, comparar todos los algoritmos con todos los tipos de datos\n");
@@ -141,8 +141,8 @@ size_t fileOpener(FILE ** datafile, char* filename){
 			printf("Error al abrir el archivo. Vuelva a intentarlo: ");
 		}
 	} while (*datafile == NULL);
-	fscanf(*datafile, "%lu,\n", &datasize);
-	printf("\nEl archivo contiene %lu datos a ordenar", datasize);
+	fscanf(*datafile, "%u,\n", &datasize);
+	printf("\nEl archivo contiene %lu datos a ordenar", (unsigned long)datasize);
 	return datasize;
 }
 

@@ -30,14 +30,6 @@ void inputData(int* datavector, size_t datasize);
 void fileReader(int* datavector, size_t datasize, FILE* datafile);
 
 /*	--------------------------------------------------------------------------------
-*	void dataSaver():	Guarda los datos ya ordenados en un fichero *.txt de salida
-*	datavector: 		puntero al vector de datos
-*	datasize: 			tamaño del vector de datos
-*	input:				nombre del archivo de entrada
-*/
-void dataSaver(int* datavector, size_t datasize, char* input);
-
-/*	--------------------------------------------------------------------------------
 *	void filePrinter():	Rellena el fichero de datos de salida con los valores
 *	datavector: 		puntero al vector de datos
 *	datasize: 			tamaño del vector de datos

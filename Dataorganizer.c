@@ -1,7 +1,7 @@
 /******************************************************************************
 * ARCHIVO :  Dataorganizer.c
 *
-* DESCRIPCION: Contiene las funciones del modo ORDENADOR. Ver aclaraciones en header
+* DESCRIPCION: Contiene las funciones del modo ORDENADOR. Ver aclaraciones de funciones publicas en header
 *
 * AUTOR :    Mario Musicò Cortés
 ******************************************************************************/
@@ -18,7 +18,7 @@ void inputData(int* datavector, size_t datasize){
 	size_t i;
 	printf("\n");
 	for(i = 0; i < datasize; i++){
-		printf("Introduzca dato %lu: ", i+1);
+		printf("Introduzca dato %lu: ", (unsigned long)i+1);
 		scanf("%d", datavector + i);
 	}
 }
@@ -35,7 +35,7 @@ void fileReader(int* datavector, size_t datasize, FILE* datafile){
 
 void filePrinter(int* datavector, size_t datasize, FILE* datafile){
 	size_t i;
-	fprintf(datafile, "%lu,\n", datasize);
+	fprintf(datafile, "%lu,\n", (unsigned long)datasize);
 	for (i = 0; i < datasize; i++){
 		fprintf(datafile, "%d\n", datavector[i]);
 	}
@@ -43,6 +43,12 @@ void filePrinter(int* datavector, size_t datasize, FILE* datafile){
 	printf("Fichero generado con exito.\n");
 }	
 
+/*	--------------------------------------------------------------------------------
+*	void dataSaver():	Guarda los datos ya ordenados en un fichero *.txt de salida
+*	datavector: 		puntero al vector de datos
+*	datasize: 			tamaño del vector de datos
+*	input:				nombre del archivo de entrada
+*/
 void dataSaver(int* datavector, size_t datasize, char* input){
 	FILE* datafile;
 	int i = 0, j = 0;
@@ -69,7 +75,7 @@ void dataSaver(int* datavector, size_t datasize, char* input){
 }
 	
 
-char**** multiSorter(int * datavector, size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename){
+char**** multiSorter(int datavector[], size_t datasize, algorithm_ptr algorithms[], int n_algorithm, char* filename){
 	Experiment experiment;
 	int buffer[datasize];
 	float millisec;
@@ -82,12 +88,12 @@ char**** multiSorter(int * datavector, size_t datasize, algorithm_ptr algorithms
 		for (k = 0; k < COSTS; k++){
 			costs[i][0][k] = (char *) calloc(NAMESIZE, sizeof(char));
 		}
-		memcpy(buffer, datavector, datasize * sizeof(datavector));
+		memcpy(buffer, datavector, datasize * sizeof(*datavector));
 		experiment = newExperiment(datasize);
 		algorithms[i](buffer, datasize, &experiment);
 		millisec = nanos(&experiment) / 1000000.0;
-		sprintf(costs[i][0][0], "%lu", experiment.comparations);
-		sprintf(costs[i][0][1], "%lu", experiment.movements);
+		sprintf(costs[i][0][0], "%lu", (unsigned long)experiment.comparations);
+		sprintf(costs[i][0][1], "%lu", (unsigned long)experiment.movements);
 		sprintf(costs[i][0][2], "%.3f", millisec);
 		for (k = 0; k < COSTS; k++){
 			if (strlen(costs[i][0][k]) < 8) strcat(costs[i][0][k], "\t");
